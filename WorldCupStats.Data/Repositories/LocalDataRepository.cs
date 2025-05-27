@@ -2,6 +2,7 @@
 using System.Text.Json;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
+using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Repositories;
 
@@ -49,16 +50,9 @@ public class LocalDataRepository : IDataRepository
 
 	private static async Task<IEnumerable<T>> GetLocalContent<T>(ChampionshipType type, string filePath)
 	{
-		var baseDirectory =
-			Directory.GetParent(
-			Directory.GetParent(
-			Directory.GetParent(
-			Directory.GetParent(
-			Directory.GetParent(
-				AppContext.BaseDirectory)
-				.FullName).FullName).FullName).FullName);
+		var baseDirectory = FileUtils.GetBaseDirectory();
 
-		var fullPath = Path.Combine(baseDirectory!.FullName, $@"LocalData\{type.ToString().ToLowerInvariant()}\", filePath);
+		var fullPath = Path.Combine(baseDirectory, $@"LocalData\{type.ToString().ToLowerInvariant()}\", filePath);
 
 		if (!File.Exists(fullPath))
 			throw new FileNotFoundException($"The file {fullPath} does not exist.");

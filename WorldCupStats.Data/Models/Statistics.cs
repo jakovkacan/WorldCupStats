@@ -5,43 +5,43 @@ namespace WorldCupStats.Data.Models;
 public class Statistics
 {
 	[JsonPropertyName("attempts_on_goal")]
-	public int AttemptsOnGoal { get; set; }
+	public int? AttemptsOnGoal { get; set; }
 	[JsonPropertyName("on_target")]
-	public int OnTarget { get; set; }
+	public int? OnTarget { get; set; }
 	[JsonPropertyName("off_target")]
-	public int OffTarget { get; set; }
+	public int? OffTarget { get; set; }
 	[JsonPropertyName("blocked")]
-	public int Blocked { get; set; }
+	public int? Blocked { get; set; }
 	[JsonPropertyName("woodwork")]
-	public int Woodwork { get; set; }
+	public int? Woodwork { get; set; }
 	[JsonPropertyName("corners")]
-	public int Corners { get; set; }
+	public int? Corners { get; set; }
 	[JsonPropertyName("offsides")]
-	public int Offsides { get; set; }
+	public int? Offsides { get; set; }
 	[JsonPropertyName("possession")]
-	public int Possession { get; set; }
+	public int? Possession { get; set; }
 	[JsonPropertyName("pass_accuracy")]
-	public int PassAccuracy { get; set; } // in percentage
+	public int? PassAccuracy { get; set; } // in percentage
 	[JsonPropertyName("num_passes")]
-	public int Passes { get; set; }
+	public int? Passes { get; set; }
 	[JsonPropertyName("passes_completed")]
-	public int PassesCompleted { get; set; }
+	public int? PassesCompleted { get; set; }
 	[JsonPropertyName("distance_covered")]
-	public int DistanceCovered { get; set; } // in meters
+	public int? DistanceCovered { get; set; } // in meters
 	[JsonPropertyName("balls_recovered")]
-	public int BallsRecovered { get; set; }
+	public int? BallsRecovered { get; set; }
 	[JsonPropertyName("fouls_committed")]
 	public int? FoulsCommitted { get; set; }
 	[JsonPropertyName("yellow_cards")]
-	public int YellowCards { get; set; }
+	public int? YellowCards { get; set; }
 	[JsonPropertyName("red_cards")]
-	public int RedCards { get; set; }
+	public int? RedCards { get; set; }
 	[JsonPropertyName("tackles")]
-	public int Tackles { get; set; }
+	public int? Tackles { get; set; }
 	[JsonPropertyName("clearances")]
-	public int Clearances { get; set; }
+	public int? Clearances { get; set; }
 	[JsonPropertyName("tactics")]
-	public string Tactics { get; set; }
+	public string? Tactics { get; set; }
 
 	[JsonPropertyName("starting_eleven")]
 	public IEnumerable<Player> StartingEleven { get; set; }

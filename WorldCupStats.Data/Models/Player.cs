@@ -3,15 +3,6 @@ using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Models;
 
-
-public enum Position
-{
-	Goalie,
-	Defender,
-	Midfield,
-	Forward
-}
-
 public class Player
 {
 	[JsonPropertyName("name")]

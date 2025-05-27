@@ -20,6 +20,6 @@ public class Team
 	public override string ToString()
 	{
 		return
-			$"{nameof(Id)}: {Id}, {nameof(Country)}: {Country}, {nameof(FifaCode)}: {FifaCode}, {nameof(GroupId)}: {GroupId}, {nameof(GroupLetter)}: {GroupLetter}";
+			$"{nameof(Id)}: {Id}, {nameof(Country)}: {Country}, {nameof(FifaCode)}: {FifaCode}, {nameof(Code)}: {Code}, {nameof(GroupId)}: {GroupId}, {nameof(GroupLetter)}: {GroupLetter}";
 	}
 }

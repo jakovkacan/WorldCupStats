@@ -1,15 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Net;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
+using Microsoft.Extensions.Configuration;
 using WorldCupStats.Data.Interfaces;
 
-namespace WorldCupStats.Data.Repositories;
+namespace WorldCupStats.Data.Providers;
 
-public class HttpClientFactory : IHttpClientFactory
+public class HttpClientProvider : IHttpClientFactory
 {
 
 	private readonly IConfiguration _config;
-	public HttpClientFactory(IConfiguration config)
+	public HttpClientProvider(IConfiguration config)
 	{
 		_config = config;
 	}
@@ -22,7 +21,7 @@ public class HttpClientFactory : IHttpClientFactory
 
 		if (_config == null)
 		{
-			throw new InvalidOperationException("Configuration has not been initialized. Call HttpClientFactory.Initialize(config) first.");
+			throw new InvalidOperationException("Configuration has not been initialized. Call HttpClientProvider.Initialize(config) first.");
 		}
 
 		client.BaseAddress = new Uri(baseUrl);

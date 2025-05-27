@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace WorldCupStats.Data.Services;
+namespace WorldCupStats.Data.Providers;
 
-public static class ConfigurationService
+public static class ConfigurationProvider
 {
 	public static IConfigurationRoot BuildConfiguration()
 	{
@@ -11,10 +11,4 @@ public static class ConfigurationService
 			.AddJsonFile("appsettings.json", optional: false)
 			.Build();
 	}
-
-	//public static T GetSection<T>(string sectionName) where T : class, new()
-	//{
-	//	//var config = BuildConfiguration();
-	//	//return config.GetSection(sectionName).Get<T>();
-	//}
 }
