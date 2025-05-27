@@ -59,19 +59,4 @@ public class ApiDataRepository : IDataRepository
 		return await response.Content.ReadFromJsonAsync<IEnumerable<T>>() ?? [];
 	}
 
-	//public Task<Team> GetTeamByIdAsync(int id)
-	//{
-	//	throw new NotImplementedException();
-	//}
-
-	//public Task<Team> GetTeamByFifaCode(string fifaCode)
-	//{
-	//	throw new NotImplementedException();
-	//}
-
-	//public string GetUrl(ChampionshipType type)
-	//{
-	//	var endpointUrl = _config["DataConfig:ApiEndpoints:Teams"];
-	//	return $"{type.ToString().ToLower()}/{endpointUrl}";
-	//}
 }

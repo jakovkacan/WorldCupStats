@@ -9,8 +9,10 @@ public class Match
 	[JsonPropertyName("location")]
 	public string Location { get; set; }
 	[JsonPropertyName("fifa_id")]
+	[JsonConverter(typeof(StringToIntJsonConverter))]
 	public int FifaId { get; set; }
 	[JsonPropertyName("attendance")]
+	[JsonConverter(typeof(StringToIntJsonConverter))]
 	public int Attendance { get; set; }
 	[JsonPropertyName("officials")]
 	public IEnumerable<string> Officials { get; set; }

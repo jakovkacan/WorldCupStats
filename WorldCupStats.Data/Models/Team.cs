@@ -9,7 +9,9 @@ public class Team
 	[JsonPropertyName("country")]
 	public string Country { get; set; }
 	[JsonPropertyName("fifa_code")]
-	public string FifaCode { get; set; }
+	public string? FifaCode { get; set; }
+	[JsonPropertyName("code")]
+	public string? Code { get; set; }
 	[JsonPropertyName("group_id")]
 	public int GroupId { get; set; }
 	[JsonPropertyName("group_letter")]

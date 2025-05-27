@@ -18,22 +18,6 @@ public class HttpClientFactory : IHttpClientFactory
 	{
 		var baseUrl = _config["DataConfig:ApiEndpoints:BaseUrl"];
 
-		//var handler = new HttpClientHandler
-		//{
-		//	UseCookies = true,
-		//	CookieContainer = new CookieContainer(),
-		//	AllowAutoRedirect = true // Essential for Cloudflare challenges
-		//};
-
-		//var cookies = handler.CookieContainer.GetCookies(new Uri(baseUrl));
-
-		// Reload cookies
-		//foreach (Cookie cookie in cookies)
-		//{
-		//	handler.CookieContainer.Add(cookie);
-		//}
-
-		//var client = new HttpClient(handler);
 		var client = new HttpClient();
 
 		if (_config == null)
@@ -49,7 +33,6 @@ public class HttpClientFactory : IHttpClientFactory
 		client.DefaultRequestHeaders.UserAgent.ParseAdd(
 			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
 			"(KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
-
 
 		return client;
 

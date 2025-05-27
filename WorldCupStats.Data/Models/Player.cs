@@ -17,6 +17,7 @@ public class Player
 	[JsonPropertyName("name")]
 	public string Name { get; set; }
 	[JsonPropertyName("shirt_number")]
+	[JsonConverter(typeof(StringToIntJsonConverter))]
 	public int ShirtNumber { get; set; }
 	[JsonPropertyName("position")]
 	[JsonConverter(typeof(PositionJsonConverter))]

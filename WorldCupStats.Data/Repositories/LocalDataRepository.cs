@@ -7,41 +7,69 @@ namespace WorldCupStats.Data.Repositories;
 
 public class LocalDataRepository : IDataRepository
 {
-	private readonly string _filePath;
+	private readonly IConfiguration _config;
 	public LocalDataRepository(IConfiguration config)
 	{
-		_filePath = config["DataConfig:LocalDataPaths:Teams"];
+		_config = config ?? throw new ArgumentNullException(nameof(config), "Configuration cannot be null");
 	}
+
 	public async Task<IEnumerable<Team>> GetAllTeamsAsync(ChampionshipType type)
 	{
-		if (!File.Exists(_filePath))
-			throw new FileNotFoundException("Local team data not found");
-		using var stream = File.OpenRead(_filePath);
-		return await JsonSerializer.DeserializeAsync<IEnumerable<Team>>(stream);
+		var file = _config["DataConfig:LocalData:Teams"];
+
+		if (string.IsNullOrEmpty(file))
+			throw new InvalidOperationException("Local data file path for teams is not configured.");
+
+		return await GetLocalContent<Team>(type, file);
 	}
 
-	public Task<IEnumerable<Match>> GetAllMatchesAsync(ChampionshipType type)
+	public async Task<IEnumerable<Match>> GetAllMatchesAsync(ChampionshipType type)
 	{
-		throw new NotImplementedException();
+		var file = _config["DataConfig:LocalData:Matches"];
+
+		if (string.IsNullOrEmpty(file))
+			throw new InvalidOperationException("Local data file path for matches is not configured.");
+
+		return await GetLocalContent<Match>(type, file);
 	}
 
-	public Task<IEnumerable<Match>> GetAllMatchesAsync(ChampionshipType type, string fifaCode)
+	public async Task<IEnumerable<Match>> GetAllMatchesAsync(ChampionshipType type, string fifaCode)
 	{
-		throw new NotImplementedException();
+		var matches = await GetAllMatchesAsync(type);
+
+		return matches.Where(m =>
+			{
+				var codeHome = m.HomeTeam.FifaCode ?? m.HomeTeam.Code;
+				var codeAway = m.AwayTeam.FifaCode ?? m.AwayTeam.Code;
+
+				return string.Equals(codeHome, fifaCode, StringComparison.OrdinalIgnoreCase) ||
+					   string.Equals(codeAway, fifaCode, StringComparison.OrdinalIgnoreCase);
+			});
 	}
 
-	public Task<Team> GetTeamByIdAsync(int id)
+	private static async Task<IEnumerable<T>> GetLocalContent<T>(ChampionshipType type, string filePath)
 	{
-		throw new NotImplementedException();
-	}
+		var baseDirectory =
+			Directory.GetParent(
+			Directory.GetParent(
+			Directory.GetParent(
+			Directory.GetParent(
+			Directory.GetParent(
+				AppContext.BaseDirectory)
+				.FullName).FullName).FullName).FullName);
 
-	public Task<Team> GetTeamByFifaCode(string fifaCode)
-	{
-		throw new NotImplementedException();
-	}
+		var fullPath = Path.Combine(baseDirectory!.FullName, $@"LocalData\{type.ToString().ToLowerInvariant()}\", filePath);
 
-	public string GetUrl(ChampionshipType type)
-	{
-		throw new NotImplementedException();
+		if (!File.Exists(fullPath))
+			throw new FileNotFoundException($"The file {fullPath} does not exist.");
+
+		// Read the file content as a string
+		var jsonString = File.ReadAllTextAsync(fullPath);
+
+		//if (string.IsNullOrWhiteSpace(jsonString))
+		//	throw new InvalidOperationException($"The file {fullPath} is empty or contains invalid JSON.");
+
+		// Deserialize the JSON string to the specified type
+		return JsonSerializer.Deserialize<IEnumerable<T>>(jsonString.Result) ?? [];
 	}
 }

@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="LocalData\" />
-    <Folder Include="Utils\" />
+    <Compile Remove="LocalData\**" />
+    <EmbeddedResource Remove="LocalData\**" />
+    <None Remove="LocalData\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
 

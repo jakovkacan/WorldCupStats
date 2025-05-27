@@ -26,8 +26,16 @@ namespace WorldCupStats.WinForms
 			services.AddLogging();
 
 			// Register your repository
-			services.AddTransient<IDataRepository, ApiDataRepository>();
-			services.AddTransient<IHttpClientFactory, HttpClientFactory>();
+
+			var useLocalData = configuration["DataConfig:UseLocalData"]?.ToLowerInvariant() == "true";
+
+			if (useLocalData)
+				services.AddTransient<IDataRepository, LocalDataRepository>();
+			else
+			{
+				services.AddTransient<IHttpClientFactory, HttpClientFactory>();
+				services.AddTransient<IDataRepository, ApiDataRepository>();
+			}
 
 			// Register your forms
 			services.AddTransient<Form1>();
@@ -37,13 +45,13 @@ namespace WorldCupStats.WinForms
 			ApplicationConfiguration.Initialize();
 
 			var lang = configuration["Settings:Language"] ?? "en-US";
-			Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang); 
+			Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
 
 
 			// Resolve and run the main form
 			var mainForm = serviceProvider.GetRequiredService<Form1>();
 			Application.Run(mainForm);
-			
+
 		}
 	}
 }
