@@ -5,19 +5,29 @@ using WorldCupStats.Data.Models;
 
 namespace WorldCupStats.Data.Repositories;
 
-public class LocalTeamRepository : ITeamRepository
+public class LocalDataRepository : IDataRepository
 {
 	private readonly string _filePath;
-	public LocalTeamRepository(IConfiguration config)
+	public LocalDataRepository(IConfiguration config)
 	{
 		_filePath = config["DataConfig:LocalDataPaths:Teams"];
 	}
-	public async Task<IEnumerable<Team>> GetAllTeamsAsync()
+	public async Task<IEnumerable<Team>> GetAllTeamsAsync(ChampionshipType type)
 	{
 		if (!File.Exists(_filePath))
 			throw new FileNotFoundException("Local team data not found");
 		using var stream = File.OpenRead(_filePath);
 		return await JsonSerializer.DeserializeAsync<IEnumerable<Team>>(stream);
+	}
+
+	public Task<IEnumerable<Match>> GetAllMatchesAsync(ChampionshipType type)
+	{
+		throw new NotImplementedException();
+	}
+
+	public Task<IEnumerable<Match>> GetAllMatchesAsync(ChampionshipType type, string fifaCode)
+	{
+		throw new NotImplementedException();
 	}
 
 	public Task<Team> GetTeamByIdAsync(int id)
@@ -26,6 +36,11 @@ public class LocalTeamRepository : ITeamRepository
 	}
 
 	public Task<Team> GetTeamByFifaCode(string fifaCode)
+	{
+		throw new NotImplementedException();
+	}
+
+	public string GetUrl(ChampionshipType type)
 	{
 		throw new NotImplementedException();
 	}
