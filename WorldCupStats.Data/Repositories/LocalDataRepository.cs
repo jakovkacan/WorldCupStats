@@ -52,7 +52,7 @@ public class LocalDataRepository : IDataRepository
 	{
 		var baseDirectory = FileUtils.GetBaseDirectory();
 
-		var fullPath = Path.Combine(baseDirectory, $@"LocalData\{type.ToString().ToLowerInvariant()}\", filePath);
+		var fullPath = Path.Combine(baseDirectory, $@"WorldCupStats.Data\LocalData\{type.ToString().ToLowerInvariant()}\", filePath);
 
 		if (!File.Exists(fullPath))
 			throw new FileNotFoundException($"The file {fullPath} does not exist.");
