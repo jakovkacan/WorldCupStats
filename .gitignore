@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /WorldCupStats.Data/LocalData/preferences.json
+/WorldCupStats.Data/LocalData/img
