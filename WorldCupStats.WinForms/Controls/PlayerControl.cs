@@ -21,6 +21,9 @@ namespace WorldCupStats.WinForms.Controls
 			InitializeComponent();
 		}
 
+		public event EventHandler AddToFavoritesClicked;
+		public event EventHandler RemovedFromFavoritesClicked;
+
 		private void PlayerControl_Load(object sender, EventArgs e)
 		{
 			toolTip.SetToolTip(this.pbCapitan, "Capitan");
@@ -35,5 +38,25 @@ namespace WorldCupStats.WinForms.Controls
 			cmsOptionAdd.Visible = !_player.IsFavorite;
 			cmsOptionRemove.Visible = _player.IsFavorite;
 		}
+
+		private void cmsOptionAdd_Click(object sender, EventArgs e)
+		{
+			AddToFavoritesClicked?.Invoke(this, new PlayerEventArgs(_player));
+		}
+
+		private void cmsOptionRemove_Click(object sender, EventArgs e)
+		{
+			RemovedFromFavoritesClicked?.Invoke(this, new PlayerEventArgs(_player));
+		}
+
+		internal class PlayerEventArgs : EventArgs
+		{
+			public Player Player { get; }
+			public PlayerEventArgs(Player player)
+			{
+				Player = player;
+			}
+		}
+
 	}
 }

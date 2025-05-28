@@ -1,4 +1,6 @@
-﻿namespace WorldCupStats.WinForms.Controls
+﻿using WorldCupStats.WinForms.Forms;
+
+namespace WorldCupStats.WinForms.Controls
 {
 	partial class PlayerControl
 	{
@@ -117,19 +119,21 @@
 			// 
 			cmsFavorite.Items.AddRange(new ToolStripItem[] { cmsOptionAdd, cmsOptionRemove });
 			cmsFavorite.Name = "cmsFavorite";
-			cmsFavorite.Size = new Size(197, 48);
+			cmsFavorite.Size = new Size(197, 70);
 			// 
 			// cmsOptionAdd
 			// 
 			cmsOptionAdd.Name = "cmsOptionAdd";
 			cmsOptionAdd.Size = new Size(196, 22);
 			cmsOptionAdd.Text = "Add to Favorites";
+			cmsOptionAdd.Click += cmsOptionAdd_Click;
 			// 
 			// cmsOptionRemove
 			// 
 			cmsOptionRemove.Name = "cmsOptionRemove";
 			cmsOptionRemove.Size = new Size(196, 22);
 			cmsOptionRemove.Text = "Remove from Favorites";
+			cmsOptionRemove.Click += cmsOptionRemove_Click;
 			// 
 			// PlayerControl
 			// 

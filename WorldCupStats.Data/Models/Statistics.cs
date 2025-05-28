@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Models;
 
@@ -42,7 +43,6 @@ public class Statistics
 	public int? Clearances { get; set; }
 	[JsonPropertyName("tactics")]
 	public string? Tactics { get; set; }
-
 	[JsonPropertyName("starting_eleven")]
 	public IEnumerable<Player> StartingEleven { get; set; }
 	[JsonPropertyName("substitutes")]

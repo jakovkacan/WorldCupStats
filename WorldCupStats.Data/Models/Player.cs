@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using WorldCupStats.Data.Utils.Converters;
+using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Models;
 
@@ -15,7 +15,6 @@ public class Player
 	public Position Position { get; set; }
 	[JsonPropertyName("captain")]
 	public bool IsCapitan { get; set; }
-
 	public bool IsFavorite { get; set; } = false;
 	public string? PicturePath { get; set; }
 

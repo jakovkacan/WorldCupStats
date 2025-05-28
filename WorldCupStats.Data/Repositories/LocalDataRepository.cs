@@ -66,4 +66,5 @@ public class LocalDataRepository : IDataRepository
 		// Deserialize the JSON string to the specified type
 		return JsonSerializer.Deserialize<IEnumerable<T>>(jsonString.Result) ?? [];
 	}
+	public Settings GetSettingsInstance() => _settings.GetInstance();
 }

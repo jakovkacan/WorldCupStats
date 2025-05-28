@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
-using Microsoft.Extensions.Configuration;
+using System.Text.Json;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
+using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Repositories;
 
@@ -38,6 +40,8 @@ public class ApiDataRepository : IDataRepository
 		if (string.IsNullOrEmpty(endpointUrl))
 			throw new InvalidOperationException("API base URL or endpoint is not configured.");
 
+		var content = await GetHttpContent<Match>(endpointUrl);
+		
 		return await GetHttpContent<Match>(endpointUrl);
 	}
 
@@ -61,5 +65,7 @@ public class ApiDataRepository : IDataRepository
 
 		return await response.Content.ReadFromJsonAsync<IEnumerable<T>>() ?? [];
 	}
+
+	public Settings GetSettingsInstance() => _settings.GetInstance();
 
 }

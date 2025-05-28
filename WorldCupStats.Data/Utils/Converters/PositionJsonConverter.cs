@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using WorldCupStats.Data.Models;
 
-namespace WorldCupStats.Data.Utils.Converters
+namespace WorldCupStats.Data.Utils
 {
 	public class PositionJsonConverter : JsonConverter<Position>
 	{

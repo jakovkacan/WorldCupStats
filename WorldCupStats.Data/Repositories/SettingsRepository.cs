@@ -15,7 +15,7 @@ public class SettingsRepository : ISettingsRepository
 			_settings = LoadSettings();
 	}
 
-	public T GetValue<T>()
+	public T? GetValue<T>()
 	{
 		if (_settings == null)
 			throw new InvalidOperationException("Settings have not been initialized.");
@@ -47,7 +47,11 @@ public class SettingsRepository : ISettingsRepository
 			return; // No change, nothing to save
 
 		if (typeof(T) == typeof(ChampionshipType))
+		{
 			_settings.Type = (ChampionshipType)((object)value!)!;
+			_settings.FavoriteTeam = null; // Reset favorite team when changing type
+			_settings.FavoritePlayers.Clear(); // Reset favorite players when changing type
+		}
 
 		if (typeof(T) == typeof(Language))
 			_settings.Language = (Language)((object)value!)!;
@@ -115,7 +119,7 @@ public class SettingsRepository : ISettingsRepository
 			Language = language ?? Language.EN,
 			DisplayMode = displayMode ?? DisplayMode.WindowedMedium,
 			FavoriteTeam = null,
-			FavoritePlayers = new List<Player>()
+			FavoritePlayers = []
 		};
 
 		var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions
@@ -129,9 +133,43 @@ public class SettingsRepository : ISettingsRepository
 
 	public bool IsInitialized() => _settings != null;
 
+	public void AddToFavorites(Player player)
+	{
+		if (_settings?.FavoriteTeam == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+
+		player.IsFavorite = true; // Mark player as favorite
+
+		if (_settings.FavoritePlayers.All(p => p.Name != player.Name)) // Avoid duplicates
+			_settings.FavoritePlayers.Add(player);
+
+		SaveSettings();
+	}
+
+	public void RemoveFromFavorites(Player player)
+	{
+		if (_settings?.FavoriteTeam == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+
+		player.IsFavorite = false;
+
+		if (_settings.FavoritePlayers.Any(p => p.Name == player.Name))
+			_settings.FavoritePlayers.Remove(_settings.FavoritePlayers.First(p => p.Name == player.Name));
+		
+		SaveSettings();
+	}
+
+	//obsolete
+	public bool IsFavorite(Player player)
+	{
+		if (_settings?.FavoriteTeam == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+
+		return _settings.FavoritePlayers.Contains(player);
+	}
+
 	private static string GetSettingsFilePath() => Path.Combine(FileUtils.GetBaseDirectory(), "preferences.json");
 	public static bool SettingsFileExists() => File.Exists(GetSettingsFilePath());
-
 	private static Settings? LoadSettings()
 	{
 		var path = GetSettingsFilePath();
@@ -139,7 +177,6 @@ public class SettingsRepository : ISettingsRepository
 		var json = File.ReadAllText(path);
 		return JsonSerializer.Deserialize<Settings>(json);
 	}
-
 	private void SaveSettings()
 	{
 		var path = GetSettingsFilePath();
@@ -149,6 +186,12 @@ public class SettingsRepository : ISettingsRepository
 		});
 		File.WriteAllText(path, json);
 	}
+	public Settings GetInstance()
+	{
+		if (_settings == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+		return _settings;
+	}
 
-	
+
 }

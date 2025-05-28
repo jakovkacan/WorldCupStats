@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
 using WorldCupStats.WinForms.Controls;
@@ -30,18 +31,33 @@ namespace WorldCupStats.WinForms.Forms
 
 		private async void Initialize()
 		{
-			progressBar.Visible = true;
-			flpAllPlayers.Controls.Clear();
-			flpFavoritePlayers.Controls.Clear();
-			cbTeams.DataSource = null;
-
 			try
 			{
+				ClearForm();
+				progressBar.Visible = true;
+
 				var result = await _repository.GetAllTeamsAsync();
 				_teams = result.ToList();
 				cbTeams.DataSource = _teams.Select(
 						t => $"{t.Country} ({t.FifaCode ?? t.Code})")
 					.ToList();
+
+				// Load favorite team from settings
+				var savedFavoriteTeam = _settings.GetValue<Team>();
+
+				if (savedFavoriteTeam != null)
+				{
+					var index = _teams.IndexOf(_teams.First(t => t.Id == savedFavoriteTeam.Id));
+					if (index < 0) return;
+
+					cbTeams.SelectedIndex = index;
+					TeamChanged();
+				}
+				else
+				{
+					cbTeams.SelectedIndex = 0;
+				}
+
 			}
 			catch (Exception ex)
 			{
@@ -51,6 +67,51 @@ namespace WorldCupStats.WinForms.Forms
 			{
 				progressBar.Visible = false;
 			}
+		}
+
+		private async void TeamChanged()
+		{
+			try
+			{
+				ClearForm();
+				progressBar.Visible = true;
+
+				var selectedTeam = _teams[cbTeams.SelectedIndex];
+				_settings.SetValue(selectedTeam);
+
+				_players = await _repository.GetAllPlayersAsync(selectedTeam.FifaCode ?? selectedTeam.Code!);
+
+				DrawPlayers();
+			}
+			catch (Exception ex)
+			{
+				MessageBoxUtils.ShowError(ex.Message);
+			}
+			finally
+			{
+				progressBar.Visible = false;
+			}
+		}
+
+		private void DrawPlayers()
+		{
+			foreach (var player in _players)
+			{
+				var playerControl = new PlayerControl(player);
+				playerControl.AddToFavoritesClicked += PlayerControl_AddToFavoritesClicked;
+				playerControl.RemovedFromFavoritesClicked += PlayerControl_RemovedFromFavoritesClicked;
+
+				if (player.IsFavorite)
+					flpFavoritePlayers.Controls.Add(playerControl);
+				else
+					flpAllPlayers.Controls.Add(playerControl);
+			}
+		}
+
+		private void ClearForm()
+		{
+			flpAllPlayers.Controls.Clear();
+			flpFavoritePlayers.Controls.Clear();
 		}
 
 
@@ -59,39 +120,36 @@ namespace WorldCupStats.WinForms.Forms
 			Initialize();
 		}
 
-		private async void cbTeams_SelectionChangeCommitted(object sender, EventArgs e)
+		private void cbTeams_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			try
-			{
-				progressBar.Visible = true;
-				var selectedTeam = _teams[cbTeams.SelectedIndex];
-				_settings.SetValue(selectedTeam);
-
-				_players = await _repository.GetAllPlayersAsync(selectedTeam.FifaCode ?? selectedTeam.Code!);
-
-				flpAllPlayers.Controls.Clear();
-				foreach (var player in _players)
-				{
-					var playerControl = new PlayerControl(player);
-					flpAllPlayers.Controls.Add(playerControl);
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBoxUtils.ShowError(ex.Message);
-			}
-			finally
-			{
-				progressBar.Visible = false;
-			}
+			TeamChanged();
 		}
 
 		private void btnSettings_Click(object sender, EventArgs e)
 		{
 			var settingsForm = new SettingsForm(_settings);
 			settingsForm.ShowDialog(this);
+
 			if (settingsForm.SettingsSaved)
 				Initialize();
 		}
+		private void PlayerControl_AddToFavoritesClicked(object? sender, EventArgs e)
+		{
+			if (e is PlayerControl.PlayerEventArgs playerEventArgs)
+				_settings.AddToFavorites(playerEventArgs.Player);
+
+			ClearForm();
+			DrawPlayers();
+		}
+
+		private void PlayerControl_RemovedFromFavoritesClicked(object? sender, EventArgs e)
+		{
+			if (e is PlayerControl.PlayerEventArgs playerEventArgs)
+				_settings.RemoveFromFavorites(playerEventArgs.Player);
+
+			ClearForm();
+			DrawPlayers();
+		}
+
 	}
 }
