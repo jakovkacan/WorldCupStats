@@ -16,27 +16,35 @@ namespace WorldCupStats.WinForms
 			InitializeComponent();
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private async void button1_Click(object sender, EventArgs e)
 		{
 			IEnumerable<Team> response;
 			try
 			{
-				response = _repository.GetAllTeamsAsync().Result;
+				progressBar1.Visible = true;
+				response = await _repository.GetAllTeamsAsync();
+				await Task.Delay(1000);
+				if (response != null && response.Any())
+				{
+					var teams = string.Join(Environment.NewLine,
+						response.Select(t => $"{t.Country} ({t.FifaCode}) {t.GroupId} {t.GroupLetter} {t.Id}"));
+					MessageBox.Show(teams, "Teams", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				else
+				{
+					MessageBox.Show("No teams found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				throw;
 			}
-			if (response != null && response.Any())
+			finally
 			{
-				var teams = string.Join(Environment.NewLine, response.Select(t => $"{t.Country} ({t.FifaCode}) {t.GroupId} {t.GroupLetter} {t.Id}"));
-				MessageBox.Show(teams, "Teams", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				progressBar1.Visible = false;
 			}
-			else
-			{
-				MessageBox.Show("No teams found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
+			
 		}
 
 		private void button2_Click(object sender, EventArgs e)
@@ -65,6 +73,33 @@ namespace WorldCupStats.WinForms
 			//open SettingsForm
 			var settingsForm = new SettingsForm(_settings);
 			settingsForm.ShowDialog(this);
+		}
+
+		private void button4_Click(object sender, EventArgs e)
+		{
+			using var openFileDialog = new OpenFileDialog
+			{
+				Title = "Select an Image",
+				Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files|*.*"
+			};
+
+			if (openFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				string selectedFilePath = openFileDialog.FileName;
+				// Use the selectedFilePath as needed, e.g., display or save it
+				MessageBox.Show($"Selected file: {selectedFilePath}", "Image Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				var playerName = textBox1.Text;
+				try
+				{
+					_settings.SetPlayerPicture(playerName, selectedFilePath);
+					MessageBox.Show($"Picture for {playerName} saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show($"Error saving picture for {playerName}: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					throw;
+				}
+			}
 		}
 	}
 }

@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace WorldCupStats.Data.Models;
+namespace WorldCupStats.Data.Utils.Converters;
 
 public class StringToIntJsonConverter : JsonConverter<int>
 {

@@ -8,4 +8,6 @@ public interface ISettingsRepository
 	void SetValue<T>(T value);
 	void CreateSettingsFile(ChampionshipType? type = null, Language? language = null, DisplayMode? displayMode = null);
 	bool IsInitialized();
+	void SetPlayerPicture(string playerName, string picturePath);
+	void RemovePlayerPicture(string playerName);
 }

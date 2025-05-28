@@ -32,6 +32,9 @@
 			button2 = new Button();
 			richTextBox1 = new RichTextBox();
 			button3 = new Button();
+			textBox1 = new TextBox();
+			button4 = new Button();
+			progressBar1 = new ProgressBar();
 			SuspendLayout();
 			// 
 			// button1
@@ -76,11 +79,41 @@
 			button3.UseVisualStyleBackColor = true;
 			button3.Click += button3_Click;
 			// 
+			// textBox1
+			// 
+			textBox1.Location = new Point(26, 224);
+			textBox1.Name = "textBox1";
+			textBox1.Size = new Size(100, 23);
+			textBox1.TabIndex = 4;
+			textBox1.Text = "Player Name";
+			// 
+			// button4
+			// 
+			button4.Location = new Point(26, 253);
+			button4.Name = "button4";
+			button4.Size = new Size(75, 23);
+			button4.TabIndex = 5;
+			button4.Text = "Browse";
+			button4.UseVisualStyleBackColor = true;
+			button4.Click += button4_Click;
+			// 
+			// progressBar1
+			// 
+			progressBar1.Location = new Point(12, 155);
+			progressBar1.Name = "progressBar1";
+			progressBar1.Size = new Size(114, 23);
+			progressBar1.Style = ProgressBarStyle.Marquee;
+			progressBar1.TabIndex = 6;
+			progressBar1.Visible = false;
+			// 
 			// Form1
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(778, 371);
+			Controls.Add(progressBar1);
+			Controls.Add(button4);
+			Controls.Add(textBox1);
 			Controls.Add(button3);
 			Controls.Add(richTextBox1);
 			Controls.Add(button2);
@@ -89,6 +122,7 @@
 			Name = "Form1";
 			Text = "Form1";
 			ResumeLayout(false);
+			PerformLayout();
 		}
 
 		#endregion
@@ -97,5 +131,8 @@
 		private Button button2;
 		private RichTextBox richTextBox1;
 		private Button button3;
+		private TextBox textBox1;
+		private Button button4;
+		private ProgressBar progressBar1;
 	}
 }

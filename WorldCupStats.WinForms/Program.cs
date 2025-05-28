@@ -44,6 +44,7 @@ namespace WorldCupStats.WinForms
 
 			// Register your forms
 			services.AddTransient<Form1>();
+			services.AddTransient<MainForm>();
 			services.AddTransient<SettingsForm>();
 
 			var serviceProvider = services.BuildServiceProvider();
@@ -60,12 +61,12 @@ namespace WorldCupStats.WinForms
 
 				if (!settingsForm.SettingsSaved) return;
 
-				var mainForm = serviceProvider.GetRequiredService<Form1>();
+				var mainForm = serviceProvider.GetRequiredService<MainForm>();
 				Application.Run(mainForm);
 			}
 			else
 			{
-				var mainForm = serviceProvider.GetRequiredService<Form1>();
+				var mainForm = serviceProvider.GetRequiredService<MainForm>();
 				Application.Run(mainForm);
 			}
 		}

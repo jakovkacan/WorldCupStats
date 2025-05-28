@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
+using WorldCupStats.WinForms.Utils;
 
 namespace WorldCupStats.WinForms.Forms
 {
@@ -51,12 +52,7 @@ namespace WorldCupStats.WinForms.Forms
 			_type = rbTypeMen.Checked ? ChampionshipType.Men : ChampionshipType.Women;
 			_language = rbLangEn.Checked ? Language.EN : Language.HR;
 
-			var result = MessageBox.Show(
-				"Are you sure you want to save the settings?",
-				"Confirm Settings",
-				MessageBoxButtons.YesNo,
-				MessageBoxIcon.Question,
-				MessageBoxDefaultButton.Button1);
+			var result = MessageBoxUtils.ShowConfirmation("Are you sure you want to save?"); 
 
 			if (result != DialogResult.Yes) return;
 

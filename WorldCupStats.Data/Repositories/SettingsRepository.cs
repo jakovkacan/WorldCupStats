@@ -58,9 +58,47 @@ public class SettingsRepository : ISettingsRepository
 		if (typeof(T) == typeof(Team))
 			_settings.FavoriteTeam = (Team)((object)value!)!;
 
-		if (typeof(T) == typeof(IEnumerable<Player>))
-			_settings.FavoritePlayers = (IEnumerable<Player>)((object)value!)!;
-		
+		if (typeof(T) == typeof(List<Player>))
+			_settings.FavoritePlayers = (List<Player>)((object)value!)!;
+
+		SaveSettings();
+	}
+
+	public void SetPlayerPicture(string playerName, string picturePath)
+	{
+		if (_settings == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+
+		var fileName = FileUtils.CopyPicture(picturePath);
+
+		var index = _settings.PlayerPictures.FindIndex(pp => pp.Name == playerName);
+
+		if (index >= 0)
+		{
+			FileUtils.DeletePicture(_settings.PlayerPictures[index].PictureFileName); // Delete old picture
+			_settings.PlayerPictures[index].PictureFileName = fileName; // Replace existing
+		}
+		else
+			_settings.PlayerPictures.Add(new PlayerPicture() // Add new
+			{
+				Name = playerName,
+				PictureFileName = fileName
+			});
+
+		SaveSettings();
+	}
+
+	public void RemovePlayerPicture(string playerName)
+	{
+		if (_settings == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+
+		var index = _settings.PlayerPictures.FindIndex(pp => pp.Name == playerName);
+
+		if (index == -1) return;
+
+		_settings.PlayerPictures.RemoveAt(index);
+
 		SaveSettings();
 	}
 
@@ -111,4 +149,6 @@ public class SettingsRepository : ISettingsRepository
 		});
 		File.WriteAllText(path, json);
 	}
+
+	
 }
