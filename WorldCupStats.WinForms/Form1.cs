@@ -21,7 +21,7 @@ namespace WorldCupStats.WinForms
 			IEnumerable<Team> response;
 			try
 			{
-				response = _repository.GetAllTeamsAsync(_settings.GetValue<ChampionshipType>()).Result;
+				response = _repository.GetAllTeamsAsync().Result;
 			}
 			catch (Exception ex)
 			{
@@ -41,7 +41,7 @@ namespace WorldCupStats.WinForms
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			var response = _repository.GetAllMatchesAsync(_settings.GetValue<ChampionshipType>()).Result;
+			var response = _repository.GetAllMatchesAsync().Result;
 			if (response != null && response.Any())
 			{
 				var matches = string.Join(Environment.NewLine, response.Select(t => $"{t.Venue} ({t.Attendance}) {t.DateTime} {t.Weather.Description} {t.FifaId} {t.Officials.First()}"));

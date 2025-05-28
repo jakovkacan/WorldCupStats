@@ -40,7 +40,7 @@ namespace WorldCupStats.WinForms
 				services.AddTransient<IDataRepository, ApiDataRepository>();
 			}
 
-			services.AddTransient<ISettingsRepository, SettingsRepository>();
+			services.AddSingleton<ISettingsRepository, SettingsRepository>();
 
 			// Register your forms
 			services.AddTransient<Form1>();

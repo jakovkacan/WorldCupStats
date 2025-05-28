@@ -2,8 +2,8 @@
 
 public enum Language
 {
-	HR,
-	EN
+	EN,
+	HR
 }
 
 public static class LanguageExtensions

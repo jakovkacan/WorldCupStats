@@ -12,9 +12,7 @@ public class SettingsRepository : ISettingsRepository
 	public SettingsRepository()
 	{
 		if (SettingsFileExists())
-		{
 			_settings = LoadSettings();
-		}
 	}
 
 	public T GetValue<T>()
@@ -44,6 +42,9 @@ public class SettingsRepository : ISettingsRepository
 	{
 		if (_settings == null)
 			throw new InvalidOperationException("Settings have not been initialized.");
+
+		if (EqualityComparer<T>.Default.Equals(value, GetValue<T>()))
+			return; // No change, nothing to save
 
 		if (typeof(T) == typeof(ChampionshipType))
 			_settings.Type = (ChampionshipType)((object)value!)!;
@@ -85,6 +86,7 @@ public class SettingsRepository : ISettingsRepository
 		});
 
 		File.WriteAllText(path, json);
+		_settings = settings;
 	}
 
 	public bool IsInitialized() => _settings != null;
