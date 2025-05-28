@@ -43,7 +43,7 @@ namespace WorldCupStats.WinForms
 			services.AddSingleton<ISettingsRepository, SettingsRepository>();
 
 			// Register your forms
-			services.AddTransient<Form1>();
+			services.AddTransient<RankingForm>();
 			services.AddTransient<MainForm>();
 			services.AddTransient<SettingsForm>();
 

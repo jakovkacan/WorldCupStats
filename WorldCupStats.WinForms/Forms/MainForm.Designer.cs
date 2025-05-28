@@ -36,6 +36,7 @@
 			flpFavoritePlayers = new FlowLayoutPanel();
 			progressBar = new ProgressBar();
 			btnSettings = new Button();
+			btnRanking = new Button();
 			SuspendLayout();
 			// 
 			// cbTeams
@@ -122,11 +123,22 @@
 			btnSettings.UseVisualStyleBackColor = true;
 			btnSettings.Click += btnSettings_Click;
 			// 
+			// btnRanking
+			// 
+			btnRanking.Location = new Point(613, 440);
+			btnRanking.Name = "btnRanking";
+			btnRanking.Size = new Size(75, 23);
+			btnRanking.TabIndex = 10;
+			btnRanking.Text = "Ranking";
+			btnRanking.UseVisualStyleBackColor = true;
+			btnRanking.Click += btnRanking_Click;
+			// 
 			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(703, 468);
+			Controls.Add(btnRanking);
 			Controls.Add(btnSettings);
 			Controls.Add(progressBar);
 			Controls.Add(flpFavoritePlayers);
@@ -153,5 +165,6 @@
 		private FlowLayoutPanel flpFavoritePlayers;
 		private ProgressBar progressBar;
 		private Button btnSettings;
+		private Button btnRanking;
 	}
 }

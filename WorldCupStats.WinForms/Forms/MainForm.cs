@@ -270,5 +270,12 @@ namespace WorldCupStats.WinForms.Forms
 		{
 			e.Effect = e.Data!.GetDataPresent(typeof(Player)) ? DragDropEffects.Move : DragDropEffects.None;
 		}
+
+		private async void btnRanking_Click(object sender, EventArgs e)
+		{
+			var ranking = _repository.GetRanking(_settings.GetValue<Team>().FifaCode).Result;
+			var rankingForm = new RankingForm(ranking);
+			rankingForm.ShowDialog(this);
+		}
 	}
 }

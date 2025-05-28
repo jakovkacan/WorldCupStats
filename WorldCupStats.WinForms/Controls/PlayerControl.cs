@@ -16,10 +16,10 @@ namespace WorldCupStats.WinForms.Controls
 {
 	public partial class PlayerControl : UserControl
 	{
-		public readonly Player Player;
+		private readonly Player _player;
 		public PlayerControl(Player player)
 		{
-			Player = player;
+			_player = player;
 			InitializeComponent();
 		}
 
@@ -31,21 +31,21 @@ namespace WorldCupStats.WinForms.Controls
 		private void PlayerControl_Load(object sender, EventArgs e)
 		{
 			toolTip.SetToolTip(this.pbCapitan, "Capitan");
-			toolTip.SetToolTip(this.pbFavorite, "Favorite Player");
+			toolTip.SetToolTip(this.pbFavorite, "Favorite _player");
 
-			lblPlayerName.Text = Player.Name;
-			lblPlayerPosition.Text = Player.Position.ToString();
-			lblPlayerNumber.Text = $"Number: {Player.ShirtNumber.ToString()}";
-			pbCapitan.Visible = Player.IsCapitan;
-			pbFavorite.Visible = Player.IsFavorite;
+			lblPlayerName.Text = _player.Name;
+			lblPlayerPosition.Text = _player.Position.ToString();
+			lblPlayerNumber.Text = $"Number: {_player.ShirtNumber.ToString()}";
+			pbCapitan.Visible = _player.IsCapitan;
+			pbFavorite.Visible = _player.IsFavorite;
 			cmsOptionRemovePicture.Visible = false;
 			cmsOptionSetPicture.Text = "Add Picture";
 
 			try
 			{
-				if (Player.PictureFileName != null)
+				if (_player.PictureFileName != null)
 				{
-					pbPlayerPicture.Image = Image.FromFile(FileUtils.GetPicturePath(Player.PictureFileName));
+					pbPlayerPicture.Image = Image.FromFile(FileUtils.GetPicturePath(_player.PictureFileName));
 					cmsOptionRemovePicture.Visible = true;
 					cmsOptionSetPicture.Text = "Change Picture";
 				}
@@ -55,8 +55,8 @@ namespace WorldCupStats.WinForms.Controls
 				MessageBoxUtils.ShowError(ex.Message);
 			}
 
-			cmsOptionAdd.Visible = !Player.IsFavorite;
-			cmsOptionRemove.Visible = Player.IsFavorite;
+			cmsOptionAdd.Visible = !_player.IsFavorite;
+			cmsOptionRemove.Visible = _player.IsFavorite;
 
 			foreach (Control ctrl in this.Controls)
 			{
@@ -66,12 +66,12 @@ namespace WorldCupStats.WinForms.Controls
 
 		private void cmsOptionAdd_Click(object sender, EventArgs e)
 		{
-			AddToFavoritesClicked?.Invoke(this, new PlayerEventArgs(Player));
+			AddToFavoritesClicked?.Invoke(this, new PlayerEventArgs(_player));
 		}
 
 		private void cmsOptionRemove_Click(object sender, EventArgs e)
 		{
-			RemovedFromFavoritesClicked?.Invoke(this, new PlayerEventArgs(Player));
+			RemovedFromFavoritesClicked?.Invoke(this, new PlayerEventArgs(_player));
 		}
 
 		internal class PlayerEventArgs : EventArgs
@@ -85,12 +85,12 @@ namespace WorldCupStats.WinForms.Controls
 
 		private void cmsOptionSetPicture_Click(object sender, EventArgs e)
 		{
-			SetPlayerPictureClicked?.Invoke(this, new PlayerEventArgs(Player));
+			SetPlayerPictureClicked?.Invoke(this, new PlayerEventArgs(_player));
 		}
 
 		private void cmsOptionRemovePicture_Click(object sender, EventArgs e)
 		{
-			RemovePlayerPictureClicked?.Invoke(this, new PlayerEventArgs(Player));
+			RemovePlayerPictureClicked?.Invoke(this, new PlayerEventArgs(_player));
 		}
 
 		private void PlayerControl_MouseDown(object? sender, MouseEventArgs e)
@@ -98,7 +98,7 @@ namespace WorldCupStats.WinForms.Controls
 			if (e.Button == MouseButtons.Right)
 				return;
 
-			DoDragDrop(this.Player, DragDropEffects.Move);
+			DoDragDrop(this._player, DragDropEffects.Move);
 		}
 	}
 }
