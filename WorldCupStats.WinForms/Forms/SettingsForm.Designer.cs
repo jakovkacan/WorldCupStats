@@ -136,7 +136,7 @@
 			Controls.Add(rbLang);
 			Controls.Add(rbType);
 			Name = "SettingsForm";
-			Text = "SettingsForm";
+			Text = "Settings";
 			Load += SettingsForm_Load;
 			rbType.ResumeLayout(false);
 			rbType.PerformLayout();

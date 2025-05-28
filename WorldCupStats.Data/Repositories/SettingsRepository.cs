@@ -62,7 +62,7 @@ public class SettingsRepository : ISettingsRepository
 		if (typeof(T) == typeof(Team))
 		{
 			_settings.FavoriteTeam = (Team)((object)value!)!;
-			//_settings.FavoritePlayers = new List<Player>(); // Reset favorite players when setting a team
+			ResetFavorites();
 		}
 
 		if (typeof(T) == typeof(List<Player>))
@@ -141,6 +141,9 @@ public class SettingsRepository : ISettingsRepository
 		if (_settings?.FavoriteTeam == null)
 			throw new InvalidOperationException("Settings have not been initialized.");
 
+		if (_settings.FavoritePlayers.Count >= 3)
+			throw new InvalidOperationException("Cannot add more than 3 favorite players.");
+
 		player.IsFavorite = true; // Mark player as favorite
 
 		if (_settings.FavoritePlayers.All(p => p.Name != player.Name)) // Avoid duplicates
@@ -174,7 +177,7 @@ public class SettingsRepository : ISettingsRepository
 		if (_settings?.FavoriteTeam == null)
 			throw new InvalidOperationException("Settings have not been initialized.");
 
-		return _settings.FavoritePlayers.Contains(player);
+		return _settings.FavoritePlayers.Any(p => p.Name == player.Name);
 	}
 
 	private static string GetSettingsFilePath() => Path.Combine(FileUtils.GetBaseDirectory(), "preferences.json");

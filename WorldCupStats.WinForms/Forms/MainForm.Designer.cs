@@ -85,6 +85,8 @@
 			flpAllPlayers.Size = new Size(330, 360);
 			flpAllPlayers.TabIndex = 6;
 			flpAllPlayers.WrapContents = false;
+			flpAllPlayers.DragDrop += flpAllPlayers_DragDrop;
+			flpAllPlayers.DragEnter += flp_DragEnter;
 			// 
 			// flpFavoritePlayers
 			// 
@@ -97,6 +99,8 @@
 			flpFavoritePlayers.Size = new Size(330, 360);
 			flpFavoritePlayers.TabIndex = 7;
 			flpFavoritePlayers.WrapContents = false;
+			flpFavoritePlayers.DragDrop += flpFavoritePlayers_DragDrop;
+			flpFavoritePlayers.DragEnter += flp_DragEnter;
 			// 
 			// progressBar
 			// 
@@ -133,6 +137,7 @@
 			Controls.Add(cbTeams);
 			Name = "MainForm";
 			Text = "World Cup Stats";
+			FormClosing += MainForm_FormClosing;
 			Load += MainForm_Load;
 			ResumeLayout(false);
 			PerformLayout();

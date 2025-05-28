@@ -168,6 +168,7 @@ namespace WorldCupStats.WinForms.Controls
 			Name = "PlayerControl";
 			Size = new Size(310, 100);
 			Load += PlayerControl_Load;
+			MouseDown += PlayerControl_MouseDown;
 			((System.ComponentModel.ISupportInitialize)pbPlayerPicture).EndInit();
 			((System.ComponentModel.ISupportInitialize)pbFavorite).EndInit();
 			((System.ComponentModel.ISupportInitialize)pbCapitan).EndInit();

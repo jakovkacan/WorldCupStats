@@ -53,7 +53,7 @@ namespace WorldCupStats.WinForms.Forms
 					if (index < 0) return;
 
 					cbTeams.SelectedIndex = index;
-					TeamChanged();
+					TeamChanged(savedFavoriteTeam);
 				}
 				else
 				{
@@ -71,15 +71,12 @@ namespace WorldCupStats.WinForms.Forms
 			}
 		}
 
-		private async void TeamChanged()
+		private async void TeamChanged(Team selectedTeam)
 		{
 			try
 			{
 				ClearForm();
 				progressBar.Visible = true;
-
-				var selectedTeam = _teams[cbTeams.SelectedIndex];
-				_settings.SetValue(selectedTeam);
 
 				_players = await _repository.GetAllPlayersAsync(selectedTeam.FifaCode ?? selectedTeam.Code!);
 
@@ -118,17 +115,58 @@ namespace WorldCupStats.WinForms.Forms
 			flpFavoritePlayers.Controls.Clear();
 		}
 
+		private void AddToFavorites(Player player)
+		{
+			if (_settings.IsFavorite(player)) return;
+			try
+			{
+				_settings.AddToFavorites(player);
+				_players.First(p => p.Name == player.Name).IsFavorite = true;
 
+				ClearForm();
+				DrawPlayers();
+			}
+			catch (Exception ex)
+			{
+				MessageBoxUtils.ShowError(ex.Message);
+			}
+		}
+
+		private void RemoveFromFavorites(Player player)
+		{
+			if (!_settings.IsFavorite(player)) return;
+			try
+			{
+				_settings.RemoveFromFavorites(player);
+				_players.First(p => p.Name == player.Name).IsFavorite = false;
+
+				ClearForm();
+				DrawPlayers();
+			}
+			catch (Exception ex)
+			{
+				MessageBoxUtils.ShowError(ex.Message);
+			}
+		}
+
+		//Event handlers
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			Initialize();
 		}
-
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (MessageBoxUtils.ShowConfirmation("Are you sure you want to exit?") != DialogResult.Yes)
+			{
+				e.Cancel = true;
+			}
+		}
 		private void cbTeams_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			TeamChanged();
+			var selectedTeam = _teams[cbTeams.SelectedIndex];
+			_settings.SetValue(selectedTeam);
+			TeamChanged(selectedTeam);
 		}
-
 		private void btnSettings_Click(object sender, EventArgs e)
 		{
 			var settingsForm = new SettingsForm(_settings);
@@ -139,22 +177,28 @@ namespace WorldCupStats.WinForms.Forms
 		}
 		private void PlayerControl_AddToFavoritesClicked(object? sender, EventArgs e)
 		{
-			if (e is PlayerControl.PlayerEventArgs playerEventArgs)
-				_settings.AddToFavorites(playerEventArgs.Player);
-
-			ClearForm();
-			DrawPlayers();
+			try
+			{
+				if (e is PlayerControl.PlayerEventArgs playerEventArgs)
+					AddToFavorites(playerEventArgs.Player);
+			}
+			catch (Exception ex)
+			{
+				MessageBoxUtils.ShowError(ex.Message);
+			}
 		}
-
 		private void PlayerControl_RemovedFromFavoritesClicked(object? sender, EventArgs e)
 		{
-			if (e is PlayerControl.PlayerEventArgs playerEventArgs)
-				_settings.RemoveFromFavorites(playerEventArgs.Player);
-
-			ClearForm();
-			DrawPlayers();
+			try
+			{
+				if (e is PlayerControl.PlayerEventArgs playerEventArgs)
+					RemoveFromFavorites(playerEventArgs.Player);
+			}
+			catch (Exception ex)
+			{
+				MessageBoxUtils.ShowError(ex.Message);
+			}
 		}
-
 		private void PlayerControl_SetPlayerPictureClicked(object? sender, EventArgs e)
 		{
 			if (e is PlayerControl.PlayerEventArgs playerEventArgs)
@@ -187,7 +231,6 @@ namespace WorldCupStats.WinForms.Forms
 			ClearForm();
 			DrawPlayers();
 		}
-
 		private void PlayerControl_RemovePlayerPictureClicked(object? sender, EventArgs e)
 		{
 			if (e is PlayerControl.PlayerEventArgs playerEventArgs)
@@ -207,6 +250,25 @@ namespace WorldCupStats.WinForms.Forms
 			ClearForm();
 			DrawPlayers();
 		}
+		private void flpFavoritePlayers_DragDrop(object sender, DragEventArgs e)
+		{
+			if (!e.Data!.GetDataPresent(typeof(Player))) return;
 
+			var player = (Player)e.Data.GetData(typeof(Player))!;
+
+			AddToFavorites(player);
+		}
+		private void flpAllPlayers_DragDrop(object sender, DragEventArgs e)
+		{
+			if (!e.Data!.GetDataPresent(typeof(Player))) return;
+
+			var player = (Player)e.Data.GetData(typeof(Player))!;
+
+			RemoveFromFavorites(player);
+		}
+		private void flp_DragEnter(object sender, DragEventArgs e)
+		{
+			e.Effect = e.Data!.GetDataPresent(typeof(Player)) ? DragDropEffects.Move : DragDropEffects.None;
+		}
 	}
 }
