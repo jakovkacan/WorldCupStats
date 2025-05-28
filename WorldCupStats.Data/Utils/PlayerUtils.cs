@@ -17,7 +17,7 @@ public class PlayerUtils
 				p.IsFavorite = true;
 			
 			if (pictures.Any(pic => pic.Name == p.Name))
-				p.PicturePath = pictures.First(pic => pic.Name == p.Name).PictureFileName;
+				p.PictureFileName = pictures.First(pic => pic.Name == p.Name).PictureFileName;
 		});
 
 		return updatedPlayers;

@@ -16,11 +16,11 @@ public class Player
 	[JsonPropertyName("captain")]
 	public bool IsCapitan { get; set; }
 	public bool IsFavorite { get; set; } = false;
-	public string? PicturePath { get; set; }
+	public string? PictureFileName { get; set; }
 
 	public override string ToString()
 	{
 		return
-			$"{nameof(Name)}: {Name}, {nameof(ShirtNumber)}: {ShirtNumber}, {nameof(Position)}: {Position}, {nameof(IsCapitan)}: {IsCapitan}, {nameof(PicturePath)}: {PicturePath}";
+			$"{nameof(Name)}: {Name}, {nameof(ShirtNumber)}: {ShirtNumber}, {nameof(Position)}: {Position}, {nameof(IsCapitan)}: {IsCapitan}, {nameof(PictureFileName)}: {PictureFileName}";
 	}
 }

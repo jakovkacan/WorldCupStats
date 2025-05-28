@@ -42,6 +42,8 @@ namespace WorldCupStats.WinForms.Controls
 			cmsFavorite = new ContextMenuStrip(components);
 			cmsOptionAdd = new ToolStripMenuItem();
 			cmsOptionRemove = new ToolStripMenuItem();
+			cmsOptionSetPicture = new ToolStripMenuItem();
+			cmsOptionRemovePicture = new ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)pbPlayerPicture).BeginInit();
 			((System.ComponentModel.ISupportInitialize)pbFavorite).BeginInit();
 			((System.ComponentModel.ISupportInitialize)pbCapitan).BeginInit();
@@ -117,9 +119,9 @@ namespace WorldCupStats.WinForms.Controls
 			// 
 			// cmsFavorite
 			// 
-			cmsFavorite.Items.AddRange(new ToolStripItem[] { cmsOptionAdd, cmsOptionRemove });
+			cmsFavorite.Items.AddRange(new ToolStripItem[] { cmsOptionAdd, cmsOptionRemove, cmsOptionSetPicture, cmsOptionRemovePicture });
 			cmsFavorite.Name = "cmsFavorite";
-			cmsFavorite.Size = new Size(197, 70);
+			cmsFavorite.Size = new Size(197, 92);
 			// 
 			// cmsOptionAdd
 			// 
@@ -134,6 +136,20 @@ namespace WorldCupStats.WinForms.Controls
 			cmsOptionRemove.Size = new Size(196, 22);
 			cmsOptionRemove.Text = "Remove from Favorites";
 			cmsOptionRemove.Click += cmsOptionRemove_Click;
+			// 
+			// cmsOptionSetPicture
+			// 
+			cmsOptionSetPicture.Name = "cmsOptionSetPicture";
+			cmsOptionSetPicture.Size = new Size(196, 22);
+			cmsOptionSetPicture.Text = "Add Picture";
+			cmsOptionSetPicture.Click += cmsOptionSetPicture_Click;
+			// 
+			// cmsOptionRemovePicture
+			// 
+			cmsOptionRemovePicture.Name = "cmsOptionRemovePicture";
+			cmsOptionRemovePicture.Size = new Size(196, 22);
+			cmsOptionRemovePicture.Text = "Remove Picture";
+			cmsOptionRemovePicture.Click += cmsOptionRemovePicture_Click;
 			// 
 			// PlayerControl
 			// 
@@ -172,5 +188,7 @@ namespace WorldCupStats.WinForms.Controls
 		private ContextMenuStrip cmsFavorite;
 		private ToolStripMenuItem cmsOptionAdd;
 		private ToolStripMenuItem cmsOptionRemove;
+		private ToolStripMenuItem cmsOptionSetPicture;
+		private ToolStripMenuItem cmsOptionRemovePicture;
 	}
 }

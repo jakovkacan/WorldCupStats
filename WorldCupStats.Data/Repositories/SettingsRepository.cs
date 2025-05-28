@@ -60,7 +60,10 @@ public class SettingsRepository : ISettingsRepository
 			_settings.DisplayMode = (DisplayMode)((object)value!)!;
 
 		if (typeof(T) == typeof(Team))
+		{
 			_settings.FavoriteTeam = (Team)((object)value!)!;
+			//_settings.FavoritePlayers = new List<Player>(); // Reset favorite players when setting a team
+		}
 
 		if (typeof(T) == typeof(List<Player>))
 			_settings.FavoritePlayers = (List<Player>)((object)value!)!;
@@ -68,7 +71,7 @@ public class SettingsRepository : ISettingsRepository
 		SaveSettings();
 	}
 
-	public void SetPlayerPicture(string playerName, string picturePath)
+	public string? SetPlayerPicture(string playerName, string picturePath)
 	{
 		if (_settings == null)
 			throw new InvalidOperationException("Settings have not been initialized.");
@@ -79,7 +82,6 @@ public class SettingsRepository : ISettingsRepository
 
 		if (index >= 0)
 		{
-			FileUtils.DeletePicture(_settings.PlayerPictures[index].PictureFileName); // Delete old picture
 			_settings.PlayerPictures[index].PictureFileName = fileName; // Replace existing
 		}
 		else
@@ -90,6 +92,7 @@ public class SettingsRepository : ISettingsRepository
 			});
 
 		SaveSettings();
+		return fileName;
 	}
 
 	public void RemovePlayerPicture(string playerName)
@@ -155,7 +158,13 @@ public class SettingsRepository : ISettingsRepository
 
 		if (_settings.FavoritePlayers.Any(p => p.Name == player.Name))
 			_settings.FavoritePlayers.Remove(_settings.FavoritePlayers.First(p => p.Name == player.Name));
-		
+
+		SaveSettings();
+	}
+
+	private void ResetFavorites()
+	{
+		_settings.FavoritePlayers = new List<Player>(); // Clear favorite players
 		SaveSettings();
 	}
 
