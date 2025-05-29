@@ -12,6 +12,9 @@ using System.Windows.Forms;
 using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
 using WorldCupStats.WinForms.Properties;
+using WorldCupStats.WinForms.Utils;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.AxHost;
 
 namespace WorldCupStats.WinForms.Forms
 {
@@ -57,11 +60,15 @@ namespace WorldCupStats.WinForms.Forms
 				var path = pr.Player.PictureFileName != null
 					? FileUtils.GetPicturePath(pr.Player.PictureFileName)
 					: null;
-				Image? playerImage = null;
+				System.Drawing.Image? playerImage = null;
 
 				if (!string.IsNullOrEmpty(pr.Player.PictureFileName) && File.Exists(path))
 				{
-					playerImage = Image.FromFile(path);
+					playerImage = System.Drawing.Image.FromFile(path);
+				}
+				else
+				{
+					playerImage = Properties.Resources.PlaceholderPicture; // Use a default image if no picture is available
 				}
 
 				dgvPlayerRanking.Rows.Add(playerImage, pr.Player.Name, pr.GoalsScored, pr.YellowCards);
@@ -88,62 +95,141 @@ namespace WorldCupStats.WinForms.Forms
 		// Add a button or menu item to trigger printing
 		private void btnPrint_Click(object sender, EventArgs e)
 		{
-			using (PrintDialog printDialog = new PrintDialog())
+			using var printDialog = new PrintDialog();
+
+			printDialog.Document = printDocument;
+			if (printDialog.ShowDialog() != DialogResult.OK) return;
+
+			try
 			{
-				printDialog.Document = printDocument;
-				if (printDialog.ShowDialog() == DialogResult.OK)
-				{
-					printDocument.Print();
-				}
+				printDocument.Print();
+			}
+			catch (Exception ex)
+			{
+				MessageBoxUtils.ShowError(ex.Message);
 			}
 		}
 
+		private int _tableIndex = 0;
 		// PrintPage event handler
 		private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
 		{
-			int startX = 50;
-			int startY = 50;
-			int rowHeight = 100;
-			int imageSize = 80;
-			int colSpacing = 10;
-
-			Font font = new Font("Arial", 12);
-			Brush brush = Brushes.Black;
-
-			// Print headers
-			e.Graphics.DrawString("Picture", font, brush, startX, startY);
-			e.Graphics.DrawString("Name", font, brush, startX + imageSize + colSpacing, startY);
-			e.Graphics.DrawString("Goals", font, brush, startX + imageSize + 120, startY);
-			e.Graphics.DrawString("Yellow Cards", font, brush, startX + imageSize + 220, startY);
-
-			int y = startY + rowHeight;
-
-			foreach (DataGridViewRow row in dgvPlayerRanking.Rows)
+			switch (_tableIndex)
 			{
-				if (row.IsNewRow) continue;
+				case 0:
+					// Print the first table here (e.g., DataGridView1)
+					PrintTable(dgvPlayerRanking, e.Graphics, "Player Ranking", [100, 150, 50, 50]);
 
-				// Draw image
-				if (row.Cells["Picture"].Value is Image img)
+					// Prepare for next page
+					_tableIndex = 1;
+					e.HasMorePages = true; // Triggers PrintPage again for next table
+					break;
+				case 1:
+					// Print the second table here (e.g., DataGridView2)
+					PrintTable(dgvMatchRanking, e.Graphics, "Match Ranking");
+
+					// No more pages to print
+					_tableIndex = 0; // Reset for next print job
+					e.HasMorePages = false;
+					break;
+			}
+		}
+		private void printDocument_EndPrint(object sender, PrintEventArgs e)
+		{
+			MessageBoxUtils.ShowInfo(_rm.GetString("PrintCompleted"));
+		}
+		private static void PrintTable(DataGridView table, Graphics g, string? title = null, int[]? colWidths = null)
+		{
+			const int x = 50; // Start X position
+			var y = 50; // Start Y position
+			const int rowHeight = 40;
+			const int colWidth = 150;
+
+			if (colWidths == null)
+			{
+				colWidths = new int[table.Columns.Count];
+				for (var i = 0; i < table.Columns.Count; i++)
 				{
-					e.Graphics.DrawImage(img, startX, y, imageSize, imageSize);
-				}
-
-				// Draw text
-				e.Graphics.DrawString(row.Cells["Name"].Value?.ToString() ?? "", font, brush, startX + imageSize + colSpacing, y + (imageSize / 4));
-				e.Graphics.DrawString(row.Cells["Goals"].Value?.ToString() ?? "", font, brush, startX + imageSize + 120, y + (imageSize / 4));
-				e.Graphics.DrawString(row.Cells["YellowCards"].Value?.ToString() ?? "", font, brush, startX + imageSize + 220, y + (imageSize / 4));
-
-				y += rowHeight;
-
-				// Check for page break
-				if (y + rowHeight > e.MarginBounds.Bottom)
-				{
-					e.HasMorePages = true;
-					return;
+					colWidths[i] = colWidth; // Default width for each column
 				}
 			}
 
-			e.HasMorePages = false;
+			// Draw heading title if provided
+			if (!string.IsNullOrEmpty(title))
+			{
+				using var titleFont = new System.Drawing.Font("Segoe UI", 18, FontStyle.Bold);
+
+				var titleSize = g.MeasureString(title, titleFont);
+				g.DrawString(title, titleFont, Brushes.Black, x, y);
+				y += (int)titleSize.Height + 20; // Add space after title
+			}
+
+			var cellX = x;
+			var colIndex = 0;
+			foreach (DataGridViewColumn col in table.Columns)
+			{
+				using var headerFont = new System.Drawing.Font(table.Font, FontStyle.Bold);
+
+				g.DrawRectangle(Pens.Black, cellX, y, colWidths[colIndex], rowHeight);
+
+				var text = col.HeaderText;
+				g.DrawString(text, headerFont, Brushes.Black,
+					new RectangleF(cellX + 2, y + 2, colWidths[colIndex] - 4, rowHeight - 4));
+
+				cellX += colWidths[colIndex];
+				colIndex++;
+			}
+
+			y += rowHeight;
+			colIndex = 0;
+
+			foreach (DataGridViewRow row in table.Rows)
+			{
+				cellX = x;
+				foreach (DataGridViewColumn col in table.Columns)
+				{
+					var cell = row.Cells[col.Index];
+
+					// Draw cell border
+					g.DrawRectangle(Pens.Black, cellX, y, colWidths[colIndex], rowHeight);
+
+					if (col is DataGridViewImageColumn && cell.Value is System.Drawing.Image img)
+					{
+						// Calculate aspect-ratio-preserving rectangle
+						var destRect = GetAspectRatioFitRectangle(
+							img.Width, img.Height,
+							cellX + 2, y + 2,
+							colWidths[colIndex] - 4, rowHeight - 4
+						);
+						g.DrawImage(img, destRect);
+					}
+					else
+					{
+						// Draw text
+						var text = cell.Value?.ToString() ?? "";
+						g.DrawString(text, table.Font, Brushes.Black,
+							new RectangleF(cellX + 2, y + 2, colWidths[colIndex] - 4, rowHeight - 4));
+					}
+
+					cellX += colWidths[colIndex];
+					colIndex++;
+				}
+
+				y += rowHeight;
+				colIndex = 0;
+			}
 		}
+		private static Rectangle GetAspectRatioFitRectangle(int imgWidth, int imgHeight, int destX, int destY, int destWidth, int destHeight)
+		{
+			var ratio = Math.Min((float)destWidth / imgWidth, (float)destHeight / imgHeight);
+			var width = (int)(imgWidth * ratio);
+			var height = (int)(imgHeight * ratio);
+			var x = destX + (destWidth - width) / 2;
+			var y = destY + (destHeight - height) / 2;
+
+			return new Rectangle(x, y, width, height);
+		}
+
+		
 	}
 }

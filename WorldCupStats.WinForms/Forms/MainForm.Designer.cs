@@ -42,8 +42,8 @@
 			// 
 			// cbTeams
 			// 
-			resources.ApplyResources(cbTeams, "cbTeams");
 			cbTeams.FormattingEnabled = true;
+			resources.ApplyResources(cbTeams, "cbTeams");
 			cbTeams.Name = "cbTeams";
 			cbTeams.SelectionChangeCommitted += cbTeams_SelectionChangeCommitted;
 			// 
@@ -64,8 +64,8 @@
 			// 
 			// flpAllPlayers
 			// 
-			resources.ApplyResources(flpAllPlayers, "flpAllPlayers");
 			flpAllPlayers.AllowDrop = true;
+			resources.ApplyResources(flpAllPlayers, "flpAllPlayers");
 			flpAllPlayers.BorderStyle = BorderStyle.FixedSingle;
 			flpAllPlayers.Name = "flpAllPlayers";
 			flpAllPlayers.DragDrop += flpAllPlayers_DragDrop;
@@ -73,8 +73,8 @@
 			// 
 			// flpFavoritePlayers
 			// 
-			resources.ApplyResources(flpFavoritePlayers, "flpFavoritePlayers");
 			flpFavoritePlayers.AllowDrop = true;
+			resources.ApplyResources(flpFavoritePlayers, "flpFavoritePlayers");
 			flpFavoritePlayers.BorderStyle = BorderStyle.FixedSingle;
 			flpFavoritePlayers.Name = "flpFavoritePlayers";
 			flpFavoritePlayers.DragDrop += flpFavoritePlayers_DragDrop;

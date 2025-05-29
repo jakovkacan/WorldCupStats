@@ -209,34 +209,32 @@ namespace WorldCupStats.WinForms.Forms
 		}
 		private void PlayerControl_SetPlayerPictureClicked(object? sender, EventArgs e)
 		{
-			if (e is PlayerControl.PlayerEventArgs playerEventArgs)
+			if (e is not PlayerControl.PlayerEventArgs playerEventArgs) return;
+
+			var playerName = playerEventArgs.Player.Name;
+
+			using var openFileDialog = new OpenFileDialog
 			{
-				var playerName = playerEventArgs.Player.Name;
+				Title = _rm.GetString("ImageSelect"),
+				Filter = $"{_rm.GetString("ImageFiles")}|*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files|*.*"
+			};
 
-				using var openFileDialog = new OpenFileDialog
-				{
-					Title = _rm.GetString("ImageSelect"),
-					Filter = $"{_rm.GetString("ImageFiles")}|*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files|*.*"
-				};
+			if (openFileDialog.ShowDialog() != DialogResult.OK) return;
 
-				if (openFileDialog.ShowDialog() == DialogResult.OK)
-				{
-					var selectedFilePath = openFileDialog.FileName;
+			var selectedFilePath = openFileDialog.FileName;
 
-					try
-					{
-						var filename = _settings.SetPlayerPicture(playerName, selectedFilePath);
-						_players.First(p => p.Name == playerName)
-							.PictureFileName = filename;
+			try
+			{
+				var filename = _settings.SetPlayerPicture(playerName, selectedFilePath);
+				_players.First(p => p.Name == playerName)
+					.PictureFileName = filename;
 
-						ClearForm();
-						DrawPlayers();
-					}
-					catch (Exception ex)
-					{
-						MessageBoxUtils.ShowError($"{_rm.GetString("ImageError")} {playerName}: {ex.Message}");
-					}
-				}
+				ClearForm();
+				DrawPlayers();
+			}
+			catch (Exception ex)
+			{
+				MessageBoxUtils.ShowError($"{_rm.GetString("ImageError")} {playerName}: {ex.Message}");
 			}
 		}
 		private void PlayerControl_RemovePlayerPictureClicked(object? sender, EventArgs e)
@@ -262,23 +260,20 @@ namespace WorldCupStats.WinForms.Forms
 		{
 			if (!e.Data!.GetDataPresent(typeof(Player))) return;
 
-			var player = (Player)e.Data.GetData(typeof(Player))!;
-
-			AddToFavorites(player);
-		}
+				var player = (Player)e.Data.GetData(typeof(Player))!;
+				AddToFavorites(player);
+			}
 		private void flpAllPlayers_DragDrop(object sender, DragEventArgs e)
 		{
 			if (!e.Data!.GetDataPresent(typeof(Player))) return;
 
-			var player = (Player)e.Data.GetData(typeof(Player))!;
-
-			RemoveFromFavorites(player);
-		}
+				var player = (Player)e.Data.GetData(typeof(Player))!;
+				RemoveFromFavorites(player);
+			}
 		private void flp_DragEnter(object sender, DragEventArgs e)
 		{
 			e.Effect = e.Data!.GetDataPresent(typeof(Player)) ? DragDropEffects.Move : DragDropEffects.None;
 		}
-
 		private async void btnRanking_Click(object sender, EventArgs e)
 		{
 			try

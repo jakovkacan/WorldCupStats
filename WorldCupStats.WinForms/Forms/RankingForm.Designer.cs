@@ -45,41 +45,41 @@
 			// 
 			// tcRanking
 			// 
+			resources.ApplyResources(tcRanking, "tcRanking");
 			tcRanking.Controls.Add(tpPlayerRanking);
 			tcRanking.Controls.Add(tpMatchRanking);
-			resources.ApplyResources(tcRanking, "tcRanking");
 			tcRanking.Name = "tcRanking";
 			tcRanking.SelectedIndex = 0;
 			// 
 			// tpPlayerRanking
 			// 
-			tpPlayerRanking.Controls.Add(dgvPlayerRanking);
 			resources.ApplyResources(tpPlayerRanking, "tpPlayerRanking");
+			tpPlayerRanking.Controls.Add(dgvPlayerRanking);
 			tpPlayerRanking.Name = "tpPlayerRanking";
 			tpPlayerRanking.UseVisualStyleBackColor = true;
 			// 
 			// dgvPlayerRanking
 			// 
+			resources.ApplyResources(dgvPlayerRanking, "dgvPlayerRanking");
 			dgvPlayerRanking.AllowUserToAddRows = false;
 			dgvPlayerRanking.AllowUserToDeleteRows = false;
 			dgvPlayerRanking.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			resources.ApplyResources(dgvPlayerRanking, "dgvPlayerRanking");
 			dgvPlayerRanking.Name = "dgvPlayerRanking";
 			dgvPlayerRanking.ReadOnly = true;
 			// 
 			// tpMatchRanking
 			// 
-			tpMatchRanking.Controls.Add(dgvMatchRanking);
 			resources.ApplyResources(tpMatchRanking, "tpMatchRanking");
+			tpMatchRanking.Controls.Add(dgvMatchRanking);
 			tpMatchRanking.Name = "tpMatchRanking";
 			tpMatchRanking.UseVisualStyleBackColor = true;
 			// 
 			// dgvMatchRanking
 			// 
+			resources.ApplyResources(dgvMatchRanking, "dgvMatchRanking");
 			dgvMatchRanking.AllowUserToAddRows = false;
 			dgvMatchRanking.AllowUserToDeleteRows = false;
 			dgvMatchRanking.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			resources.ApplyResources(dgvMatchRanking, "dgvMatchRanking");
 			dgvMatchRanking.Name = "dgvMatchRanking";
 			dgvMatchRanking.ReadOnly = true;
 			// 
@@ -92,6 +92,7 @@
 			// 
 			// printDocument
 			// 
+			printDocument.EndPrint += printDocument_EndPrint;
 			printDocument.PrintPage += printDocument_PrintPage;
 			// 
 			// RankingForm

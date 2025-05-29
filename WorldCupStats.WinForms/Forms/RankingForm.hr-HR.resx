@@ -117,44 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="tpPlayerRanking.Text" xml:space="preserve">
-    <value>Igrači</value>
+  <data name="YellowCards" xml:space="preserve">
+    <value>Žuti kartoni</value>
   </data>
-  <data name="tpMatchRanking.Text" xml:space="preserve">
-    <value>Utakmice</value>
+  <data name="Picture" xml:space="preserve">
+    <value>Slika</value>
   </data>
-  <data name="btnPrint.Text" xml:space="preserve">
-    <value>Ispis</value>
+  <data name="HomeTeam" xml:space="preserve">
+    <value>Domaći tim</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Poredak</value>
+  <data name="Name" xml:space="preserve">
+    <value>Ime</value>
+  </data>
+  <data name="AwayTeam" xml:space="preserve">
+    <value>Gostujući tim</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="&gt;&gt;$this.Name" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="Picture" xml:space="preserve">
-    <value>Slika</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Ime</value>
-  </data>
   <data name="Goals" xml:space="preserve">
     <value>Golovi</value>
   </data>
-  <data name="YellowCards" xml:space="preserve">
-    <value>Žuti kartoni</value>
+  <data name="tpMatchRanking.Text" xml:space="preserve">
+    <value>Utakmice</value>
   </data>
   <data name="Venue" xml:space="preserve">
     <value>Stadion</value>
   </data>
-  <data name="HomeTeam" xml:space="preserve">
-    <value>Domaći tim</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Poredak</value>
   </data>
-  <data name="AwayTeam" xml:space="preserve">
-    <value>Gostujući tim</value>
+  <data name="tpPlayerRanking.Text" xml:space="preserve">
+    <value>Igrači</value>
   </data>
   <data name="Attendance" xml:space="preserve">
     <value>Posjećenost</value>
+  </data>
+  <data name="btnPrint.Text" xml:space="preserve">
+    <value>Ispis</value>
+  </data>
+  <data name="PrintCompleted" xml:space="preserve">
+    <value>Ispis je uspješno završen.</value>
   </data>
 </root>

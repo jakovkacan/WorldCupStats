@@ -85,32 +85,32 @@ namespace WorldCupStats.WinForms.Controls
 			// 
 			// cmsFavorite
 			// 
+			resources.ApplyResources(cmsFavorite, "cmsFavorite");
 			cmsFavorite.Items.AddRange(new ToolStripItem[] { cmsOptionAdd, cmsOptionRemove, cmsOptionSetPicture, cmsOptionRemovePicture });
 			cmsFavorite.Name = "cmsFavorite";
-			resources.ApplyResources(cmsFavorite, "cmsFavorite");
 			// 
 			// cmsOptionAdd
 			// 
-			cmsOptionAdd.Name = "cmsOptionAdd";
 			resources.ApplyResources(cmsOptionAdd, "cmsOptionAdd");
+			cmsOptionAdd.Name = "cmsOptionAdd";
 			cmsOptionAdd.Click += cmsOptionAdd_Click;
 			// 
 			// cmsOptionRemove
 			// 
-			cmsOptionRemove.Name = "cmsOptionRemove";
 			resources.ApplyResources(cmsOptionRemove, "cmsOptionRemove");
+			cmsOptionRemove.Name = "cmsOptionRemove";
 			cmsOptionRemove.Click += cmsOptionRemove_Click;
 			// 
 			// cmsOptionSetPicture
 			// 
-			cmsOptionSetPicture.Name = "cmsOptionSetPicture";
 			resources.ApplyResources(cmsOptionSetPicture, "cmsOptionSetPicture");
+			cmsOptionSetPicture.Name = "cmsOptionSetPicture";
 			cmsOptionSetPicture.Click += cmsOptionSetPicture_Click;
 			// 
 			// cmsOptionRemovePicture
 			// 
-			cmsOptionRemovePicture.Name = "cmsOptionRemovePicture";
 			resources.ApplyResources(cmsOptionRemovePicture, "cmsOptionRemovePicture");
+			cmsOptionRemovePicture.Name = "cmsOptionRemovePicture";
 			cmsOptionRemovePicture.Click += cmsOptionRemovePicture_Click;
 			// 
 			// PlayerControl
