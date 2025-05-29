@@ -52,108 +52,70 @@ namespace WorldCupStats.WinForms.Controls
 			// 
 			// pbPlayerPicture
 			// 
-			pbPlayerPicture.Anchor = AnchorStyles.Left;
-			pbPlayerPicture.Image = (Image)resources.GetObject("pbPlayerPicture.Image");
-			pbPlayerPicture.Location = new Point(8, 7);
+			resources.ApplyResources(pbPlayerPicture, "pbPlayerPicture");
 			pbPlayerPicture.Name = "pbPlayerPicture";
-			pbPlayerPicture.Size = new Size(85, 85);
-			pbPlayerPicture.SizeMode = PictureBoxSizeMode.Zoom;
-			pbPlayerPicture.TabIndex = 0;
 			pbPlayerPicture.TabStop = false;
 			// 
 			// lblPlayerName
 			// 
-			lblPlayerName.Anchor = AnchorStyles.Left;
-			lblPlayerName.AutoSize = true;
-			lblPlayerName.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-			lblPlayerName.Location = new Point(105, 15);
+			resources.ApplyResources(lblPlayerName, "lblPlayerName");
 			lblPlayerName.Name = "lblPlayerName";
-			lblPlayerName.Size = new Size(49, 19);
-			lblPlayerName.TabIndex = 1;
-			lblPlayerName.Text = "Name";
-			lblPlayerName.TextAlign = ContentAlignment.MiddleLeft;
 			// 
 			// lblPlayerNumber
 			// 
-			lblPlayerNumber.Anchor = AnchorStyles.Left;
-			lblPlayerNumber.AutoSize = true;
-			lblPlayerNumber.Location = new Point(105, 55);
+			resources.ApplyResources(lblPlayerNumber, "lblPlayerNumber");
 			lblPlayerNumber.Name = "lblPlayerNumber";
-			lblPlayerNumber.Size = new Size(76, 15);
-			lblPlayerNumber.TabIndex = 2;
-			lblPlayerNumber.Text = "Shirt number";
-			lblPlayerNumber.TextAlign = ContentAlignment.MiddleLeft;
 			// 
 			// lblPlayerPosition
 			// 
-			lblPlayerPosition.Anchor = AnchorStyles.Left;
-			lblPlayerPosition.AutoSize = true;
-			lblPlayerPosition.Location = new Point(105, 38);
+			resources.ApplyResources(lblPlayerPosition, "lblPlayerPosition");
 			lblPlayerPosition.Name = "lblPlayerPosition";
-			lblPlayerPosition.Size = new Size(50, 15);
-			lblPlayerPosition.TabIndex = 3;
-			lblPlayerPosition.Text = "Position";
-			lblPlayerPosition.TextAlign = ContentAlignment.MiddleLeft;
 			// 
 			// pbFavorite
 			// 
-			pbFavorite.Image = (Image)resources.GetObject("pbFavorite.Image");
-			pbFavorite.Location = new Point(267, 7);
+			resources.ApplyResources(pbFavorite, "pbFavorite");
 			pbFavorite.Name = "pbFavorite";
-			pbFavorite.Size = new Size(32, 32);
-			pbFavorite.SizeMode = PictureBoxSizeMode.Zoom;
-			pbFavorite.TabIndex = 4;
 			pbFavorite.TabStop = false;
-			pbFavorite.Visible = false;
 			// 
 			// pbCapitan
 			// 
-			pbCapitan.Image = (Image)resources.GetObject("pbCapitan.Image");
-			pbCapitan.Location = new Point(267, 60);
+			resources.ApplyResources(pbCapitan, "pbCapitan");
 			pbCapitan.Name = "pbCapitan";
-			pbCapitan.Size = new Size(32, 32);
-			pbCapitan.SizeMode = PictureBoxSizeMode.Zoom;
-			pbCapitan.TabIndex = 5;
 			pbCapitan.TabStop = false;
-			pbCapitan.Visible = false;
 			// 
 			// cmsFavorite
 			// 
 			cmsFavorite.Items.AddRange(new ToolStripItem[] { cmsOptionAdd, cmsOptionRemove, cmsOptionSetPicture, cmsOptionRemovePicture });
 			cmsFavorite.Name = "cmsFavorite";
-			cmsFavorite.Size = new Size(197, 92);
+			resources.ApplyResources(cmsFavorite, "cmsFavorite");
 			// 
 			// cmsOptionAdd
 			// 
 			cmsOptionAdd.Name = "cmsOptionAdd";
-			cmsOptionAdd.Size = new Size(196, 22);
-			cmsOptionAdd.Text = "Add to Favorites";
+			resources.ApplyResources(cmsOptionAdd, "cmsOptionAdd");
 			cmsOptionAdd.Click += cmsOptionAdd_Click;
 			// 
 			// cmsOptionRemove
 			// 
 			cmsOptionRemove.Name = "cmsOptionRemove";
-			cmsOptionRemove.Size = new Size(196, 22);
-			cmsOptionRemove.Text = "Remove from Favorites";
+			resources.ApplyResources(cmsOptionRemove, "cmsOptionRemove");
 			cmsOptionRemove.Click += cmsOptionRemove_Click;
 			// 
 			// cmsOptionSetPicture
 			// 
 			cmsOptionSetPicture.Name = "cmsOptionSetPicture";
-			cmsOptionSetPicture.Size = new Size(196, 22);
-			cmsOptionSetPicture.Text = "Add Picture";
+			resources.ApplyResources(cmsOptionSetPicture, "cmsOptionSetPicture");
 			cmsOptionSetPicture.Click += cmsOptionSetPicture_Click;
 			// 
 			// cmsOptionRemovePicture
 			// 
 			cmsOptionRemovePicture.Name = "cmsOptionRemovePicture";
-			cmsOptionRemovePicture.Size = new Size(196, 22);
-			cmsOptionRemovePicture.Text = "Remove Picture";
+			resources.ApplyResources(cmsOptionRemovePicture, "cmsOptionRemovePicture");
 			cmsOptionRemovePicture.Click += cmsOptionRemovePicture_Click;
 			// 
 			// PlayerControl
 			// 
-			AutoScaleDimensions = new SizeF(7F, 15F);
+			resources.ApplyResources(this, "$this");
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = SystemColors.ControlLightLight;
 			BorderStyle = BorderStyle.FixedSingle;
@@ -164,9 +126,7 @@ namespace WorldCupStats.WinForms.Controls
 			Controls.Add(lblPlayerNumber);
 			Controls.Add(lblPlayerName);
 			Controls.Add(pbPlayerPicture);
-			Margin = new Padding(0);
 			Name = "PlayerControl";
-			Size = new Size(310, 100);
 			Load += PlayerControl_Load;
 			MouseDown += PlayerControl_MouseDown;
 			((System.ComponentModel.ISupportInitialize)pbPlayerPicture).EndInit();

@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
+using WorldCupStats.WinForms.Forms;
 using WorldCupStats.WinForms.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -17,9 +19,11 @@ namespace WorldCupStats.WinForms.Controls
 	public partial class PlayerControl : UserControl
 	{
 		private readonly Player _player;
+		private readonly ResourceManager _rm;
 		public PlayerControl(Player player)
 		{
 			_player = player;
+			_rm = new ResourceManager("WorldCupStats.WinForms.Controls.PlayerControl", typeof(PlayerControl).Assembly);
 			InitializeComponent();
 		}
 
@@ -30,16 +34,16 @@ namespace WorldCupStats.WinForms.Controls
 
 		private void PlayerControl_Load(object sender, EventArgs e)
 		{
-			toolTip.SetToolTip(this.pbCapitan, "Capitan");
-			toolTip.SetToolTip(this.pbFavorite, "Favorite _player");
+			toolTip.SetToolTip(this.pbCapitan, _rm.GetString("Capitan"));
+			toolTip.SetToolTip(this.pbFavorite, _rm.GetString("FavoritePlayer"));
 
 			lblPlayerName.Text = _player.Name;
 			lblPlayerPosition.Text = _player.Position.ToString();
-			lblPlayerNumber.Text = $"Number: {_player.ShirtNumber.ToString()}";
+			lblPlayerNumber.Text = $"{_rm.GetString("Number")}: {_player.ShirtNumber.ToString()}";
 			pbCapitan.Visible = _player.IsCapitan;
 			pbFavorite.Visible = _player.IsFavorite;
 			cmsOptionRemovePicture.Visible = false;
-			cmsOptionSetPicture.Text = "Add Picture";
+			cmsOptionSetPicture.Text = _rm.GetString("cmsOptionSetPicture.Text");
 
 			try
 			{
@@ -47,7 +51,7 @@ namespace WorldCupStats.WinForms.Controls
 				{
 					pbPlayerPicture.Image = Image.FromFile(FileUtils.GetPicturePath(_player.PictureFileName));
 					cmsOptionRemovePicture.Visible = true;
-					cmsOptionSetPicture.Text = "Change Picture";
+					cmsOptionSetPicture.Text = _rm.GetString("ChangePicture");
 				}
 			}
 			catch (Exception ex)

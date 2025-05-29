@@ -20,11 +20,34 @@ namespace WorldCupStats.WinForms
 		[STAThread]
 		private static void Main()
 		{
-			// Build configuration
-			var configuration = ConfigurationProvider.BuildConfiguration();
+
 
 			// Set up DI
 			var services = new ServiceCollection();
+
+			
+
+			services.AddSingleton<ISettingsRepository, SettingsRepository>();
+
+			// Register your forms
+			services.AddTransient<RankingForm>();
+			services.AddTransient<MainForm>();
+			services.AddTransient<SettingsForm>();
+
+			var serviceProvider = services.BuildServiceProvider();
+
+			ApplicationConfiguration.Initialize();
+
+			if (!SettingsRepository.SettingsFileExists())
+			{
+				var settingsForm = serviceProvider.GetRequiredService<SettingsForm>();
+				Application.Run(settingsForm);
+
+				if (!settingsForm.SettingsSaved) return;
+			}
+
+			// Build configuration
+			var configuration = ConfigurationProvider.BuildConfiguration();
 
 			services.AddSingleton<IConfiguration>(configuration);
 			services.AddLogging();
@@ -40,35 +63,15 @@ namespace WorldCupStats.WinForms
 				services.AddTransient<IDataRepository, ApiDataRepository>();
 			}
 
-			services.AddSingleton<ISettingsRepository, SettingsRepository>();
+			serviceProvider = services.BuildServiceProvider();
 
-			// Register your forms
-			services.AddTransient<RankingForm>();
-			services.AddTransient<MainForm>();
-			services.AddTransient<SettingsForm>();
-
-			var serviceProvider = services.BuildServiceProvider();
-
-			ApplicationConfiguration.Initialize();
-
-			var lang = configuration["Settings:Language"] ?? "en";
+			var lang = configuration["Language"] ?? "en";
 			Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+			Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
 
-			if (!SettingsRepository.SettingsFileExists())
-			{
-				var settingsForm = serviceProvider.GetRequiredService<SettingsForm>();
-				Application.Run(settingsForm);
+			var mainForm = serviceProvider.GetRequiredService<MainForm>();
+			Application.Run(mainForm);
 
-				if (!settingsForm.SettingsSaved) return;
-
-				var mainForm = serviceProvider.GetRequiredService<MainForm>();
-				Application.Run(mainForm);
-			}
-			else
-			{
-				var mainForm = serviceProvider.GetRequiredService<MainForm>();
-				Application.Run(mainForm);
-			}
 		}
 	}
 }

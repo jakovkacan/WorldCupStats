@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
 			rbType = new GroupBox();
 			rbTypeWomen = new RadioButton();
 			rbTypeMen = new RadioButton();
@@ -42,101 +43,71 @@
 			// 
 			// rbType
 			// 
+			resources.ApplyResources(rbType, "rbType");
 			rbType.Controls.Add(rbTypeWomen);
 			rbType.Controls.Add(rbTypeMen);
-			rbType.Location = new Point(12, 12);
 			rbType.Name = "rbType";
-			rbType.Size = new Size(229, 62);
-			rbType.TabIndex = 2;
 			rbType.TabStop = false;
-			rbType.Text = "Championship";
 			// 
 			// rbTypeWomen
 			// 
-			rbTypeWomen.AutoSize = true;
-			rbTypeWomen.Location = new Point(138, 26);
+			resources.ApplyResources(rbTypeWomen, "rbTypeWomen");
 			rbTypeWomen.Name = "rbTypeWomen";
-			rbTypeWomen.Size = new Size(67, 19);
-			rbTypeWomen.TabIndex = 1;
-			rbTypeWomen.Text = "Women";
 			rbTypeWomen.UseVisualStyleBackColor = true;
 			// 
 			// rbTypeMen
 			// 
-			rbTypeMen.AutoSize = true;
+			resources.ApplyResources(rbTypeMen, "rbTypeMen");
 			rbTypeMen.Checked = true;
-			rbTypeMen.Location = new Point(13, 26);
 			rbTypeMen.Name = "rbTypeMen";
-			rbTypeMen.Size = new Size(49, 19);
-			rbTypeMen.TabIndex = 0;
 			rbTypeMen.TabStop = true;
-			rbTypeMen.Text = "Men";
 			rbTypeMen.UseVisualStyleBackColor = true;
 			// 
 			// rbLang
 			// 
+			resources.ApplyResources(rbLang, "rbLang");
 			rbLang.Controls.Add(rbLangHr);
 			rbLang.Controls.Add(rbLangEn);
-			rbLang.Location = new Point(12, 80);
 			rbLang.Name = "rbLang";
-			rbLang.Size = new Size(229, 62);
-			rbLang.TabIndex = 3;
 			rbLang.TabStop = false;
-			rbLang.Text = "Language";
 			// 
 			// rbLangHr
 			// 
-			rbLangHr.AutoSize = true;
-			rbLangHr.Location = new Point(138, 26);
+			resources.ApplyResources(rbLangHr, "rbLangHr");
 			rbLangHr.Name = "rbLangHr";
-			rbLangHr.Size = new Size(68, 19);
-			rbLangHr.TabIndex = 1;
-			rbLangHr.Text = "Hrvatski";
 			rbLangHr.UseVisualStyleBackColor = true;
 			// 
 			// rbLangEn
 			// 
-			rbLangEn.AutoSize = true;
+			resources.ApplyResources(rbLangEn, "rbLangEn");
 			rbLangEn.Checked = true;
-			rbLangEn.Location = new Point(13, 26);
 			rbLangEn.Name = "rbLangEn";
-			rbLangEn.Size = new Size(63, 19);
-			rbLangEn.TabIndex = 0;
 			rbLangEn.TabStop = true;
-			rbLangEn.Text = "English";
 			rbLangEn.UseVisualStyleBackColor = true;
 			// 
 			// btnSave
 			// 
-			btnSave.Location = new Point(84, 175);
+			resources.ApplyResources(btnSave, "btnSave");
 			btnSave.Name = "btnSave";
-			btnSave.Size = new Size(75, 23);
-			btnSave.TabIndex = 4;
-			btnSave.Text = "Save";
 			btnSave.UseVisualStyleBackColor = true;
 			btnSave.Click += btnSave_Click;
 			// 
 			// btnCancel
 			// 
-			btnCancel.Location = new Point(165, 175);
+			resources.ApplyResources(btnCancel, "btnCancel");
 			btnCancel.Name = "btnCancel";
-			btnCancel.Size = new Size(75, 23);
-			btnCancel.TabIndex = 5;
-			btnCancel.Text = "Cancel";
 			btnCancel.UseVisualStyleBackColor = true;
 			btnCancel.Click += btnCancel_Click;
 			// 
 			// SettingsForm
 			// 
-			AutoScaleDimensions = new SizeF(7F, 15F);
+			resources.ApplyResources(this, "$this");
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(257, 208);
 			Controls.Add(btnCancel);
 			Controls.Add(btnSave);
 			Controls.Add(rbLang);
 			Controls.Add(rbType);
 			Name = "SettingsForm";
-			Text = "Settings";
 			Load += SettingsForm_Load;
 			rbType.ResumeLayout(false);
 			rbType.PerformLayout();

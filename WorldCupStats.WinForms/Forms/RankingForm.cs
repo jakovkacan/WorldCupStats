@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,10 +18,12 @@ namespace WorldCupStats.WinForms.Forms
 	public partial class RankingForm : Form
 	{
 		private readonly Ranking _ranking;
+		private readonly ResourceManager _rm;
 
 		public RankingForm(Ranking ranking)
 		{
 			_ranking = ranking ?? throw new ArgumentNullException(nameof(ranking));
+			_rm = new ResourceManager("WorldCupStats.WinForms.Forms.RankingForm", typeof(RankingForm).Assembly);
 			InitializeComponent();
 		}
 
@@ -37,15 +40,15 @@ namespace WorldCupStats.WinForms.Forms
 			var imgCol = new DataGridViewImageColumn
 			{
 				Name = "Picture",
-				HeaderText = "Picture",
+				HeaderText = _rm.GetString("Picture"),
 				ImageLayout = DataGridViewImageCellLayout.Zoom
 			};
 			dgvPlayerRanking.Columns.Add(imgCol);
 
 			// Add other columns as needed
-			dgvPlayerRanking.Columns.Add("Name", "Name");
-			dgvPlayerRanking.Columns.Add("Goals", "Goals");
-			dgvPlayerRanking.Columns.Add("YellowCards", "Yellow Cards");
+			dgvPlayerRanking.Columns.Add("Name", _rm.GetString("Name"));
+			dgvPlayerRanking.Columns.Add("Goals", _rm.GetString("Goals"));
+			dgvPlayerRanking.Columns.Add("YellowCards", _rm.GetString("YellowCards"));
 
 			// Populate rows
 			foreach (var pr in _ranking.PlayerRanking)
@@ -70,10 +73,10 @@ namespace WorldCupStats.WinForms.Forms
 			dgvMatchRanking.RowHeadersVisible = false;
 			dgvMatchRanking.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-			dgvMatchRanking.Columns.Add("Venue", "Venue");
-			dgvMatchRanking.Columns.Add("HomeTeam", "Home Team");
-			dgvMatchRanking.Columns.Add("AwayTeam", "Away Team");
-			dgvMatchRanking.Columns.Add("Attendance", "Attendance");
+			dgvMatchRanking.Columns.Add("Venue", _rm.GetString("Venue"));
+			dgvMatchRanking.Columns.Add("HomeTeam", _rm.GetString("HomeTeam"));
+			dgvMatchRanking.Columns.Add("AwayTeam", _rm.GetString("AwayTeam"));
+			dgvMatchRanking.Columns.Add("Attendance", _rm.GetString("Attendance"));
 
 			foreach (var mr in _ranking.MatchRanking)
 			{

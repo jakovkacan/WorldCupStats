@@ -33,7 +33,7 @@ public static class LanguageExtensions
 		return language switch
 		{
 			Language.HR => "hr-HR",
-			Language.EN => "en-US",
+			Language.EN => "en",
 			_ => throw new ArgumentOutOfRangeException(nameof(language), language, null)
 		};
 	}

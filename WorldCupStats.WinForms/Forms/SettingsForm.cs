@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,10 +17,12 @@ namespace WorldCupStats.WinForms.Forms
 	public partial class SettingsForm : Form
 	{
 		private readonly ISettingsRepository _settings;
+		private readonly ResourceManager _rm;
 		public SettingsForm(ISettingsRepository settings)
 		{
 			_settings = settings;
 			_isStartup = !_settings.IsInitialized();
+			_rm = new ResourceManager("WorldCupStats.WinForms.Forms.SettingsForm", typeof(SettingsForm).Assembly);
 			InitializeComponent();
 		}
 
@@ -52,7 +55,7 @@ namespace WorldCupStats.WinForms.Forms
 			_type = rbTypeMen.Checked ? ChampionshipType.Men : ChampionshipType.Women;
 			_language = rbLangEn.Checked ? Language.EN : Language.HR;
 
-			var result = MessageBoxUtils.ShowConfirmation("Are you sure you want to save?"); 
+			var result = MessageBoxUtils.ShowConfirmation(_rm.GetString("SaveConfirmation"), _rm.GetString("Confirmation")); 
 
 			if (result != DialogResult.Yes) return;
 
@@ -67,7 +70,11 @@ namespace WorldCupStats.WinForms.Forms
 			}
 
 			SettingsSaved = true;
-			Close();
+			if (_settings.LanguageChanged())
+			{
+				Application.Restart();
+			} else 
+				Close();
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)

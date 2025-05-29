@@ -2,18 +2,23 @@
 using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
 using System.Text.Json;
+using WorldCupStats.Data.Providers;
 
 namespace WorldCupStats.Data.Repositories;
 
 public class SettingsRepository : ISettingsRepository
 {
 	private Settings? _settings;
+	private bool _languageChanged;
 
 	public SettingsRepository()
 	{
 		if (SettingsFileExists())
 			_settings = LoadSettings();
 	}
+
+	
+	public bool LanguageChanged() => _languageChanged;
 
 	public T? GetValue<T>()
 	{
@@ -46,6 +51,8 @@ public class SettingsRepository : ISettingsRepository
 		if (EqualityComparer<T>.Default.Equals(value, GetValue<T>()))
 			return; // No change, nothing to save
 
+		_languageChanged = false; // Reset language change flag
+
 		if (typeof(T) == typeof(ChampionshipType))
 		{
 			_settings.Type = (ChampionshipType)((object)value!)!;
@@ -54,7 +61,11 @@ public class SettingsRepository : ISettingsRepository
 		}
 
 		if (typeof(T) == typeof(Language))
+		{
 			_settings.Language = (Language)((object)value!)!;
+			ConfigurationProvider.UpdateAppSettingsLanguage(_settings.Language.ToSettingsString());
+			_languageChanged = true; // Flag to indicate language change
+		}
 
 		if (typeof(T) == typeof(DisplayMode))
 			_settings.DisplayMode = (DisplayMode)((object)value!)!;
@@ -132,6 +143,7 @@ public class SettingsRepository : ISettingsRepository
 
 		File.WriteAllText(path, json);
 		_settings = settings;
+		ConfigurationProvider.UpdateAppSettingsLanguage(_settings.Language.ToSettingsString());
 	}
 
 	public bool IsInitialized() => _settings != null;

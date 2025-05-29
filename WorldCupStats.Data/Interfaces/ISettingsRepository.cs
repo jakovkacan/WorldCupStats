@@ -14,4 +14,5 @@ public interface ISettingsRepository
 	void RemoveFromFavorites(Player player);
 	bool IsFavorite(Player player);
 	Settings GetInstance();
+	bool LanguageChanged();
 }

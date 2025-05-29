@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			cbTeams = new ComboBox();
 			lbFavoriteTeam = new Label();
 			lblAllPlayers = new Label();
@@ -41,103 +42,69 @@
 			// 
 			// cbTeams
 			// 
+			resources.ApplyResources(cbTeams, "cbTeams");
 			cbTeams.FormattingEnabled = true;
-			cbTeams.Location = new Point(131, 12);
 			cbTeams.Name = "cbTeams";
-			cbTeams.Size = new Size(211, 23);
-			cbTeams.TabIndex = 0;
 			cbTeams.SelectionChangeCommitted += cbTeams_SelectionChangeCommitted;
 			// 
 			// lbFavoriteTeam
 			// 
-			lbFavoriteTeam.AutoSize = true;
-			lbFavoriteTeam.Location = new Point(12, 15);
+			resources.ApplyResources(lbFavoriteTeam, "lbFavoriteTeam");
 			lbFavoriteTeam.Name = "lbFavoriteTeam";
-			lbFavoriteTeam.Size = new Size(81, 15);
-			lbFavoriteTeam.TabIndex = 1;
-			lbFavoriteTeam.Text = "Favorite Team";
 			// 
 			// lblAllPlayers
 			// 
-			lblAllPlayers.AutoSize = true;
-			lblAllPlayers.Location = new Point(12, 47);
+			resources.ApplyResources(lblAllPlayers, "lblAllPlayers");
 			lblAllPlayers.Name = "lblAllPlayers";
-			lblAllPlayers.Size = new Size(61, 15);
-			lblAllPlayers.TabIndex = 3;
-			lblAllPlayers.Text = "All Players";
 			// 
 			// lblFavoritePlayers
 			// 
-			lblFavoritePlayers.AutoSize = true;
-			lblFavoritePlayers.Location = new Point(358, 47);
+			resources.ApplyResources(lblFavoritePlayers, "lblFavoritePlayers");
 			lblFavoritePlayers.Name = "lblFavoritePlayers";
-			lblFavoritePlayers.Size = new Size(89, 15);
-			lblFavoritePlayers.TabIndex = 5;
-			lblFavoritePlayers.Text = "Favorite Players";
 			// 
 			// flpAllPlayers
 			// 
+			resources.ApplyResources(flpAllPlayers, "flpAllPlayers");
 			flpAllPlayers.AllowDrop = true;
-			flpAllPlayers.AutoScroll = true;
 			flpAllPlayers.BorderStyle = BorderStyle.FixedSingle;
-			flpAllPlayers.FlowDirection = FlowDirection.TopDown;
-			flpAllPlayers.Location = new Point(12, 74);
 			flpAllPlayers.Name = "flpAllPlayers";
-			flpAllPlayers.Size = new Size(330, 360);
-			flpAllPlayers.TabIndex = 6;
-			flpAllPlayers.WrapContents = false;
 			flpAllPlayers.DragDrop += flpAllPlayers_DragDrop;
 			flpAllPlayers.DragEnter += flp_DragEnter;
 			// 
 			// flpFavoritePlayers
 			// 
+			resources.ApplyResources(flpFavoritePlayers, "flpFavoritePlayers");
 			flpFavoritePlayers.AllowDrop = true;
-			flpFavoritePlayers.AutoScroll = true;
 			flpFavoritePlayers.BorderStyle = BorderStyle.FixedSingle;
-			flpFavoritePlayers.FlowDirection = FlowDirection.TopDown;
-			flpFavoritePlayers.Location = new Point(358, 74);
 			flpFavoritePlayers.Name = "flpFavoritePlayers";
-			flpFavoritePlayers.Size = new Size(330, 360);
-			flpFavoritePlayers.TabIndex = 7;
-			flpFavoritePlayers.WrapContents = false;
 			flpFavoritePlayers.DragDrop += flpFavoritePlayers_DragDrop;
 			flpFavoritePlayers.DragEnter += flp_DragEnter;
 			// 
 			// progressBar
 			// 
-			progressBar.Location = new Point(532, 12);
+			resources.ApplyResources(progressBar, "progressBar");
 			progressBar.MarqueeAnimationSpeed = 10;
 			progressBar.Name = "progressBar";
-			progressBar.Size = new Size(156, 23);
 			progressBar.Style = ProgressBarStyle.Marquee;
-			progressBar.TabIndex = 8;
-			progressBar.Visible = false;
 			// 
 			// btnSettings
 			// 
-			btnSettings.Location = new Point(12, 440);
+			resources.ApplyResources(btnSettings, "btnSettings");
 			btnSettings.Name = "btnSettings";
-			btnSettings.Size = new Size(75, 23);
-			btnSettings.TabIndex = 9;
-			btnSettings.Text = "Settings";
 			btnSettings.UseVisualStyleBackColor = true;
 			btnSettings.Click += btnSettings_Click;
 			// 
 			// btnRanking
 			// 
-			btnRanking.Location = new Point(613, 440);
+			resources.ApplyResources(btnRanking, "btnRanking");
 			btnRanking.Name = "btnRanking";
-			btnRanking.Size = new Size(75, 23);
-			btnRanking.TabIndex = 10;
-			btnRanking.Text = "Ranking";
 			btnRanking.UseVisualStyleBackColor = true;
 			btnRanking.Click += btnRanking_Click;
 			// 
 			// MainForm
 			// 
-			AutoScaleDimensions = new SizeF(7F, 15F);
+			resources.ApplyResources(this, "$this");
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(703, 468);
 			Controls.Add(btnRanking);
 			Controls.Add(btnSettings);
 			Controls.Add(progressBar);
@@ -148,7 +115,6 @@
 			Controls.Add(lbFavoriteTeam);
 			Controls.Add(cbTeams);
 			Name = "MainForm";
-			Text = "World Cup Stats";
 			FormClosing += MainForm_FormClosing;
 			Load += MainForm_Load;
 			ResumeLayout(false);
