@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Models;
 

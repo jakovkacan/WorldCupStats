@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Resources;
 using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
-using WorldCupStats.WinForms.Forms;
 using WorldCupStats.WinForms.Utils;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WorldCupStats.WinForms.Controls
 {

@@ -10,12 +10,12 @@ public class PlayerUtils
 		var updatedPlayers = players.ToList();
 		updatedPlayers.ForEach(p =>
 		{
-			if (p.IsFavorite && favoritePlayers.All(fp => fp.Name != p.Name)) 
+			if (p.IsFavorite && favoritePlayers.All(fp => fp.Name != p.Name))
 				p.IsFavorite = false; // Remove favorite status if not in favorites list
 
 			if (favoritePlayers.Any(fp => fp.Name == p.Name))
 				p.IsFavorite = true;
-			
+
 			if (pictures.Any(pic => pic.Name == p.Name))
 				p.PictureFileName = pictures.First(pic => pic.Name == p.Name).PictureFileName;
 		});

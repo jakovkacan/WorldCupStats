@@ -1,12 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Providers;
 using WorldCupStats.Data.Repositories;
-using WorldCupStats.Data.Providers;
 using WorldCupStats.WinForms.Forms;
 using ConfigurationProvider = WorldCupStats.Data.Providers.ConfigurationProvider;
 
@@ -25,7 +22,7 @@ namespace WorldCupStats.WinForms
 			// Set up DI
 			var services = new ServiceCollection();
 
-			
+
 
 			services.AddSingleton<ISettingsRepository, SettingsRepository>();
 

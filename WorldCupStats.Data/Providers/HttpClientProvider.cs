@@ -1,5 +1,5 @@
-﻿using System.Net.Http.Headers;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using System.Net.Http.Headers;
 using WorldCupStats.Data.Interfaces;
 
 namespace WorldCupStats.Data.Providers;

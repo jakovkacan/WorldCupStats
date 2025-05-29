@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Linq;
+﻿using System.Drawing.Printing;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
-using WorldCupStats.WinForms.Properties;
 using WorldCupStats.WinForms.Utils;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.AxHost;
 
 namespace WorldCupStats.WinForms.Forms
 {
@@ -230,6 +218,6 @@ namespace WorldCupStats.WinForms.Forms
 			return new Rectangle(x, y, width, height);
 		}
 
-		
+
 	}
 }

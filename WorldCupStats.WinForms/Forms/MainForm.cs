@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+﻿using System.Data;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Input;
-using Microsoft.Extensions.Configuration;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
-using WorldCupStats.Data.Utils;
 using WorldCupStats.WinForms.Controls;
 using WorldCupStats.WinForms.Utils;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WorldCupStats.WinForms.Forms
 {
@@ -260,16 +248,16 @@ namespace WorldCupStats.WinForms.Forms
 		{
 			if (!e.Data!.GetDataPresent(typeof(Player))) return;
 
-				var player = (Player)e.Data.GetData(typeof(Player))!;
-				AddToFavorites(player);
-			}
+			var player = (Player)e.Data.GetData(typeof(Player))!;
+			AddToFavorites(player);
+		}
 		private void flpAllPlayers_DragDrop(object sender, DragEventArgs e)
 		{
 			if (!e.Data!.GetDataPresent(typeof(Player))) return;
 
-				var player = (Player)e.Data.GetData(typeof(Player))!;
-				RemoveFromFavorites(player);
-			}
+			var player = (Player)e.Data.GetData(typeof(Player))!;
+			RemoveFromFavorites(player);
+		}
 		private void flp_DragEnter(object sender, DragEventArgs e)
 		{
 			e.Effect = e.Data!.GetDataPresent(typeof(Player)) ? DragDropEffects.Move : DragDropEffects.None;

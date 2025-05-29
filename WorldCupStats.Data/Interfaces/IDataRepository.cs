@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using WorldCupStats.Data.Models;
+﻿using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Interfaces;
@@ -48,7 +47,7 @@ public interface IDataRepository
 
 			if (events == null || !events.Any() || statistics == null)
 				return;
-			
+
 			events.ForEach(e =>
 			{
 				switch (e.EventType)

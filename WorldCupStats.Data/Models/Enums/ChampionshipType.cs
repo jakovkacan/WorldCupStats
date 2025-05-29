@@ -1,6 +1,4 @@
-﻿using WorldCupStats.Data.Interfaces;
-
-namespace WorldCupStats.Data.Models;
+﻿namespace WorldCupStats.Data.Models;
 
 public enum ChampionshipType
 {

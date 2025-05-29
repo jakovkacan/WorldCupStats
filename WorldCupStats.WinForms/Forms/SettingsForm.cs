@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Resources;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
 using WorldCupStats.WinForms.Utils;
@@ -55,7 +46,7 @@ namespace WorldCupStats.WinForms.Forms
 			_type = rbTypeMen.Checked ? ChampionshipType.Men : ChampionshipType.Women;
 			_language = rbLangEn.Checked ? Language.EN : Language.HR;
 
-			var result = MessageBoxUtils.ShowConfirmation(_rm.GetString("SaveConfirmation"), _rm.GetString("Confirmation")); 
+			var result = MessageBoxUtils.ShowConfirmation(_rm.GetString("SaveConfirmation"), _rm.GetString("Confirmation"));
 
 			if (result != DialogResult.Yes) return;
 
@@ -73,7 +64,8 @@ namespace WorldCupStats.WinForms.Forms
 			if (_settings.LanguageChanged())
 			{
 				Application.Restart();
-			} else 
+			}
+			else
 				Close();
 		}
 

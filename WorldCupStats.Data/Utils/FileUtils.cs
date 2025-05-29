@@ -50,7 +50,7 @@ public static class FileUtils
 
 		if (!File.Exists(filePath))
 			throw new FileNotFoundException("The specified picture file does not exist.", filePath);
-		
+
 		return filePath;
 	}
 

@@ -1,8 +1,8 @@
-﻿using WorldCupStats.Data.Interfaces;
+﻿using System.Text.Json;
+using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
-using WorldCupStats.Data.Utils;
-using System.Text.Json;
 using WorldCupStats.Data.Providers;
+using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Repositories;
 
@@ -17,7 +17,7 @@ public class SettingsRepository : ISettingsRepository
 			_settings = LoadSettings();
 	}
 
-	
+
 	public bool LanguageChanged() => _languageChanged;
 
 	public T? GetValue<T>()

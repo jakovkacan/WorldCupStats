@@ -12,7 +12,7 @@ public class EventTypeJsonConverter : JsonConverter<EventType>
 			"goal" => EventType.Goal,
 			"yellow-card" => EventType.YellowCard,
 			"red-card" => EventType.RedCard,
-			"yellow-card-second" => EventType.SecondYellowCard, 
+			"yellow-card-second" => EventType.SecondYellowCard,
 			"substitution-in" => EventType.SubstitutionIn,
 			"substitution-out" => EventType.SubstitutionOut,
 			"offside" => EventType.Offside,

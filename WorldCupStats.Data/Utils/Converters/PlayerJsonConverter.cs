@@ -1,9 +1,7 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
-using WorldCupStats.Data.Repositories;
 
 namespace WorldCupStats.Data.Utils;
 

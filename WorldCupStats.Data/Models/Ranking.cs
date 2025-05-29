@@ -5,7 +5,7 @@ public class Ranking
 	public IList<PlayerRank> PlayerRanking { get; set; } = new List<PlayerRank>();
 	public IList<Match> MatchRanking { get; set; } = new List<Match>();
 
-	
+
 }
 
 public static class RankingExtensions
@@ -38,10 +38,10 @@ public static class RankingExtensions
 					playerRank.YellowCards++;
 					break;
 				default:
-				{
-					throw new InvalidOperationException($"Event type {type} is not supported for ranking.");
-					break;
-				}
+					{
+						throw new InvalidOperationException($"Event type {type} is not supported for ranking.");
+						break;
+					}
 			}
 		}
 		else
