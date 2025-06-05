@@ -1,4 +1,5 @@
-﻿using WorldCupStats.Data.Models;
+﻿using System.Runtime.InteropServices;
+using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Interfaces;
@@ -65,7 +66,6 @@ public interface IDataRepository
 		return match;
 	}
 	Settings GetSettingsInstance();
-
 	async Task<Ranking> GetRanking(string fifaCode)
 	{
 		var matches = GetAllMatchesAsync(fifaCode).Result.ToList();
@@ -124,5 +124,43 @@ public interface IDataRepository
 		ranking.MatchRanking = ranking.MatchRanking.OrderByDescending(m => m.Attendance).ToList();
 
 		return ranking;
+	}
+
+	async Task<TeamStatistics> GetTeamStatistics(Team team)
+	{
+		var statistics = new TeamStatistics()
+		{
+			Country = team.Country,
+			FifaCode = team.FifaCode ?? team.Code!,
+		};
+
+		var matches = GetAllMatchesAsync(statistics.FifaCode).Result.ToList();
+		statistics.MatchCount = matches.Count();
+		if (statistics.MatchCount == 0)
+			return statistics;
+
+		matches.ForEach(m =>
+		{
+			if (m.WinnerFifaCode == "Draw")
+				statistics.Draws++;
+			else if (m.WinnerFifaCode == statistics.FifaCode)
+				statistics.Wins++;
+			else
+				statistics.Losses++;
+
+			if (m.HomeTeam.FifaCode == statistics.FifaCode)
+			{
+				statistics.GoalsScored += m.HomeTeamEvents.Count(e => e.EventType == EventType.Goal);
+				statistics.GoalsConceded += m.AwayTeamEvents.Count(e => e.EventType == EventType.Goal);
+			}
+			else
+			{
+				statistics.GoalsScored += m.AwayTeamEvents.Count(e => e.EventType == EventType.Goal);
+				statistics.GoalsConceded += m.HomeTeamEvents.Count(e => e.EventType == EventType.Goal);
+			}
+
+		});
+
+		return statistics;
 	}
 }

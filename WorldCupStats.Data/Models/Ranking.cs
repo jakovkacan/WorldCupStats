@@ -8,6 +8,19 @@ public class Ranking
 
 }
 
+public class PlayerRank
+{
+	public Player Player { get; set; }
+	public int YellowCards { get; set; }
+	public int GoalsScored { get; set; }
+
+	public override string ToString()
+	{
+		return
+			$"{Player.Name}: {nameof(YellowCards)}: {YellowCards}, {nameof(GoalsScored)}: {GoalsScored}";
+	}
+}
+
 public static class RankingExtensions
 {
 	public static void AddPlayers(this Ranking ranking, IEnumerable<Player> players)

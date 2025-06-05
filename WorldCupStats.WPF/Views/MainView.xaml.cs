@@ -147,5 +147,35 @@ namespace WorldCupStats.WPF.Views
 				MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
+
+		private void btnTeam1Info_Click(object sender, RoutedEventArgs e)
+		{
+			if (cbTeam1.SelectedItem != null)
+			{
+				var statistics = _repository.GetTeamStatistics(_selectedTeam1!).Result;
+				var teamInfoWindow = new TeamInfoView(statistics);
+				teamInfoWindow.Owner = this;
+				teamInfoWindow.ShowDialog();
+			}
+			else
+			{
+				MessageBox.Show("Please select a team first.", "No Team Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+			}
+		}
+
+		private void btnTeam2Info_Click(object sender, RoutedEventArgs e)
+		{
+			if (cbTeam2.SelectedItem != null)
+			{
+				var statistics = _repository.GetTeamStatistics(_selectedTeam2!).Result;
+				var teamInfoWindow = new TeamInfoView(statistics);
+				teamInfoWindow.Owner = this;
+				teamInfoWindow.ShowDialog();
+			}
+			else
+			{
+				MessageBox.Show("Please select a team first.", "No Team Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+			}
+		}
 	}
 }
