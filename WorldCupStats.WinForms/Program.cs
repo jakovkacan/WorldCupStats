@@ -17,12 +17,8 @@ namespace WorldCupStats.WinForms
 		[STAThread]
 		private static void Main()
 		{
-
-
 			// Set up DI
 			var services = new ServiceCollection();
-
-
 
 			services.AddSingleton<ISettingsRepository, SettingsRepository>();
 

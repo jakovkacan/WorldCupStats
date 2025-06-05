@@ -23,8 +23,8 @@ public class Match
 	public Team HomeTeam { get; set; }
 	[JsonPropertyName("away_team")]
 	public Team AwayTeam { get; set; }
-	public int? HomeTeamGoals { get; set; }
-	public int? AwayTeamGoals { get; set; }
+	public int? Team1Goals { get; set; }
+	public int? Team2Goals { get; set; }
 	[JsonPropertyName("home_team_events")]
 	public IEnumerable<Event> HomeTeamEvents { get; set; }
 	[JsonPropertyName("away_team_events")]
@@ -43,6 +43,6 @@ public class Match
 	public override string ToString()
 	{
 		return
-			$"{nameof(Venue)}: {Venue}, {nameof(Location)}: {Location}, {nameof(FifaId)}: {FifaId}, {nameof(Attendance)}: {Attendance}, {nameof(Officials)}: {Officials}, {nameof(Weather)}: {Weather}, {nameof(HomeTeam)}: {HomeTeam}, {nameof(AwayTeam)}: {AwayTeam}, {nameof(HomeTeamGoals)}: {HomeTeamGoals}, {nameof(AwayTeamGoals)}: {AwayTeamGoals}, {nameof(HomeTeamEvents)}: {HomeTeamEvents}, {nameof(AwayTeamEvents)}: {AwayTeamEvents}, {nameof(HomeTeamStatistics)}: {HomeTeamStatistics}, {nameof(AwayTeamStatistics)}: {AwayTeamStatistics}, {nameof(DateTime)}: {DateTime}, {nameof(Stage)}: {Stage}, {nameof(WinnerFifaCode)}: {WinnerFifaCode}";
+			$"{nameof(Venue)}: {Venue}, {nameof(Location)}: {Location}, {nameof(FifaId)}: {FifaId}, {nameof(Attendance)}: {Attendance}, {nameof(Officials)}: {Officials}, {nameof(Weather)}: {Weather}, {nameof(HomeTeam)}: {HomeTeam}, {nameof(AwayTeam)}: {AwayTeam}, {nameof(Team1Goals)}: {Team1Goals}, {nameof(Team2Goals)}: {Team2Goals}, {nameof(HomeTeamEvents)}: {HomeTeamEvents}, {nameof(AwayTeamEvents)}: {AwayTeamEvents}, {nameof(HomeTeamStatistics)}: {HomeTeamStatistics}, {nameof(AwayTeamStatistics)}: {AwayTeamStatistics}, {nameof(DateTime)}: {DateTime}, {nameof(Stage)}: {Stage}, {nameof(WinnerFifaCode)}: {WinnerFifaCode}";
 	}
 }

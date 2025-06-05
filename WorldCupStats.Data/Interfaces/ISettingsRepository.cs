@@ -15,4 +15,6 @@ public interface ISettingsRepository
 	bool IsFavorite(Player player);
 	Settings GetInstance();
 	bool LanguageChanged();
+	void SetTeam2(Team team);
+	Team? GetTeam2();
 }

@@ -37,6 +37,9 @@ public class SettingsRepository : ISettingsRepository
 		if (typeof(T) == typeof(Team))
 			return (T)(object)_settings.FavoriteTeam!;
 
+		//if (typeof(T) == typeof(Team2))
+		//	return (T)(object)_settings.OpponentTeam;
+
 		if (typeof(T) == typeof(IEnumerable<Player>))
 			return (T)(object)_settings.FavoritePlayers!;
 
@@ -73,8 +76,12 @@ public class SettingsRepository : ISettingsRepository
 		if (typeof(T) == typeof(Team))
 		{
 			_settings.FavoriteTeam = (Team)((object)value!)!;
+			_settings.OpponentTeam = null; // Reset opponent team when setting favorite team
 			ResetFavorites();
 		}
+
+		//if (typeof(T) == typeof(Team2))
+		//	_settings.OpponentTeam = (Team2)((object)value!)!;
 
 		if (typeof(T) == typeof(List<Player>))
 			_settings.FavoritePlayers = (List<Player>)((object)value!)!;
@@ -215,6 +222,26 @@ public class SettingsRepository : ISettingsRepository
 		if (_settings == null)
 			throw new InvalidOperationException("Settings have not been initialized.");
 		return _settings;
+	}
+
+	public void SetTeam2(Team team)
+	{
+		if (_settings == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+
+		if (EqualityComparer<Team>.Default.Equals(team, GetTeam2()))
+			return; // No change, nothing to save
+
+		_settings.OpponentTeam = team;
+		SaveSettings();
+	}
+
+	public Team? GetTeam2()
+	{
+		if (_settings == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+
+		return _settings.OpponentTeam;
 	}
 
 

@@ -19,6 +19,51 @@ public interface IDataRepository
 
 		return PlayerUtils.UpdatePlayerFavoritesPictures(players, settings.FavoritePlayers, settings.PlayerPictures);
 	}
+	async Task<IEnumerable<Team>> GetAllOpponentTeamsAsync(string fifaCode)
+	{
+		var matches = await GetAllMatchesAsync(fifaCode);
+		var teams = matches.Select(m =>
+		{
+			var code = m.HomeTeam.FifaCode ?? m.HomeTeam.Code;
+			return code == fifaCode ? m.AwayTeam : m.HomeTeam;
+		}).Distinct().ToList();
+
+		var allTeams = await GetAllTeamsAsync();
+		teams = allTeams.Where(t => teams.Any(ot => ot.Country == t.Country)).ToList();
+
+		return teams;
+	}
+	async Task<Match> GetMatchAsync(string fifaCodeTeam1, string fifaCodeTeam2)
+	{
+		//find match by team FIFA codes
+		var matches = await GetAllMatchesAsync(fifaCodeTeam1);
+		var match = matches.FirstOrDefault(m =>
+		{
+			var codeHome = m.HomeTeam.FifaCode ?? m.HomeTeam.Code;
+			var codeAway = m.AwayTeam.FifaCode ?? m.AwayTeam.Code;
+			return (codeHome == fifaCodeTeam1 && codeAway == fifaCodeTeam2) ||
+			       (codeHome == fifaCodeTeam2 && codeAway == fifaCodeTeam1);
+		})!;
+
+		// determine which team is team1 and which is team2 and set score
+		var codeHome = match.HomeTeam.FifaCode ?? match.HomeTeam.Code;
+
+		var homeTeamGoals = match.HomeTeamEvents.Count(e => e.EventType == EventType.Goal);
+		var awayTeamGoals = match.AwayTeamEvents.Count(e => e.EventType == EventType.Goal);
+
+		if (codeHome == fifaCodeTeam1)
+		{
+			match.Team1Goals = homeTeamGoals;
+			match.Team2Goals = awayTeamGoals;
+		}
+		else
+		{
+			match.Team1Goals = awayTeamGoals;
+			match.Team2Goals = homeTeamGoals;
+		}
+
+		return match;
+	}
 	Settings GetSettingsInstance();
 
 	async Task<Ranking> GetRanking(string fifaCode)

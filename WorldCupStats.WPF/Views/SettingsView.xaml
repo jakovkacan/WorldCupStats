@@ -1,0 +1,56 @@
+﻿<Window x:Class="WorldCupStats.WPF.Views.SettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorldCupStats.WPF.Views"
+        mc:Ignorable="d"
+        Title="Settings" Height="400" Width="300"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="15*"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Championship">
+            <Grid VerticalAlignment="Center" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <RadioButton x:Name="rbTypeMen" Grid.Row="0" Content="Men" Margin="5" IsChecked="True"></RadioButton>
+                <RadioButton x:Name="rbTypeWomen" Grid.Row="1" Content="Women" Margin="5"></RadioButton>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="Language">
+            <Grid VerticalAlignment="Center" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <RadioButton x:Name="rbLangEn" Grid.Row="0" Content="English" Margin="5" IsChecked="True"></RadioButton>
+                <RadioButton x:Name="rbLangHr" Grid.Row="1" Content="Hrvatski" Margin="5"></RadioButton>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Header="Display Mode">
+            <Grid VerticalAlignment="Center" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <RadioButton x:Name="rbDisplayFullscreen" Grid.Row="0" Content="Fullscreen" Margin="5"></RadioButton>
+                <RadioButton x:Name="rbDisplayWindowed" Grid.Row="1" Content="Windowed" Margin="5" IsChecked="True"></RadioButton>
+            </Grid>
+        </GroupBox>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="btnSave" Content="Save" Width="80" Margin="5" Click="btnSave_Click"/>
+            <Button x:Name="btnCancel" Content="Cancel" Width="80" Margin="5" Click="btnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
