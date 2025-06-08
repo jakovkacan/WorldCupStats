@@ -23,8 +23,6 @@ public class Match
 	public Team HomeTeam { get; set; }
 	[JsonPropertyName("away_team")]
 	public Team AwayTeam { get; set; }
-	public int? Team1Goals { get; set; }
-	public int? Team2Goals { get; set; }
 	[JsonPropertyName("home_team_events")]
 	public IEnumerable<Event> HomeTeamEvents { get; set; }
 	[JsonPropertyName("away_team_events")]
@@ -39,6 +37,13 @@ public class Match
 	public string Stage { get; set; }
 	[JsonPropertyName("winner_code")]
 	public string WinnerFifaCode { get; set; }
+
+	//WPF visualization properties
+	public int? Team1Goals { get; set; }
+	public int? Team2Goals { get; set; }
+	public IEnumerable<Player>? Team1StartingEleven { get; set; }
+	public IEnumerable<Player>? Team2StartingEleven { get; set; }
+
 
 	public override string ToString()
 	{

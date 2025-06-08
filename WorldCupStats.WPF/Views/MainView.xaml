@@ -79,25 +79,17 @@
         </Grid>
 
         <!-- Soccer Field Area -->
-        <Border Grid.Row="1" Margin="20" 
-                Background="#4CAF50" BorderBrush="White" 
-                BorderThickness="2" CornerRadius="5">
-            <Grid>
-                <!-- Field Lines -->
-                <Path Stroke="White" StrokeThickness="2">
-                    <Path.Data>
-                        <GeometryGroup>
-                            <!-- Center Circle -->
-                            <EllipseGeometry Center="0.5,0.5" 
-                                             RadiusX="0.1" RadiusY="0.1"/>
-                            <!-- Center Line -->
-                            <LineGeometry StartPoint="0.5,0" 
-                                          EndPoint="0.5,1"/>
-                            <!-- Penalty Areas and Goal Areas will be added here -->
-                        </GeometryGroup>
-                    </Path.Data>
-                </Path>
-            </Grid>
+        <Border Grid.Row="1" Margin="20">
+            <Viewbox Stretch="Uniform">
+                <Grid Width="1920" Height="1226">
+                    <Image x:Name="SoccerFieldImage" 
+                           Source="/Resources/Images/field.png"
+                           Stretch="Fill"/>
+                    
+                    <Canvas x:Name="PlayerCanvas" 
+                            Width="1920" Height="1226"/>
+                </Grid>
+            </Viewbox>
         </Border>
     </Grid>
 </Window>

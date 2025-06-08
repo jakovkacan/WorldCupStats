@@ -52,15 +52,21 @@ public interface IDataRepository
 		var homeTeamGoals = match.HomeTeamEvents.Count(e => e.EventType == EventType.Goal);
 		var awayTeamGoals = match.AwayTeamEvents.Count(e => e.EventType == EventType.Goal);
 
+		var settings = GetSettingsInstance();
+
 		if (codeHome == fifaCodeTeam1)
 		{
 			match.Team1Goals = homeTeamGoals;
 			match.Team2Goals = awayTeamGoals;
+			match.Team1StartingEleven = PlayerUtils.UpdatePlayerFavoritesPictures(match.HomeTeamStatistics.StartingEleven, settings.FavoritePlayers, settings.PlayerPictures);
+			match.Team2StartingEleven = PlayerUtils.UpdatePlayerFavoritesPictures(match.AwayTeamStatistics.StartingEleven, settings.FavoritePlayers, settings.PlayerPictures);
 		}
 		else
 		{
 			match.Team1Goals = awayTeamGoals;
 			match.Team2Goals = homeTeamGoals;
+			match.Team1StartingEleven = PlayerUtils.UpdatePlayerFavoritesPictures(match.AwayTeamStatistics.StartingEleven, settings.FavoritePlayers, settings.PlayerPictures);
+			match.Team2StartingEleven = PlayerUtils.UpdatePlayerFavoritesPictures(match.HomeTeamStatistics.StartingEleven, settings.FavoritePlayers, settings.PlayerPictures);
 		}
 
 		return match;
