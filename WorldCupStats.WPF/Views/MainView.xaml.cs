@@ -7,6 +7,7 @@ using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
 using WorldCupStats.WPF.Controls;
 using WorldCupStats.WPF.Helpers;
+using WorldCupStats.WPF.Resources;
 
 namespace WorldCupStats.WPF.Views
 {
@@ -27,6 +28,7 @@ namespace WorldCupStats.WPF.Views
 			_repository = repository;
 			_settings = settings;
 			InitializeComponent();
+			Title = WorldCupStats.WPF.Resources.Resources.MainView_Title;
 		}
 
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -64,7 +66,7 @@ namespace WorldCupStats.WPF.Views
 			}
 			catch (System.Exception ex)
 			{
-				MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -84,7 +86,7 @@ namespace WorldCupStats.WPF.Views
 			}
 			catch (System.Exception ex)
 			{
-				MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -105,16 +107,15 @@ namespace WorldCupStats.WPF.Views
 					_selectedTeam1.FifaCode ?? _selectedTeam1.Code!,
 					_selectedTeam2.FifaCode ?? _selectedTeam2.Code!);
 
-				if (_currentMatch != null)
-				{
-					txtScore.Text = $"{_currentMatch.Team1Goals ?? 0} : {_currentMatch.Team2Goals ?? 0}";
-					txtScore.Visibility = Visibility.Visible;
-					VisualizePlayers(_currentMatch);
-				}
+				if (_currentMatch == null) return;
+				
+				txtScore.Text = $"{_currentMatch.Team1Goals ?? 0} : {_currentMatch.Team2Goals ?? 0}";
+				txtScore.Visibility = Visibility.Visible;
+				VisualizePlayers(_currentMatch);
 			}
 			catch (System.Exception ex)
 			{
-				MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -156,7 +157,7 @@ namespace WorldCupStats.WPF.Views
 			}
 			catch (System.Exception ex)
 			{
-				MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -171,7 +172,11 @@ namespace WorldCupStats.WPF.Views
 			}
 			else
 			{
-				MessageBox.Show("Please select a team first.", "No Team Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+				MessageBox.Show(
+					WorldCupStats.WPF.Resources.Resources.MainView_NoTeamSelected_Message,
+					WorldCupStats.WPF.Resources.Resources.MainView_NoTeamSelected_Title,
+					MessageBoxButton.OK,
+					MessageBoxImage.Information);
 			}
 		}
 
@@ -186,7 +191,11 @@ namespace WorldCupStats.WPF.Views
 			}
 			else
 			{
-				MessageBox.Show("Please select a team first.", "No Team Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+				MessageBox.Show(
+					WorldCupStats.WPF.Resources.Resources.MainView_NoTeamSelected_Message,
+					WorldCupStats.WPF.Resources.Resources.MainView_NoTeamSelected_Title,
+					MessageBoxButton.OK,
+					MessageBoxImage.Information);
 			}
 		}
 

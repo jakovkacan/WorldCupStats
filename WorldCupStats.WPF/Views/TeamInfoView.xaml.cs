@@ -1,4 +1,5 @@
 using System.Windows;
+using WorldCupStats.WPF.Resources;
 using WorldCupStats.Data.Models;
 
 namespace WorldCupStats.WPF.Views
@@ -10,7 +11,7 @@ namespace WorldCupStats.WPF.Views
             InitializeComponent();
 
             txtTeamName.Text = statistics.Country;
-            txtFifaCode.Text = $"FIFA Code: {statistics.FifaCode}";
+            txtFifaCode.Text = string.Format(WPF.Resources.Resources.TeamInfo_FifaCode, statistics.FifaCode);
             txtGamesPlayed.Text = statistics.MatchCount.ToString();
             txtWins.Text = statistics.Wins.ToString();
             txtDraws.Text = statistics.Draws.ToString();

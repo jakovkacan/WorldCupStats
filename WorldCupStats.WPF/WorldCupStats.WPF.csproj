@@ -6,9 +6,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\app.ico" />
     <None Remove="Resources\Images\default.jpg" />
     <None Remove="Resources\Images\dress_black.png" />
     <None Remove="Resources\Images\dress_white.png" />
@@ -16,18 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Images\default.jpg">
+    <Resource Include="Resources\app.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Images\dress_black.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\dress_white.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\field.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\Images\default.jpg" />
+    <Resource Include="Resources\Images\dress_black.png" />
+    <Resource Include="Resources\Images\dress_white.png" />
+    <Resource Include="Resources\Images\field.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +33,25 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Localization\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Localization\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resources.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorldCupStats.WPF.Views"
+        xmlns:properties="clr-namespace:WorldCupStats.WPF.Resources"
         mc:Ignorable="d"
-        Title="Team Information" 
+        Title="{x:Static properties:Resources.TeamInfo_Title}" 
+        Icon="/Resources/app.ico"
         Height="450" Width="400"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -78,17 +80,17 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Games Played:" Grid.Row="0" Grid.Column="0" Foreground="#CCCCCC" Margin="0,5"/>
+                <TextBlock Text="{x:Static properties:Resources.TeamInfo_GamesPlayed}" Grid.Row="0" Grid.Column="0" Foreground="#CCCCCC" Margin="0,5"/>
                 <TextBlock x:Name="txtGamesPlayed" Text="0" Grid.Row="0" Grid.Column="1" Foreground="White" Margin="0,5"/>
 
-                <TextBlock Text="Wins:" Grid.Row="1" Grid.Column="0" Foreground="#CCCCCC" Margin="0,5"/>
+                <TextBlock Text="{x:Static properties:Resources.TeamInfo_Wins}" Grid.Row="1" Grid.Column="0" Foreground="#CCCCCC" Margin="0,5"/>
                 <TextBlock x:Name="txtWins" Text="0" Grid.Row="1" Grid.Column="1" Foreground="#90EE90" Margin="0,5"/>
 
-                <TextBlock Text="Draws:" Grid.Row="2" Grid.Column="0" Foreground="#CCCCCC" Margin="0,5"/>
-                <TextBlock x:Name="txtDraws" Text="0" Grid.Row="2" Grid.Column="1" Foreground="#FFD700" Margin="0,5"/>
+                <TextBlock Text="{x:Static properties:Resources.TeamInfo_Draws}" Grid.Row="2" Grid.Column="0" Foreground="#CCCCCC" Margin="0,5"/>
+                <TextBlock x:Name="txtDraws" Text="0" Grid.Row="2" Grid.Column="1" Foreground="White" Margin="0,5"/>
 
-                <TextBlock Text="Losses:" Grid.Row="3" Grid.Column="0" Foreground="#CCCCCC" Margin="0,5"/>
-                <TextBlock x:Name="txtLosses" Text="0" Grid.Row="3" Grid.Column="1" Foreground="#FF6B6B" Margin="0,5"/>
+                <TextBlock Text="{x:Static properties:Resources.TeamInfo_Losses}" Grid.Row="3" Grid.Column="0" Foreground="#CCCCCC" Margin="0,5"/>
+                <TextBlock x:Name="txtLosses" Text="0" Grid.Row="3" Grid.Column="1" Foreground="#FF7F7F" Margin="0,5"/>
 
                 <Separator Grid.Row="4" Grid.ColumnSpan="2" Margin="0,10"/>
 
@@ -98,7 +100,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Goals Scored:" Foreground="#CCCCCC"/>
+                        <TextBlock Text="{x:Static properties:Resources.TeamInfo_GoalsScored}" Foreground="#CCCCCC"/>
                         <TextBlock x:Name="txtGoalsScored" Text="0" Grid.Column="1" Foreground="#90EE90"/>
                     </Grid>
                     <Grid Margin="0,5">
@@ -106,7 +108,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Goals Conceded:" Foreground="#CCCCCC"/>
+                        <TextBlock Text="{x:Static properties:Resources.TeamInfo_GoalsConceded}" Foreground="#CCCCCC"/>
                         <TextBlock x:Name="txtGoalsConceded" Text="0" Grid.Column="1" Foreground="#FF6B6B"/>
                     </Grid>
                     <Grid Margin="0,5">
@@ -114,42 +116,22 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Goal Difference:" Foreground="#CCCCCC"/>
+                        <TextBlock Text="{x:Static properties:Resources.TeamInfo_GoalDifference}" Foreground="#CCCCCC"/>
                         <TextBlock x:Name="txtGoalDifference" Text="0" Grid.Column="1" Foreground="White"/>
-                    </Grid>
+            </Grid>
                 </StackPanel>
             </Grid>
 
-            <!-- Close Button -->
-            <Button Grid.Row="2" 
-                    Content="Close" 
-                    Width="100"
-                    Height="35"
-                    Margin="0,20,0,0"
-                    Background="#FF4B4B4B"
-                    Foreground="White"
-                    BorderThickness="0"
-                    Click="CloseButton_Click">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}"
-                                            CornerRadius="17.5">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FF6B6B6B"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
+            <Button Grid.Row="0" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top"
+                    Width="30" Height="30"
+                    Click="CloseButton_Click"
+                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                    Foreground="White">
+                <TextBlock Text="✕" 
+                         FontSize="20" 
+                         HorizontalAlignment="Center"/>
             </Button>
         </Grid>
     </Border>

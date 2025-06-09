@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorldCupStats.WPF.Views"
+        xmlns:resources="clr-namespace:WorldCupStats.WPF.Resources"
         mc:Ignorable="d"
-        Title="Settings" Height="500" Width="400"
+        Title="{x:Static resources:Resources.Settings_Title}" Height="500" Width="400"
+        Icon="/Resources/app.ico"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     
@@ -59,36 +61,36 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <GroupBox Header="Championship" Style="{StaticResource ModernGroupBox}">
+            <GroupBox Header="{x:Static resources:Resources.Settings_Championship}" Style="{StaticResource ModernGroupBox}">
                 <StackPanel>
-                    <RadioButton x:Name="rbTypeMen" Content="Men" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
-                    <RadioButton x:Name="rbTypeWomen" Content="Women" Style="{StaticResource ModernRadioButton}"/>
+                    <RadioButton x:Name="rbTypeMen" Content="{x:Static resources:Resources.Settings_Men}" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
+                    <RadioButton x:Name="rbTypeWomen" Content="{x:Static resources:Resources.Settings_Women}" Style="{StaticResource ModernRadioButton}"/>
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Grid.Row="1" Header="Language" Style="{StaticResource ModernGroupBox}">
+            <GroupBox Grid.Row="1" Header="{x:Static resources:Resources.Settings_Language}" Style="{StaticResource ModernGroupBox}">
                 <StackPanel>
-                    <RadioButton x:Name="rbLangEn" Content="English" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
-                    <RadioButton x:Name="rbLangHr" Content="Hrvatski" Style="{StaticResource ModernRadioButton}"/>
+                    <RadioButton x:Name="rbLangEn" Content="{x:Static resources:Resources.Settings_English}" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
+                    <RadioButton x:Name="rbLangHr" Content="{x:Static resources:Resources.Settings_Croatian}" Style="{StaticResource ModernRadioButton}"/>
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Grid.Row="2" Header="Display Mode" Style="{StaticResource ModernGroupBox}">
+            <GroupBox Grid.Row="2" Header="{x:Static resources:Resources.Settings_DisplayMode}" Style="{StaticResource ModernGroupBox}">
                 <StackPanel>
-                    <RadioButton x:Name="rbDisplayFullscreen" Content="Fullscreen" Style="{StaticResource ModernRadioButton}"/>
-                    <RadioButton x:Name="rbDisplayWindowed" Content="Windowed" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
+                    <RadioButton x:Name="rbDisplayFullscreen" Content="{x:Static resources:Resources.Settings_Fullscreen}" Style="{StaticResource ModernRadioButton}"/>
+                    <RadioButton x:Name="rbDisplayWindowed" Content="{x:Static resources:Resources.Settings_Windowed}" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
                     
                     <StackPanel x:Name="spWindowedOptions" Margin="25,5,0,0">
-                        <RadioButton x:Name="rbSizeSmall" Content="Small (800x600)" Style="{StaticResource ModernRadioButton}" IsEnabled="{Binding IsChecked, ElementName=rbDisplayWindowed}"/>
-                        <RadioButton x:Name="rbSizeMedium" Content="Medium (1000x700)" Style="{StaticResource ModernRadioButton}" IsEnabled="{Binding IsChecked, ElementName=rbDisplayWindowed}" IsChecked="True"/>
-                        <RadioButton x:Name="rbSizeLarge" Content="Large (1200x800)" Style="{StaticResource ModernRadioButton}" IsEnabled="{Binding IsChecked, ElementName=rbDisplayWindowed}"/>
+                        <RadioButton x:Name="rbSizeSmall" Content="{x:Static resources:Resources.Settings_SmallSize}" Style="{StaticResource ModernRadioButton}" IsEnabled="{Binding IsChecked, ElementName=rbDisplayWindowed}"/>
+                        <RadioButton x:Name="rbSizeMedium" Content="{x:Static resources:Resources.Settings_MediumSize}" Style="{StaticResource ModernRadioButton}" IsEnabled="{Binding IsChecked, ElementName=rbDisplayWindowed}" IsChecked="True"/>
+                        <RadioButton x:Name="rbSizeLarge" Content="{x:Static resources:Resources.Settings_LargeSize}" Style="{StaticResource ModernRadioButton}" IsEnabled="{Binding IsChecked, ElementName=rbDisplayWindowed}"/>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
 
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                <Button x:Name="btnSave" Content="Save" Style="{StaticResource ModernButton}" Click="btnSave_Click"/>
-                <Button x:Name="btnCancel" Content="Cancel" Style="{StaticResource ModernButton}" Background="#757575" Click="btnCancel_Click"/>
+                <Button x:Name="btnSave" Content="{x:Static resources:Resources.Settings_Save}" Style="{StaticResource ModernButton}" Click="btnSave_Click"/>
+                <Button x:Name="btnCancel" Content="{x:Static resources:Resources.Settings_Cancel}" Style="{StaticResource ModernButton}" Background="#757575" Click="btnCancel_Click"/>
             </StackPanel>
         </Grid>
     </Border>

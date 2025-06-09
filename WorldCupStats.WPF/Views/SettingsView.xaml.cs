@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
+using WorldCupStats.WPF.Resources;
 
 namespace WorldCupStats.WPF.Views
 {
@@ -96,7 +97,11 @@ namespace WorldCupStats.WPF.Views
 				}
 			}
 
-			var result = MessageBox.Show("Are you sure you want to save these settings?", "Confirm Settings", MessageBoxButton.YesNo, MessageBoxImage.Question);
+			var result = MessageBox.Show(
+				WPF.Resources.Resources.Settings_ConfirmSave,
+				WPF.Resources.Resources.Settings_ConfirmTitle,
+				MessageBoxButton.YesNo,
+				MessageBoxImage.Question);
 
 			if (result != MessageBoxResult.Yes) return;
 

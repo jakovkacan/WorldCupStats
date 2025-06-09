@@ -8,10 +8,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
     <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\app.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WorldCupStats.Data\WorldCupStats.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\app.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

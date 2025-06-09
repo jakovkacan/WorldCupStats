@@ -25,6 +25,11 @@ namespace WorldCupStats.WPF
 		{
 			base.OnStartup(e);
 
+			// Initialize resources
+			var rm = WorldCupStats.WPF.Resources.Resources.ResourceManager;
+			Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
 			var services = new ServiceCollection();
 
 			// Build configuration and register it BEFORE other services that depend on it
@@ -67,7 +72,7 @@ namespace WorldCupStats.WPF
 			}
 
 			// Set culture based on settings
-			var lang = configuration["Language"] ?? "en";
+			var lang = configuration["Language"] ?? "en-US";
 			Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
 			Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
 
