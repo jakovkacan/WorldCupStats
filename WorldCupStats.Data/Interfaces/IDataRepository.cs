@@ -185,10 +185,14 @@ public interface IDataRepository
 			switch (e.EventType)
 			{
 				case EventType.Goal:
-					players.First(p => p.Name == e.PlayerName).GoalsScored++;
+					var playerGoal = players.FirstOrDefault(p => p.Name == e.PlayerName);
+					if (playerGoal != null)
+						playerGoal.GoalsScored++;
 					break;
 				case EventType.YellowCard:
-					players.First(p => p.Name == e.PlayerName).YellowCards++;
+					var playerYellowCard = players.FirstOrDefault(p => p.Name == e.PlayerName);
+					if (playerYellowCard != null)
+						playerYellowCard.YellowCards++;
 					break;
 				default:
 					// Other event types are not tracked in this context

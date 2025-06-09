@@ -28,6 +28,32 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="SettingsButton" TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Background" Value="#FF4B4B4B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="20">
+                            <Path Data="M24,13.616v-3.232c-1.651-0.587-2.694-0.752-3.219-2.019v-0.001c-0.527-1.271,0.1-2.134,0.847-3.707l-2.285-2.285c-1.561,0.742-2.433,1.375-3.707,0.847h-0.001c-1.269-0.526-1.435-1.576-2.019-3.219h-3.232c-0.582,1.635-0.749,2.692-2.019,3.219h-0.001c-1.271,0.528-2.132-0.098-3.707-0.847L2.372,4.677c0.741,1.563,1.369,2.434,0.847,3.707C2.692,9.651,1.645,9.817,0,10.401v3.232c1.645,0.584,2.692,0.749,3.219,2.019c0.528,1.271-0.097,2.132-0.847,3.707l2.285,2.286c1.562-0.743,2.434-1.375,3.707-0.847h0.001c1.27,0.526,1.436,1.579,2.019,3.219h3.232c0.582-1.636,0.75-2.69,2.027-3.222c1.262-0.524,2.12,0.101,3.698,0.851l2.285-2.286c-0.744-1.563-1.375-2.433-0.848-3.706c0.527-1.271,1.588-1.44,3.221-2.021C24,13.616,24,13.616,24,13.616z M12,15.616c-1.999,0-3.616-1.617-3.616-3.616c0-1.999,1.617-3.616,3.616-3.616c1.997,0,3.616,1.617,3.616,3.616C15.616,13.999,13.997,15.616,12,15.616z"
+                                  Fill="White"
+                                  Stretch="Uniform"
+                                  Margin="10"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF666666"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -43,6 +69,14 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+
+            <!-- Settings Button -->
+            <Button x:Name="btnSettings" 
+                    Style="{StaticResource SettingsButton}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Click="btnSettings_Click"
+                    ToolTip="Settings"/>
 
             <!-- Team 1 Section -->
             <StackPanel Grid.Column="0" Orientation="Horizontal" 

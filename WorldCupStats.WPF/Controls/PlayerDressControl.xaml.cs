@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
 using WorldCupStats.WPF.Views;
@@ -9,31 +10,6 @@ namespace WorldCupStats.WPF.Controls
 {
     public partial class PlayerDressControl : UserControl
     {
-        public PlayerDressControl()
-        {
-            InitializeComponent();
-            this.DataContext = this;
-            
-            // Show popup on mouse enter, hide on mouse leave for the entire control
-            this.MouseEnter += (s, e) => PlayerPopup.IsOpen = true;
-            this.MouseLeave += (s, e) => PlayerPopup.IsOpen = false;
-
-            // Add click event handler
-            this.MouseLeftButtonDown += PlayerDressControl_MouseLeftButtonDown;
-        }
-
-        private void PlayerDressControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var playerInfo = this.Tag as PlayerInfo;
-            if (playerInfo == null) return;
-
-            var window = new PlayerInfoView(playerInfo);
-            window.Owner = Window.GetWindow(this);
-            window.ShowDialog();
-        }
-
-        #region Dependency Properties
-
         public static readonly DependencyProperty PlayerNameProperty =
             DependencyProperty.Register("PlayerName", typeof(string), typeof(PlayerDressControl),
                 new PropertyMetadata(string.Empty, OnPlayerNameChanged));
@@ -61,6 +37,10 @@ namespace WorldCupStats.WPF.Controls
         public static readonly DependencyProperty PositionProperty =
             DependencyProperty.Register("Position", typeof(Position), typeof(PlayerDressControl),
                 new PropertyMetadata(Position.Forward));
+
+        public static readonly DependencyProperty IsOpponentProperty =
+            DependencyProperty.Register("IsOpponent", typeof(bool), typeof(PlayerDressControl),
+                new PropertyMetadata(false, OnIsOpponentChanged));
 
         private static void OnPlayerNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -101,6 +81,57 @@ namespace WorldCupStats.WPF.Controls
         private static void OnPhotoUrlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             // This is now handled by OnPictureFileNameChanged
+        }
+
+        private static void OnIsOpponentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PlayerDressControl control)
+            {
+                control.UpdateAppearance();
+            }
+        }
+
+        public PlayerDressControl()
+        {
+            InitializeComponent();
+            this.DataContext = this;
+            
+            // Show popup on mouse enter, hide on mouse leave for the entire control
+            this.MouseEnter += (s, e) => PlayerPopup.IsOpen = true;
+            this.MouseLeave += (s, e) => PlayerPopup.IsOpen = false;
+
+            // Add click event handler
+            this.MouseLeftButtonDown += PlayerDressControl_MouseLeftButtonDown;
+
+            UpdateAppearance();
+        }
+
+        private void UpdateAppearance()
+        {
+            if (IsOpponent)
+            {
+                DressImage.Source = new ImageSourceConverter().ConvertFromString(
+                    "pack://application:,,,/WorldCupStats.WPF;component/Resources/Images/dress_white.png"
+                ) as ImageSource;
+                NumberText.Foreground = Brushes.Black;
+            }
+            else
+            {
+                DressImage.Source = new ImageSourceConverter().ConvertFromString(
+                    "pack://application:,,,/WorldCupStats.WPF;component/Resources/Images/dress_black.png"
+                ) as ImageSource;
+                NumberText.Foreground = Brushes.White;
+            }
+        }
+
+        private void PlayerDressControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var playerInfo = this.Tag as PlayerInfo;
+            if (playerInfo == null) return;
+
+            var window = new PlayerInfoView(playerInfo);
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
         }
 
         public string PlayerName
@@ -145,6 +176,10 @@ namespace WorldCupStats.WPF.Controls
             set { SetValue(PositionProperty, value); }
         }
 
-        #endregion
+        public bool IsOpponent
+        {
+            get { return (bool)GetValue(IsOpponentProperty); }
+            set { SetValue(IsOpponentProperty, value); }
+        }
     }
 } 

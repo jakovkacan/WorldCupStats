@@ -5,52 +5,91 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorldCupStats.WPF.Views"
         mc:Ignorable="d"
-        Title="Settings" Height="400" Width="300"
+        Title="Settings" Height="500" Width="400"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="35*"/>
-            <RowDefinition Height="15*"/>
-        </Grid.RowDefinitions>
-        <GroupBox Header="Championship">
-            <Grid VerticalAlignment="Center" Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    
+    <Window.Resources>
+        <Style x:Key="ModernGroupBox" TargetType="GroupBox">
+            <Setter Property="Margin" Value="10,5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+        </Style>
+        
+        <Style x:Key="ModernRadioButton" TargetType="RadioButton">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="8,4"/>
+        </Style>
+        
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
-                <RadioButton x:Name="rbTypeMen" Grid.Row="0" Content="Men" Margin="5" IsChecked="True"></RadioButton>
-                <RadioButton x:Name="rbTypeWomen" Grid.Row="1" Content="Women" Margin="5"></RadioButton>
-            </Grid>
-        </GroupBox>
-        <GroupBox Grid.Row="1" Header="Language">
-            <Grid VerticalAlignment="Center" Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <Border Background="White" Padding="15">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                <RadioButton x:Name="rbLangEn" Grid.Row="0" Content="English" Margin="5" IsChecked="True"></RadioButton>
-                <RadioButton x:Name="rbLangHr" Grid.Row="1" Content="Hrvatski" Margin="5"></RadioButton>
-            </Grid>
-        </GroupBox>
-        <GroupBox Grid.Row="2" Header="Display Mode">
-            <Grid VerticalAlignment="Center" Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+            <GroupBox Header="Championship" Style="{StaticResource ModernGroupBox}">
+                <StackPanel>
+                    <RadioButton x:Name="rbTypeMen" Content="Men" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
+                    <RadioButton x:Name="rbTypeWomen" Content="Women" Style="{StaticResource ModernRadioButton}"/>
+                </StackPanel>
+            </GroupBox>
 
-                <RadioButton x:Name="rbDisplayFullscreen" Grid.Row="0" Content="Fullscreen" Margin="5"></RadioButton>
-                <RadioButton x:Name="rbDisplayWindowed" Grid.Row="1" Content="Windowed" Margin="5" IsChecked="True"></RadioButton>
-            </Grid>
-        </GroupBox>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="btnSave" Content="Save" Width="80" Margin="5" Click="btnSave_Click"/>
-            <Button x:Name="btnCancel" Content="Cancel" Width="80" Margin="5" Click="btnCancel_Click"/>
-        </StackPanel>
-    </Grid>
+            <GroupBox Grid.Row="1" Header="Language" Style="{StaticResource ModernGroupBox}">
+                <StackPanel>
+                    <RadioButton x:Name="rbLangEn" Content="English" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
+                    <RadioButton x:Name="rbLangHr" Content="Hrvatski" Style="{StaticResource ModernRadioButton}"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Row="2" Header="Display Mode" Style="{StaticResource ModernGroupBox}">
+                <StackPanel>
+                    <RadioButton x:Name="rbDisplayFullscreen" Content="Fullscreen" Style="{StaticResource ModernRadioButton}"/>
+                    <RadioButton x:Name="rbDisplayWindowed" Content="Windowed" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
+                    
+                    <StackPanel x:Name="spWindowedOptions" Margin="25,5,0,0">
+                        <RadioButton x:Name="rbSizeSmall" Content="Small (800x600)" Style="{StaticResource ModernRadioButton}" IsEnabled="{Binding IsChecked, ElementName=rbDisplayWindowed}"/>
+                        <RadioButton x:Name="rbSizeMedium" Content="Medium (1000x700)" Style="{StaticResource ModernRadioButton}" IsEnabled="{Binding IsChecked, ElementName=rbDisplayWindowed}" IsChecked="True"/>
+                        <RadioButton x:Name="rbSizeLarge" Content="Large (1200x800)" Style="{StaticResource ModernRadioButton}" IsEnabled="{Binding IsChecked, ElementName=rbDisplayWindowed}"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <Button x:Name="btnSave" Content="Save" Style="{StaticResource ModernButton}" Click="btnSave_Click"/>
+                <Button x:Name="btnCancel" Content="Cancel" Style="{StaticResource ModernButton}" Background="#757575" Click="btnCancel_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

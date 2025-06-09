@@ -5,24 +5,53 @@ namespace WorldCupStats.WPF.Helpers
 {
     public static class PositionHelper
     {
-        public static Point GetPositionOnField(Position position, int playerIndex, int totalPlayersInPosition = 0)
+        private static class HomePositions
         {
-            switch (position)
+            public const double Goalie = 0.05;
+            public const double Defender = 0.15;
+            public const double Midfield = 0.30;
+            public const double Forward = 0.45;
+            public const double Default = 0.25;
+        }
+
+        private static class AwayPositions
+        {
+            public const double Goalie = 0.95;
+            public const double Defender = 0.85;
+            public const double Midfield = 0.70;
+            public const double Forward = 0.55;
+            public const double Default = 0.75;
+        }
+
+        public static Point GetPositionOnField(Position position, int playerIndex, int totalPlayersInPosition = 0, bool isOpponent = false)
+        {
+            double xPosition = GetXPosition(position, isOpponent);
+            return GetVerticallySpacedPosition(xPosition, playerIndex, totalPlayersInPosition);
+        }
+
+        private static double GetXPosition(Position position, bool isOpponent)
+        {
+            if (isOpponent)
             {
-                case Position.Goalie:
-                    return new Point(0.05, 0.5); // Always centered
-
-                case Position.Defender:
-                    return GetVerticallySpacedPosition(0.15, playerIndex, totalPlayersInPosition);
-
-                case Position.Midfield:
-                    return GetVerticallySpacedPosition(0.3, playerIndex, totalPlayersInPosition);
-
-                case Position.Forward:
-                    return GetVerticallySpacedPosition(0.45, playerIndex, totalPlayersInPosition);
-
-                default:
-                    return new Point(0.25, 0.5);
+                return position switch
+                {
+                    Position.Goalie => AwayPositions.Goalie,
+                    Position.Defender => AwayPositions.Defender,
+                    Position.Midfield => AwayPositions.Midfield,
+                    Position.Forward => AwayPositions.Forward,
+                    _ => AwayPositions.Default
+                };
+            }
+            else
+            {
+                return position switch
+                {
+                    Position.Goalie => HomePositions.Goalie,
+                    Position.Defender => HomePositions.Defender,
+                    Position.Midfield => HomePositions.Midfield,
+                    Position.Forward => HomePositions.Forward,
+                    _ => HomePositions.Default
+                };
             }
         }
 

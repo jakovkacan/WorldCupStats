@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
 
@@ -49,6 +38,7 @@ namespace WorldCupStats.WPF.Views
 				rbTypeMen.IsChecked = true;
 				rbLangEn.IsChecked = true;
 				rbDisplayWindowed.IsChecked = true;
+				rbSizeMedium.IsChecked = true;
 			}
 			else
 			{
@@ -62,6 +52,22 @@ namespace WorldCupStats.WPF.Views
 				rbLangHr.IsChecked = _language == Data.Models.Language.HR;
 				rbDisplayFullscreen.IsChecked = _displayMode == DisplayMode.Fullscreen;
 				rbDisplayWindowed.IsChecked = _displayMode != DisplayMode.Fullscreen;
+
+				if (_displayMode != DisplayMode.Fullscreen)
+				{
+					switch (_displayMode)
+					{
+						case DisplayMode.WindowedSmall:
+							rbSizeSmall.IsChecked = true;
+							break;
+						case DisplayMode.WindowedMedium:
+							rbSizeMedium.IsChecked = true;
+							break;
+						case DisplayMode.WindowedLarge:
+							rbSizeLarge.IsChecked = true;
+							break;
+					}
+				}
 			}
 		}
 
@@ -69,9 +75,28 @@ namespace WorldCupStats.WPF.Views
 		{
 			_type = rbTypeMen.IsChecked == true ? ChampionshipType.Men : ChampionshipType.Women;
 			_language = rbLangEn.IsChecked == true ? Data.Models.Language.EN : Data.Models.Language.HR;
-			_displayMode = rbDisplayFullscreen.IsChecked == true ? DisplayMode.Fullscreen : DisplayMode.WindowedMedium;
+			
+			if (rbDisplayFullscreen.IsChecked == true)
+			{
+				_displayMode = DisplayMode.Fullscreen;
+			}
+			else
+			{
+				if (rbSizeSmall.IsChecked == true)
+				{
+					_displayMode = DisplayMode.WindowedSmall;
+				}
+				else if (rbSizeMedium.IsChecked == true)
+				{
+					_displayMode = DisplayMode.WindowedMedium;
+				}
+				else
+				{
+					_displayMode = DisplayMode.WindowedLarge;
+				}
+			}
 
-			var result = MessageBox.Show("Are you sure you want to save?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+			var result = MessageBox.Show("Are you sure you want to save these settings?", "Confirm Settings", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
 			if (result != MessageBoxResult.Yes) return;
 
@@ -93,7 +118,47 @@ namespace WorldCupStats.WPF.Views
 				Application.Current.Shutdown();
 			}
 			else
+			{
+				ApplyWindowSettings();
 				Close();
+			}
+		}
+
+		private void ApplyWindowSettings()
+		{
+			var mainWindow = Application.Current.MainWindow;
+			if (mainWindow == null) return;
+
+			if (_displayMode == DisplayMode.Fullscreen)
+			{
+				mainWindow.WindowState = WindowState.Maximized;
+				mainWindow.WindowStyle = WindowStyle.None;
+			}
+			else
+			{
+				mainWindow.WindowState = WindowState.Normal;
+				mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+
+				switch (_displayMode)
+				{
+					case DisplayMode.WindowedSmall:
+						mainWindow.Width = 800;
+						mainWindow.Height = 600;
+						break;
+					case DisplayMode.WindowedMedium:
+						mainWindow.Width = 1000;
+						mainWindow.Height = 700;
+						break;
+					case DisplayMode.WindowedLarge:
+						mainWindow.Width = 1200;
+						mainWindow.Height = 800;
+						break;
+				}
+
+				// Center the window
+				mainWindow.Left = (SystemParameters.PrimaryScreenWidth - mainWindow.Width) / 2;
+				mainWindow.Top = (SystemParameters.PrimaryScreenHeight - mainWindow.Height) / 2;
+			}
 		}
 
 		private void btnCancel_Click(object sender, RoutedEventArgs e)

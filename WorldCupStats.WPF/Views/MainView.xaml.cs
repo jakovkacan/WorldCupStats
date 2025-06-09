@@ -31,6 +31,11 @@ namespace WorldCupStats.WPF.Views
 
 		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
+			LoadTeams();
+		}
+
+		private async void LoadTeams()
+		{
 			try
 			{
 				// Get all teams
@@ -185,6 +190,70 @@ namespace WorldCupStats.WPF.Views
 			}
 		}
 
+		private void btnSettings_Click(object sender, RoutedEventArgs e)
+		{
+			var settingsWindow = new SettingsView(_settings);
+			settingsWindow.Owner = this;
+			var previousType = _settings.GetValue<ChampionshipType>();
+			settingsWindow.ShowDialog();
+
+			if (!settingsWindow.SettingsSaved) return;
+			
+			LoadSettings();
+				
+			// If championship type changed, reload teams
+			var currentType = _settings.GetValue<ChampionshipType>();
+			if (currentType == previousType) return;
+				
+			LoadTeams();
+			ResetTeamSelections();
+		}
+
+		private void ResetTeamSelections()
+		{
+			cbTeam1.SelectedIndex = -1;
+			cbTeam2.SelectedIndex = -1;
+			cbTeam2.IsEnabled = false;
+			txtScore.Visibility = Visibility.Collapsed;
+			PlayerCanvas.Children.Clear();
+		}
+
+		private void LoadSettings()
+		{
+			var displayMode = _settings.GetValue<DisplayMode>();
+
+			if (displayMode == DisplayMode.Fullscreen)
+			{
+				WindowState = WindowState.Maximized;
+				WindowStyle = WindowStyle.None;
+			}
+			else
+			{
+				WindowState = WindowState.Normal;
+				WindowStyle = WindowStyle.SingleBorderWindow;
+
+				switch (displayMode)
+				{
+					case DisplayMode.WindowedSmall:
+						Width = 800;
+						Height = 600;
+						break;
+					case DisplayMode.WindowedMedium:
+						Width = 1000;
+						Height = 700;
+						break;
+					case DisplayMode.WindowedLarge:
+						Width = 1200;
+						Height = 800;
+						break;
+				}
+
+				// Center the window
+				Left = (SystemParameters.PrimaryScreenWidth - Width) / 2;
+				Top = (SystemParameters.PrimaryScreenHeight - Height) / 2;
+			}
+		}
+
 		private void VisualizePlayers(Match match)
 		{
 			//clear previous players
@@ -198,7 +267,7 @@ namespace WorldCupStats.WPF.Views
 			// Add goalkeeper
 			if (team1Positions.TryGetValue(Position.Goalie, out var goalies) && goalies.Count > 0)
 			{
-				AddHomePlayer(new PlayerInfo()
+				AddPlayer(new PlayerInfo()
 				{
 					Name = goalies[0].Name,
 					Number = goalies[0].ShirtNumber,
@@ -207,7 +276,7 @@ namespace WorldCupStats.WPF.Views
 					IsCaptain = goalies[0].IsCapitan,
 					Goals = goalies[0].GoalsScored,
 					YellowCards = goalies[0].YellowCards
-				}, 0, 1);
+				}, 0, 1, false);
 			}
 
 			// Add defenders
@@ -215,7 +284,7 @@ namespace WorldCupStats.WPF.Views
 			{
 				for (int i = 0; i < defenders.Count; i++)
 				{
-					AddHomePlayer(new PlayerInfo()
+					AddPlayer(new PlayerInfo()
 					{
 						Name = defenders[i].Name,
 						Number = defenders[i].ShirtNumber,
@@ -224,7 +293,7 @@ namespace WorldCupStats.WPF.Views
 						IsCaptain = defenders[i].IsCapitan,
 						Goals = defenders[i].GoalsScored,
 						YellowCards = defenders[i].YellowCards
-					}, i, defenders.Count);
+					}, i, defenders.Count, false);
 				}
 			}
 
@@ -233,7 +302,7 @@ namespace WorldCupStats.WPF.Views
 			{
 				for (int i = 0; i < midfielders.Count; i++)
 				{
-					AddHomePlayer(new PlayerInfo()
+					AddPlayer(new PlayerInfo()
 					{
 						Name = midfielders[i].Name,
 						Number = midfielders[i].ShirtNumber,
@@ -242,7 +311,7 @@ namespace WorldCupStats.WPF.Views
 						IsCaptain = midfielders[i].IsCapitan,
 						Goals = midfielders[i].GoalsScored,
 						YellowCards = midfielders[i].YellowCards
-					}, i, midfielders.Count);
+					}, i, midfielders.Count, false);
 				}
 			}
 
@@ -251,7 +320,7 @@ namespace WorldCupStats.WPF.Views
 			{
 				for (int i = 0; i < forwards.Count; i++)
 				{
-					AddHomePlayer(new PlayerInfo()
+					AddPlayer(new PlayerInfo()
 					{
 						Name = forwards[i].Name,
 						Number = forwards[i].ShirtNumber,
@@ -260,7 +329,7 @@ namespace WorldCupStats.WPF.Views
 						IsCaptain = forwards[i].IsCapitan,
 						Goals = forwards[i].GoalsScored,
 						YellowCards = forwards[i].YellowCards
-					}, i, forwards.Count);
+					}, i, forwards.Count, false);
 				}
 			}
 
@@ -273,7 +342,7 @@ namespace WorldCupStats.WPF.Views
 			// Add goalkeeper
 			if (team2Positions.TryGetValue(Position.Goalie, out var awayGoalies) && awayGoalies.Count > 0)
 			{
-				AddAwayPlayer(new PlayerInfo()
+				AddPlayer(new PlayerInfo()
 				{
 					Name = awayGoalies[0].Name,
 					Number = awayGoalies[0].ShirtNumber,
@@ -282,7 +351,7 @@ namespace WorldCupStats.WPF.Views
 					IsCaptain = awayGoalies[0].IsCapitan,
 					Goals = awayGoalies[0].GoalsScored,
 					YellowCards = awayGoalies[0].YellowCards
-				}, 0, 1);
+				}, 0, 1, true);
 			}
 
 			// Add defenders
@@ -290,7 +359,7 @@ namespace WorldCupStats.WPF.Views
 			{
 				for (int i = 0; i < awayDefenders.Count; i++)
 				{
-					AddAwayPlayer(new PlayerInfo()
+					AddPlayer(new PlayerInfo()
 					{
 						Name = awayDefenders[i].Name,
 						Number = awayDefenders[i].ShirtNumber,
@@ -299,7 +368,7 @@ namespace WorldCupStats.WPF.Views
 						IsCaptain = awayDefenders[i].IsCapitan,
 						Goals = awayDefenders[i].GoalsScored,
 						YellowCards = awayDefenders[i].YellowCards
-					}, i, awayDefenders.Count);
+					}, i, awayDefenders.Count, true);
 				}
 			}
 
@@ -308,7 +377,7 @@ namespace WorldCupStats.WPF.Views
 			{
 				for (int i = 0; i < awayMidfielders.Count; i++)
 				{
-					AddAwayPlayer(new PlayerInfo()
+					AddPlayer(new PlayerInfo()
 					{
 						Name = awayMidfielders[i].Name,
 						Number = awayMidfielders[i].ShirtNumber,
@@ -317,7 +386,7 @@ namespace WorldCupStats.WPF.Views
 						IsCaptain = awayMidfielders[i].IsCapitan,
 						Goals = awayMidfielders[i].GoalsScored,
 						YellowCards = awayMidfielders[i].YellowCards
-					}, i, awayMidfielders.Count);
+					}, i, awayMidfielders.Count, true);
 				}
 			}
 
@@ -326,7 +395,7 @@ namespace WorldCupStats.WPF.Views
 			{
 				for (int i = 0; i < awayForwards.Count; i++)
 				{
-					AddAwayPlayer(new PlayerInfo()
+					AddPlayer(new PlayerInfo()
 					{
 						Name = awayForwards[i].Name,
 						Number = awayForwards[i].ShirtNumber,
@@ -335,15 +404,14 @@ namespace WorldCupStats.WPF.Views
 						IsCaptain = awayForwards[i].IsCapitan,
 						Goals = awayForwards[i].GoalsScored,
 						YellowCards = awayForwards[i].YellowCards
-					}, i, awayForwards.Count);
+					}, i, awayForwards.Count, true);
 				}
 			}
-
 		}
 
 		private void ClearVisualization() => PlayerCanvas.Children.Clear();
 
-		private void AddHomePlayer(PlayerInfo player, int positionIndex, int totalPlayersInPosition)
+		private void AddPlayer(PlayerInfo player, int positionIndex, int totalPlayersInPosition, bool isOpponent)
 		{
 			var control = new PlayerDressControl
 			{
@@ -351,30 +419,11 @@ namespace WorldCupStats.WPF.Views
 				ShirtNumber = player.Number,
 				Position = player.Position,
 				PictureFileName = player.PictureFileName,
+				IsOpponent = isOpponent,
 				Tag = player // Store the full player info in the Tag property
 			};
 
-			Point position = PositionHelper.GetPositionOnField(player.Position, positionIndex, totalPlayersInPosition);
-			
-			// Center the control by subtracting half its width (200/2 = 100)
-			Canvas.SetLeft(control, 1920 * position.X - 100);
-			Canvas.SetTop(control, 1226 * position.Y - 60);
-
-			PlayerCanvas.Children.Add(control);
-		}
-
-		private void AddAwayPlayer(PlayerInfo player, int positionIndex, int totalPlayersInPosition)
-		{
-			var control = new OpponentPlayerDressControl
-			{
-				PlayerName = player.Name,
-				ShirtNumber = player.Number,
-				Position = player.Position,
-				PictureFileName = player.PictureFileName,
-				Tag = player // Store the full player info in the Tag property
-			};
-
-			Point position = OpponentPositionHelper.GetPositionOnField(player.Position, positionIndex, totalPlayersInPosition);
+			Point position = PositionHelper.GetPositionOnField(player.Position, positionIndex, totalPlayersInPosition, isOpponent);
 			
 			// Center the control by subtracting half its width (200/2 = 100)
 			Canvas.SetLeft(control, 1920 * position.X - 100);
