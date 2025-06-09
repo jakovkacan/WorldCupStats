@@ -17,6 +17,8 @@ public class Player
 	public bool IsCapitan { get; set; }
 	public bool IsFavorite { get; set; } = false;
 	public string? PictureFileName { get; set; }
+	public int YellowCards { get; set; }
+	public int GoalsScored { get; set; }
 
 	public override string ToString()
 	{

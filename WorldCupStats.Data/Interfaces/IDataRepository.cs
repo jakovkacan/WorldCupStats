@@ -60,6 +60,9 @@ public interface IDataRepository
 			match.Team2Goals = awayTeamGoals;
 			match.Team1StartingEleven = PlayerUtils.UpdatePlayerFavoritesPictures(match.HomeTeamStatistics.StartingEleven, settings.FavoritePlayers, settings.PlayerPictures);
 			match.Team2StartingEleven = PlayerUtils.UpdatePlayerFavoritesPictures(match.AwayTeamStatistics.StartingEleven, settings.FavoritePlayers, settings.PlayerPictures);
+
+			match.Team1StartingEleven = UpdatePlayerStatistics(match.Team1StartingEleven, match.HomeTeamEvents);
+			match.Team2StartingEleven = UpdatePlayerStatistics(match.Team2StartingEleven, match.AwayTeamEvents);
 		}
 		else
 		{
@@ -67,6 +70,10 @@ public interface IDataRepository
 			match.Team2Goals = homeTeamGoals;
 			match.Team1StartingEleven = PlayerUtils.UpdatePlayerFavoritesPictures(match.AwayTeamStatistics.StartingEleven, settings.FavoritePlayers, settings.PlayerPictures);
 			match.Team2StartingEleven = PlayerUtils.UpdatePlayerFavoritesPictures(match.HomeTeamStatistics.StartingEleven, settings.FavoritePlayers, settings.PlayerPictures);
+
+			match.Team2StartingEleven = UpdatePlayerStatistics(match.Team2StartingEleven, match.HomeTeamEvents);
+			match.Team1StartingEleven = UpdatePlayerStatistics(match.Team1StartingEleven, match.AwayTeamEvents);
+
 		}
 
 		return match;
@@ -168,5 +175,27 @@ public interface IDataRepository
 		});
 
 		return statistics;
+	}
+
+	private IEnumerable<Player> UpdatePlayerStatistics(IEnumerable<Player> players, IEnumerable<Event> events)
+	{
+		//player statistics
+		events.ToList().ForEach(e =>
+		{
+			switch (e.EventType)
+			{
+				case EventType.Goal:
+					players.First(p => p.Name == e.PlayerName).GoalsScored++;
+					break;
+				case EventType.YellowCard:
+					players.First(p => p.Name == e.PlayerName).YellowCards++;
+					break;
+				default:
+					// Other event types are not tracked in this context
+					break;
+			}
+		});
+
+		return players;
 	}
 }

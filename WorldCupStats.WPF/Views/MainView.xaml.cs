@@ -203,7 +203,10 @@ namespace WorldCupStats.WPF.Views
 					Name = goalies[0].Name,
 					Number = goalies[0].ShirtNumber,
 					Position = Position.Goalie,
-					PictureFileName = goalies[0].PictureFileName
+					PictureFileName = goalies[0].PictureFileName,
+					IsCaptain = goalies[0].IsCapitan,
+					Goals = goalies[0].GoalsScored,
+					YellowCards = goalies[0].YellowCards
 				}, 0, 1);
 			}
 
@@ -217,7 +220,10 @@ namespace WorldCupStats.WPF.Views
 						Name = defenders[i].Name,
 						Number = defenders[i].ShirtNumber,
 						Position = Position.Defender,
-						PictureFileName = defenders[i].PictureFileName
+						PictureFileName = defenders[i].PictureFileName,
+						IsCaptain = defenders[i].IsCapitan,
+						Goals = defenders[i].GoalsScored,
+						YellowCards = defenders[i].YellowCards
 					}, i, defenders.Count);
 				}
 			}
@@ -232,7 +238,10 @@ namespace WorldCupStats.WPF.Views
 						Name = midfielders[i].Name,
 						Number = midfielders[i].ShirtNumber,
 						Position = Position.Midfield,
-						PictureFileName = midfielders[i].PictureFileName
+						PictureFileName = midfielders[i].PictureFileName,
+						IsCaptain = midfielders[i].IsCapitan,
+						Goals = midfielders[i].GoalsScored,
+						YellowCards = midfielders[i].YellowCards
 					}, i, midfielders.Count);
 				}
 			}
@@ -247,7 +256,10 @@ namespace WorldCupStats.WPF.Views
 						Name = forwards[i].Name,
 						Number = forwards[i].ShirtNumber,
 						Position = Position.Forward,
-						PictureFileName = forwards[i].PictureFileName
+						PictureFileName = forwards[i].PictureFileName,
+						IsCaptain = forwards[i].IsCapitan,
+						Goals = forwards[i].GoalsScored,
+						YellowCards = forwards[i].YellowCards
 					}, i, forwards.Count);
 				}
 			}
@@ -266,7 +278,10 @@ namespace WorldCupStats.WPF.Views
 					Name = awayGoalies[0].Name,
 					Number = awayGoalies[0].ShirtNumber,
 					Position = Position.Goalie,
-					PictureFileName = awayGoalies[0].PictureFileName
+					PictureFileName = awayGoalies[0].PictureFileName,
+					IsCaptain = awayGoalies[0].IsCapitan,
+					Goals = awayGoalies[0].GoalsScored,
+					YellowCards = awayGoalies[0].YellowCards
 				}, 0, 1);
 			}
 
@@ -280,7 +295,10 @@ namespace WorldCupStats.WPF.Views
 						Name = awayDefenders[i].Name,
 						Number = awayDefenders[i].ShirtNumber,
 						Position = Position.Defender,
-						PictureFileName = awayDefenders[i].PictureFileName
+						PictureFileName = awayDefenders[i].PictureFileName,
+						IsCaptain = awayDefenders[i].IsCapitan,
+						Goals = awayDefenders[i].GoalsScored,
+						YellowCards = awayDefenders[i].YellowCards
 					}, i, awayDefenders.Count);
 				}
 			}
@@ -295,7 +313,10 @@ namespace WorldCupStats.WPF.Views
 						Name = awayMidfielders[i].Name,
 						Number = awayMidfielders[i].ShirtNumber,
 						Position = Position.Midfield,
-						PictureFileName = awayMidfielders[i].PictureFileName
+						PictureFileName = awayMidfielders[i].PictureFileName,
+						IsCaptain = awayMidfielders[i].IsCapitan,
+						Goals = awayMidfielders[i].GoalsScored,
+						YellowCards = awayMidfielders[i].YellowCards
 					}, i, awayMidfielders.Count);
 				}
 			}
@@ -310,7 +331,10 @@ namespace WorldCupStats.WPF.Views
 						Name = awayForwards[i].Name,
 						Number = awayForwards[i].ShirtNumber,
 						Position = Position.Forward,
-						PictureFileName = awayForwards[i].PictureFileName
+						PictureFileName = awayForwards[i].PictureFileName,
+						IsCaptain = awayForwards[i].IsCapitan,
+						Goals = awayForwards[i].GoalsScored,
+						YellowCards = awayForwards[i].YellowCards
 					}, i, awayForwards.Count);
 				}
 			}
@@ -326,7 +350,8 @@ namespace WorldCupStats.WPF.Views
 				PlayerName = player.Name,
 				ShirtNumber = player.Number,
 				Position = player.Position,
-				PictureFileName = player.PictureFileName
+				PictureFileName = player.PictureFileName,
+				Tag = player // Store the full player info in the Tag property
 			};
 
 			Point position = PositionHelper.GetPositionOnField(player.Position, positionIndex, totalPlayersInPosition);
@@ -345,7 +370,8 @@ namespace WorldCupStats.WPF.Views
 				PlayerName = player.Name,
 				ShirtNumber = player.Number,
 				Position = player.Position,
-				PictureFileName = player.PictureFileName
+				PictureFileName = player.PictureFileName,
+				Tag = player // Store the full player info in the Tag property
 			};
 
 			Point position = OpponentPositionHelper.GetPositionOnField(player.Position, positionIndex, totalPlayersInPosition);
@@ -364,5 +390,8 @@ namespace WorldCupStats.WPF.Views
 		public int Number { get; set; }
 		public Position Position { get; set; }
 		public string? PictureFileName { get; set; }
+		public bool IsCaptain { get; set; }
+		public int Goals { get; set; }
+		public int YellowCards { get; set; }
 	}
 }

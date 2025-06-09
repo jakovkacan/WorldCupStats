@@ -1,7 +1,9 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
+using WorldCupStats.WPF.Views;
 
 namespace WorldCupStats.WPF.Controls
 {
@@ -84,6 +86,19 @@ namespace WorldCupStats.WPF.Controls
             // Show popup on mouse enter, hide on mouse leave for the entire control
             this.MouseEnter += (s, e) => PlayerPopup.IsOpen = true;
             this.MouseLeave += (s, e) => PlayerPopup.IsOpen = false;
+
+            // Add click event handler
+            this.MouseLeftButtonDown += OpponentPlayerDressControl_MouseLeftButtonDown;
+        }
+
+        private void OpponentPlayerDressControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var playerInfo = this.Tag as PlayerInfo;
+            if (playerInfo == null) return;
+
+            var window = new PlayerInfoView(playerInfo);
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
         }
 
         public string PlayerName
