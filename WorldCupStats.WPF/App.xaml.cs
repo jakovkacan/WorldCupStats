@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
-using Microsoft.Extensions.Configuration;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Providers;
 using WorldCupStats.Data.Repositories;
@@ -64,10 +65,10 @@ namespace WorldCupStats.WPF
 				var settingsView = ServiceProvider.GetRequiredService<SettingsView>();
 				settingsView.ShowDialog();
 
-				if (!settingsView.SettingsSaved)
+				if (settingsView.SettingsSaved)
 				{
-					Shutdown();
-					return;
+					Process.Start(Environment.ProcessPath!);
+					Application.Current.Shutdown();
 				}
 			}
 

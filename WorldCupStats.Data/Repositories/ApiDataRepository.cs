@@ -23,6 +23,9 @@ public class ApiDataRepository : IDataRepository
 
 	public async Task<IEnumerable<Team>> GetAllTeamsAsync()
 	{
+
+		//await Task.Delay(3000);
+
 		var endpointUrl = _config["DataConfig:ApiEndpoints:Teams"];
 
 		if (string.IsNullOrEmpty(endpointUrl))
