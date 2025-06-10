@@ -16,9 +16,42 @@ public class SettingsRepository : ISettingsRepository
 		if (SettingsFileExists())
 			_settings = LoadSettings();
 	}
-
-
 	public bool LanguageChanged() => _languageChanged;
+	public bool IsInitialized() => _settings != null;
+	public static bool SettingsFileExists() => File.Exists(GetSettingsFilePath());
+
+	public void CreateSettingsFile(ChampionshipType? type, Language? language, DisplayMode? displayMode)
+	{
+		var path = GetSettingsFilePath();
+
+		if (File.Exists(path))
+			File.Delete(path);
+
+		var settings = new Settings
+		{
+			Type = type ?? ChampionshipType.Men,
+			Language = language ?? Language.EN,
+			DisplayMode = displayMode ?? DisplayMode.WindowedMedium,
+			FavoriteTeam = null,
+			FavoritePlayers = []
+		};
+
+		var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions
+		{
+			WriteIndented = true,
+		});
+
+		File.WriteAllText(path, json);
+		_settings = settings;
+		ConfigurationProvider.UpdateAppSettingsLanguage(_settings.Language.ToSettingsString());
+	}
+
+	public Settings GetInstance()
+	{
+		if (_settings == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+		return _settings;
+	}
 
 	public T? GetValue<T>()
 	{
@@ -89,6 +122,27 @@ public class SettingsRepository : ISettingsRepository
 		SaveSettings();
 	}
 
+	// WPF Team2
+	public Team? GetTeam2()
+	{
+		if (_settings == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+
+		return _settings.OpponentTeam;
+	}
+	public void SetTeam2(Team team)
+	{
+		if (_settings == null)
+			throw new InvalidOperationException("Settings have not been initialized.");
+
+		if (EqualityComparer<Team>.Default.Equals(team, GetTeam2()))
+			return; // No change, nothing to save
+
+		_settings.OpponentTeam = team;
+		SaveSettings();
+	}
+
+	//player pictures
 	public string? SetPlayerPicture(string playerName, string picturePath)
 	{
 		if (_settings == null)
@@ -127,34 +181,7 @@ public class SettingsRepository : ISettingsRepository
 		SaveSettings();
 	}
 
-	public void CreateSettingsFile(ChampionshipType? type, Language? language, DisplayMode? displayMode)
-	{
-		var path = GetSettingsFilePath();
-
-		if (File.Exists(path))
-			File.Delete(path);
-
-		var settings = new Settings
-		{
-			Type = type ?? ChampionshipType.Men,
-			Language = language ?? Language.EN,
-			DisplayMode = displayMode ?? DisplayMode.WindowedMedium,
-			FavoriteTeam = null,
-			FavoritePlayers = []
-		};
-
-		var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions
-		{
-			WriteIndented = true,
-		});
-
-		File.WriteAllText(path, json);
-		_settings = settings;
-		ConfigurationProvider.UpdateAppSettingsLanguage(_settings.Language.ToSettingsString());
-	}
-
-	public bool IsInitialized() => _settings != null;
-
+	//favorite players
 	public void AddToFavorites(Player player)
 	{
 		if (_settings?.FavoriteTeam == null)
@@ -190,7 +217,6 @@ public class SettingsRepository : ISettingsRepository
 		SaveSettings();
 	}
 
-	//obsolete
 	public bool IsFavorite(Player player)
 	{
 		if (_settings?.FavoriteTeam == null)
@@ -199,8 +225,9 @@ public class SettingsRepository : ISettingsRepository
 		return _settings.FavoritePlayers.Any(p => p.Name == player.Name);
 	}
 
+
 	private static string GetSettingsFilePath() => Path.Combine(FileUtils.GetBaseDirectory(), "preferences.json");
-	public static bool SettingsFileExists() => File.Exists(GetSettingsFilePath());
+	
 	private static Settings? LoadSettings()
 	{
 		var path = GetSettingsFilePath();
@@ -217,32 +244,9 @@ public class SettingsRepository : ISettingsRepository
 		});
 		File.WriteAllText(path, json);
 	}
-	public Settings GetInstance()
-	{
-		if (_settings == null)
-			throw new InvalidOperationException("Settings have not been initialized.");
-		return _settings;
-	}
+	
 
-	public void SetTeam2(Team team)
-	{
-		if (_settings == null)
-			throw new InvalidOperationException("Settings have not been initialized.");
-
-		if (EqualityComparer<Team>.Default.Equals(team, GetTeam2()))
-			return; // No change, nothing to save
-
-		_settings.OpponentTeam = team;
-		SaveSettings();
-	}
-
-	public Team? GetTeam2()
-	{
-		if (_settings == null)
-			throw new InvalidOperationException("Settings have not been initialized.");
-
-		return _settings.OpponentTeam;
-	}
+	
 
 
 }

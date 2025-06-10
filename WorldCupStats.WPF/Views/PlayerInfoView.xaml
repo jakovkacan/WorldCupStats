@@ -34,6 +34,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!-- Close Button -->
             <Button Grid.Row="0" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Top"
@@ -49,6 +50,7 @@
             <StackPanel Grid.Row="1" 
                         HorizontalAlignment="Center" 
                         Margin="0,0,0,20">
+                <!-- Player Image with Shadow and Clip -->
                 <Border Width="200" Height="200" 
                         CornerRadius="100"
                         BorderBrush="White"
@@ -72,6 +74,7 @@
                            Margin="-20"/>
                 </Border>
 
+                <!-- Player Name -->
                 <TextBlock x:Name="PlayerNameText"
                           FontSize="24"
                           FontWeight="Bold"
@@ -93,6 +96,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
+                    <!--Player Info Fields -->
                     <TextBlock Text="{x:Static resources:Resources.PlayerInfo_Number}" 
                              Style="{StaticResource InfoTextBlockStyle}"
                              Grid.Row="0" Grid.Column="0"/>
@@ -137,6 +141,7 @@
         </Grid>
     </Border>
 
+    <!-- Window Triggers for Animation -->
     <Window.Triggers>
         <EventTrigger RoutedEvent="Window.Loaded">
             <BeginStoryboard>
@@ -144,13 +149,6 @@
                     <DoubleAnimation 
                         Storyboard.TargetProperty="Opacity"
                         From="0" To="1" Duration="0:0:0.5"/>
-                    <!--<DoubleAnimation 
-                        Storyboard.TargetProperty="(Window.RenderTransform).(ScaleTransform.ScaleX)"
-                        From="0.8" To="1" Duration="0:0:0.3">
-                        <DoubleAnimation.EasingFunction>
-                            <BackEase EasingMode="EaseOut" Amplitude="0.5"/>
-                        </DoubleAnimation.EasingFunction>
-                    </DoubleAnimation>-->
                     <DoubleAnimation 
                         Storyboard.TargetProperty="(Window.RenderTransform).(ScaleTransform.ScaleY)"
                         From="0.8" To="1" Duration="0:0:0.5">

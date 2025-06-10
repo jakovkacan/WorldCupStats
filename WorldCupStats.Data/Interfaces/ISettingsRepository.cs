@@ -2,6 +2,13 @@
 
 namespace WorldCupStats.Data.Interfaces;
 
+/// <summary>
+/// Defines a repository for managing application settings, including retrieval, modification, and persistence of
+/// settings.
+/// </summary>
+/// <remarks>This interface provides methods for interacting with application settings, such as retrieving and
+/// updating values,  managing player-related data, and handling favorites. It also includes functionality for
+/// initialization and  language change detection.</remarks>
 public interface ISettingsRepository
 {
 	T? GetValue<T>();

@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
-using WorldCupStats.Data.Utils;
 using WorldCupStats.WPF.Controls;
 using WorldCupStats.WPF.Helpers;
-using WorldCupStats.WPF.Resources;
 
 namespace WorldCupStats.WPF.Views
 {
@@ -28,7 +24,7 @@ namespace WorldCupStats.WPF.Views
 			_repository = repository;
 			_settings = settings;
 			InitializeComponent();
-			Title = WorldCupStats.WPF.Resources.Resources.MainView_Title;
+			Title = WPF.Resources.Resources.MainView_Title;
 			LoadSettings(); // Apply display mode settings on startup
 		}
 
@@ -45,6 +41,7 @@ namespace WorldCupStats.WPF.Views
 			try
 			{
 				ShowLoading();
+				
 				// Get all teams
 				var result = await _repository.GetAllTeamsAsync();
 				_teams = result.ToList();
@@ -69,9 +66,9 @@ namespace WorldCupStats.WPF.Views
 					}
 				}
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(ex.Message, WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			finally
 			{
@@ -82,21 +79,24 @@ namespace WorldCupStats.WPF.Views
 		//change Team 1 selection
 		private async void cbTeam1_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (cbTeam1.SelectedIndex < 0) return;
-			var selectedTeam = _teams[cbTeam1.SelectedIndex];
-			if (selectedTeam == _selectedTeam1) return; // No change in selection
-
 			try
 			{
+				if (cbTeam1.SelectedIndex < 0) return;
+				var selectedTeam = _teams[cbTeam1.SelectedIndex];
+				if (selectedTeam == _selectedTeam1) return; // No change in selection
+
 				ShowLoading();
+
 				_selectedTeam1 = selectedTeam;
 				_settings.SetValue(selectedTeam);
+				
 				ClearVisualization();
+
 				await LoadOpponentTeams(selectedTeam);
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(ex.Message, WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			finally
 			{
@@ -107,30 +107,19 @@ namespace WorldCupStats.WPF.Views
 		//change Team 2 selection
 		private async void cbTeam2_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (cbTeam2.SelectedIndex < 0) return;
-			if (_selectedTeam1 == null) return;
-
-			var opponents = (List<Team>)cbTeam2.Tag;
-			var selectedTeam = opponents[cbTeam2.SelectedIndex];
-
 			try
 			{
-				ShowLoading();
-				_selectedTeam2 = selectedTeam;
-				_settings.SetTeam2(_selectedTeam2);
-				_currentMatch = await _repository.GetMatchAsync(
-					_selectedTeam1.FifaCode ?? _selectedTeam1.Code!,
-					_selectedTeam2.FifaCode ?? _selectedTeam2.Code!);
+				if (cbTeam2.SelectedIndex < 0) return;
+				if (_selectedTeam1 == null) return;
 
-				if (_currentMatch == null) return;
-				
-				txtScore.Text = $"{_currentMatch.Team1Goals ?? 0} : {_currentMatch.Team2Goals ?? 0}";
-				txtScore.Visibility = Visibility.Visible;
-				VisualizePlayers(_currentMatch);
+				var opponents = (List<Team>)cbTeam2.Tag;
+				var selectedTeam = opponents[cbTeam2.SelectedIndex];
+
+				await LoadMatchDetails(selectedTeam);
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(ex.Message, WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			finally
 			{
@@ -143,6 +132,7 @@ namespace WorldCupStats.WPF.Views
 			try
 			{
 				ShowLoading();
+
 				// Clear previous selection and disable combobox
 				cbTeam2.SelectedIndex = -1;
 				cbTeam2.ItemsSource = null;
@@ -151,14 +141,15 @@ namespace WorldCupStats.WPF.Views
 
 				// Get opponent teams
 				var opponents = (await _repository.GetAllOpponentTeamsAsync(selectedTeam.FifaCode ?? selectedTeam.Code!)).ToList();
-				
+
 				// Store the opponents list for later use
 				cbTeam2.Tag = opponents;
-				
+
 				// Populate team 2 combobox
 				cbTeam2.ItemsSource = opponents.Select(t => $"{t.Country} ({t.FifaCode ?? t.Code})");
 				cbTeam2.IsEnabled = true;
 
+				// Load saved opponent team from settings if exists
 				var savedOpponentTeam = _settings.GetTeam2();
 				if (savedOpponentTeam != null)
 				{
@@ -174,9 +165,9 @@ namespace WorldCupStats.WPF.Views
 					}
 				}
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(ex.Message, WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			finally
 			{
@@ -189,21 +180,51 @@ namespace WorldCupStats.WPF.Views
 			try
 			{
 				ShowLoading();
+
 				_selectedTeam2 = team2;
 				_settings.SetTeam2(_selectedTeam2);
+
+				// Get match details for selected teams
 				_currentMatch = await _repository.GetMatchAsync(
 					_selectedTeam1!.FifaCode ?? _selectedTeam1.Code!,
 					_selectedTeam2.FifaCode ?? _selectedTeam2.Code!);
 
 				if (_currentMatch == null) return;
-				
+
+				// Update score display
 				txtScore.Text = $"{_currentMatch.Team1Goals ?? 0} : {_currentMatch.Team2Goals ?? 0}";
 				txtScore.Visibility = Visibility.Visible;
+				
 				VisualizePlayers(_currentMatch);
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(ex.Message, WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+			finally
+			{
+				HideLoading();
+			}
+		}
+
+		private async Task ShowTeamStatistics(Team team)
+		{
+			try
+			{
+				ShowLoading();
+
+				var statistics = await _repository.GetTeamStatistics(team);
+
+				var teamInfoWindow = new TeamInfoView(statistics);
+				teamInfoWindow.Owner = this;
+
+				HideLoading();
+				teamInfoWindow.ShowDialog();
+			}
+			catch (Exception ex)
+			{
+				HideLoading();
+				MessageBox.Show(ex.Message, WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			finally
 			{
@@ -213,79 +234,67 @@ namespace WorldCupStats.WPF.Views
 
 		private async void btnTeam1Info_Click(object sender, RoutedEventArgs e)
 		{
-			if (cbTeam1.SelectedItem != null)
+			try
 			{
-				try
-				{
-					ShowLoading();
-					var statistics = await _repository.GetTeamStatistics(_selectedTeam1!);
-					var teamInfoWindow = new TeamInfoView(statistics);
-					teamInfoWindow.Owner = this;
-					HideLoading();
-					teamInfoWindow.ShowDialog();
-				}
-				catch (System.Exception ex)
-				{
-					HideLoading();
-					MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-				}
+				if (cbTeam1.SelectedItem != null)
+					await ShowTeamStatistics(_selectedTeam1!);
+				else
+					MessageBox.Show(
+						WPF.Resources.Resources.MainView_NoTeamSelected_Message,
+						WPF.Resources.Resources.MainView_NoTeamSelected_Title,
+						MessageBoxButton.OK,
+						MessageBoxImage.Information);
 			}
-			else
+			catch (Exception ex)
 			{
-				MessageBox.Show(
-					WorldCupStats.WPF.Resources.Resources.MainView_NoTeamSelected_Message,
-					WorldCupStats.WPF.Resources.Resources.MainView_NoTeamSelected_Title,
-					MessageBoxButton.OK,
-					MessageBoxImage.Information);
+				MessageBox.Show(ex.Message, WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
 		private async void btnTeam2Info_Click(object sender, RoutedEventArgs e)
 		{
-			if (cbTeam2.SelectedItem != null)
+			try
 			{
-				try
-				{
-					ShowLoading();
-					var statistics = await _repository.GetTeamStatistics(_selectedTeam2!);
-					var teamInfoWindow = new TeamInfoView(statistics);
-					teamInfoWindow.Owner = this;
-					HideLoading();
-					teamInfoWindow.ShowDialog();
-				}
-				catch (System.Exception ex)
-				{
-					HideLoading();
-					MessageBox.Show(ex.Message, WorldCupStats.WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-				}
+				if (cbTeam2.SelectedItem != null)
+					await ShowTeamStatistics(_selectedTeam2!);
+				else
+					MessageBox.Show(
+						WPF.Resources.Resources.MainView_NoTeamSelected_Message,
+						WPF.Resources.Resources.MainView_NoTeamSelected_Title,
+						MessageBoxButton.OK,
+						MessageBoxImage.Information);
 			}
-			else
+			catch (Exception ex)
 			{
-				MessageBox.Show(
-					WorldCupStats.WPF.Resources.Resources.MainView_NoTeamSelected_Message,
-					WorldCupStats.WPF.Resources.Resources.MainView_NoTeamSelected_Title,
-					MessageBoxButton.OK,
-					MessageBoxImage.Information);
+				MessageBox.Show(ex.Message, WPF.Resources.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
-		private void btnSettings_Click(object sender, RoutedEventArgs e)
+		private async void btnSettings_Click(object sender, RoutedEventArgs e)
 		{
-			var settingsWindow = new SettingsView(_settings);
-			settingsWindow.Owner = this;
-			var previousType = _settings.GetValue<ChampionshipType>();
-			settingsWindow.ShowDialog();
+			try
+			{
+				var settingsWindow = new SettingsView(_settings);
+				settingsWindow.Owner = this;
 
-			if (!settingsWindow.SettingsSaved) return;
-			
-			LoadSettings();
-				
-			// If championship type changed, reload teams
-			var currentType = _settings.GetValue<ChampionshipType>();
-			if (currentType == previousType) return;
-				
-			LoadTeams();
-			ResetTeamSelections();
+				var previousType = _settings.GetValue<ChampionshipType>();
+				settingsWindow.ShowDialog();
+
+				if (!settingsWindow.SettingsSaved) return;
+
+				LoadSettings();
+
+				// If championship type changed, reload teams
+				var currentType = _settings.GetValue<ChampionshipType>();
+				if (currentType == previousType) return;
+
+				await LoadTeams();
+				ResetTeamSelections();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
 		}
 
 		private void ResetTeamSelections()
@@ -325,6 +334,9 @@ namespace WorldCupStats.WPF.Views
 						Width = 1200;
 						Height = 800;
 						break;
+					case DisplayMode.Fullscreen:
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 
 				// Center the window
@@ -338,6 +350,7 @@ namespace WorldCupStats.WPF.Views
 			//clear previous players
 			ClearVisualization();
 
+			// Team 1
 			var team1Players = match.Team1StartingEleven!.ToList();
 			var team1Positions = team1Players
 				.GroupBy(p => p.Position)
@@ -412,7 +425,7 @@ namespace WorldCupStats.WPF.Views
 				}
 			}
 
-
+			// Team 2
 			var team2Players = match.Team2StartingEleven!.ToList();
 			var team2Positions = team2Players
 				.GroupBy(p => p.Position)
@@ -502,24 +515,13 @@ namespace WorldCupStats.WPF.Views
 				Tag = player // Store the full player info in the Tag property
 			};
 
-			Point position = PositionHelper.GetPositionOnField(player.Position, positionIndex, totalPlayersInPosition, isOpponent);
-			
-			// Center the control by subtracting half its width (200/2 = 100)
+			var position = PositionHelper.GetPositionOnField(player.Position, positionIndex, totalPlayersInPosition, isOpponent);
+
+			// Center the control by subtracting half its width
 			Canvas.SetLeft(control, 1920 * position.X - 100);
 			Canvas.SetTop(control, 1226 * position.Y - 60);
 
 			PlayerCanvas.Children.Add(control);
 		}
-	}
-
-	public class PlayerInfo
-	{
-		public string Name { get; set; }
-		public int Number { get; set; }
-		public Position Position { get; set; }
-		public string? PictureFileName { get; set; }
-		public bool IsCaptain { get; set; }
-		public int Goals { get; set; }
-		public int YellowCards { get; set; }
 	}
 }

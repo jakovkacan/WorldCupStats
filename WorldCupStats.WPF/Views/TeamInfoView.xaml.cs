@@ -1,30 +1,26 @@
 using System.Windows;
-using WorldCupStats.WPF.Resources;
 using WorldCupStats.Data.Models;
 
 namespace WorldCupStats.WPF.Views
 {
-    public partial class TeamInfoView : Window
-    {
-        public TeamInfoView(TeamStatistics statistics)
-        {
-            InitializeComponent();
+	public partial class TeamInfoView : Window
+	{
+		public TeamInfoView(TeamStatistics statistics)
+		{
+			InitializeComponent();
 
-            txtTeamName.Text = statistics.Country;
-            txtFifaCode.Text = string.Format(WPF.Resources.Resources.TeamInfo_FifaCode, statistics.FifaCode);
-            txtGamesPlayed.Text = statistics.MatchCount.ToString();
-            txtWins.Text = statistics.Wins.ToString();
-            txtDraws.Text = statistics.Draws.ToString();
-            txtLosses.Text = statistics.Losses.ToString();
-            txtGoalsScored.Text = statistics.GoalsScored.ToString();
-            txtGoalsConceded.Text = statistics.GoalsConceded.ToString();
-            txtGoalDifference.Text = (statistics.GoalDifference == 0 ? "0" 
-	            : $"{(statistics.GoalDifference >= 0 ? "+" : "")}{statistics.GoalDifference.ToString()}");
-        }
+			txtTeamName.Text = statistics.Country;
+			txtFifaCode.Text = string.Format(WPF.Resources.Resources.TeamInfo_FifaCode, statistics.FifaCode);
+			txtGamesPlayed.Text = statistics.MatchCount.ToString();
+			txtWins.Text = statistics.Wins.ToString();
+			txtDraws.Text = statistics.Draws.ToString();
+			txtLosses.Text = statistics.Losses.ToString();
+			txtGoalsScored.Text = statistics.GoalsScored.ToString();
+			txtGoalsConceded.Text = statistics.GoalsConceded.ToString();
+			txtGoalDifference.Text = (statistics.GoalDifference == 0 ? "0"
+				: $"{(statistics.GoalDifference >= 0 ? "+" : "")}{statistics.GoalDifference.ToString()}");
+		}
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-    }
-} 
+		private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
+	}
+}

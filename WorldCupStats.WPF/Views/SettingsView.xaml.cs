@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Models;
-using WorldCupStats.WPF.Resources;
 
 namespace WorldCupStats.WPF.Views
 {
@@ -54,20 +52,22 @@ namespace WorldCupStats.WPF.Views
 				rbDisplayFullscreen.IsChecked = _displayMode == DisplayMode.Fullscreen;
 				rbDisplayWindowed.IsChecked = _displayMode != DisplayMode.Fullscreen;
 
-				if (_displayMode != DisplayMode.Fullscreen)
+				if (_displayMode == DisplayMode.Fullscreen) return;
+				
+				switch (_displayMode)
 				{
-					switch (_displayMode)
-					{
-						case DisplayMode.WindowedSmall:
-							rbSizeSmall.IsChecked = true;
-							break;
-						case DisplayMode.WindowedMedium:
-							rbSizeMedium.IsChecked = true;
-							break;
-						case DisplayMode.WindowedLarge:
-							rbSizeLarge.IsChecked = true;
-							break;
-					}
+					case DisplayMode.WindowedSmall:
+						rbSizeSmall.IsChecked = true;
+						break;
+					case DisplayMode.WindowedMedium:
+						rbSizeMedium.IsChecked = true;
+						break;
+					case DisplayMode.WindowedLarge:
+						rbSizeLarge.IsChecked = true;
+						break;
+					case DisplayMode.Fullscreen:
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 			}
 		}
@@ -76,25 +76,20 @@ namespace WorldCupStats.WPF.Views
 		{
 			_type = rbTypeMen.IsChecked == true ? ChampionshipType.Men : ChampionshipType.Women;
 			_language = rbLangEn.IsChecked == true ? Data.Models.Language.EN : Data.Models.Language.HR;
-			
+
+			// display mode
 			if (rbDisplayFullscreen.IsChecked == true)
-			{
 				_displayMode = DisplayMode.Fullscreen;
-			}
 			else
 			{
 				if (rbSizeSmall.IsChecked == true)
-				{
 					_displayMode = DisplayMode.WindowedSmall;
-				}
+				
 				else if (rbSizeMedium.IsChecked == true)
-				{
 					_displayMode = DisplayMode.WindowedMedium;
-				}
+				
 				else
-				{
 					_displayMode = DisplayMode.WindowedLarge;
-				}
 			}
 
 			var result = MessageBox.Show(
@@ -106,9 +101,7 @@ namespace WorldCupStats.WPF.Views
 			if (result != MessageBoxResult.Yes) return;
 
 			if (_isStartup)
-			{
 				_settings.CreateSettingsFile(_type, _language, _displayMode);
-			}
 			else
 			{
 				_settings.SetValue(_type);
@@ -158,6 +151,9 @@ namespace WorldCupStats.WPF.Views
 						mainWindow.Width = 1200;
 						mainWindow.Height = 800;
 						break;
+					case DisplayMode.Fullscreen:
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 
 				// Center the window
@@ -166,9 +162,7 @@ namespace WorldCupStats.WPF.Views
 			}
 		}
 
-		private void btnCancel_Click(object sender, RoutedEventArgs e)
-		{
-			Close();
-		}
+		private void btnCancel_Click(object sender, RoutedEventArgs e) => Close();
+		
 	}
 }

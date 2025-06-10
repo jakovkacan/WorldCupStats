@@ -67,15 +67,6 @@ namespace WorldCupStats.WinForms.Controls
 			RemovedFromFavoritesClicked?.Invoke(this, new PlayerEventArgs(_player));
 		}
 
-		internal class PlayerEventArgs : EventArgs
-		{
-			public Player Player { get; }
-			public PlayerEventArgs(Player player)
-			{
-				Player = player;
-			}
-		}
-
 		private void cmsOptionSetPicture_Click(object sender, EventArgs e)
 		{
 			SetPlayerPictureClicked?.Invoke(this, new PlayerEventArgs(_player));
@@ -92,6 +83,15 @@ namespace WorldCupStats.WinForms.Controls
 				return;
 
 			DoDragDrop(this._player, DragDropEffects.Move);
+		}
+
+		internal class PlayerEventArgs : EventArgs
+		{
+			public Player Player { get; }
+			public PlayerEventArgs(Player player)
+			{
+				Player = player;
+			}
 		}
 	}
 }

@@ -1,11 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Configuration;
-using System.Data;
 using System.Diagnostics;
 using System.Globalization;
-using System.Threading;
 using System.Windows;
 using WorldCupStats.Data.Interfaces;
 using WorldCupStats.Data.Providers;
@@ -20,7 +16,7 @@ namespace WorldCupStats.WPF
 	/// </summary>
 	public partial class App : Application
 	{
-		public static ServiceProvider? ServiceProvider { get; private set; }
+		private static ServiceProvider? ServiceProvider { get; set; }
 
 		protected override void OnStartup(StartupEventArgs e)
 		{

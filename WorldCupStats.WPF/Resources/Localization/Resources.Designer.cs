@@ -106,6 +106,15 @@ namespace WorldCupStats.WPF.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Captain:.
         /// </summary>
         public static string PlayerInfo_Captain {
@@ -390,6 +399,15 @@ namespace WorldCupStats.WPF.Resources {
         public static string TeamInfo_Wins {
             get {
                 return ResourceManager.GetString("TeamInfo_Wins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

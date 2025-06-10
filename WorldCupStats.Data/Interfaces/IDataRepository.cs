@@ -1,39 +1,20 @@
-﻿using System.Runtime.InteropServices;
-using WorldCupStats.Data.Models;
+﻿using WorldCupStats.Data.Models;
 using WorldCupStats.Data.Utils;
 
 namespace WorldCupStats.Data.Interfaces;
 
+/// <summary>
+/// Defines a contract for accessing and managing data related to teams, matches, players, and rankings.
+/// </summary>
+/// <remarks>This interface provides asynchronous methods for retrieving data about teams, matches, players, and
+/// rankings. It is designed to support operations such as fetching all teams, matches, or players, retrieving specific
+/// match details, calculating rankings, and obtaining team statistics. Implementations of this interface should ensure
+/// thread safety and proper handling of asynchronous operations.</remarks>
 public interface IDataRepository
 {
 	Task<IEnumerable<Team>> GetAllTeamsAsync();
 	Task<IEnumerable<Match>> GetAllMatchesAsync();
 	Task<IEnumerable<Match>> GetAllMatchesAsync(string fifaCode);
-
-	async Task<IEnumerable<Player>> GetAllPlayersAsync(string fifaCode)
-	{
-		var match = GetAllMatchesAsync(fifaCode).Result.First();
-		var settings = GetSettingsInstance();
-
-		var statistics = match.HomeTeam.Code == fifaCode ? match.HomeTeamStatistics : match.AwayTeamStatistics;
-		var players = statistics.StartingEleven.Union(statistics.Substitutes);
-
-		return PlayerUtils.UpdatePlayerFavoritesPictures(players, settings.FavoritePlayers, settings.PlayerPictures);
-	}
-	async Task<IEnumerable<Team>> GetAllOpponentTeamsAsync(string fifaCode)
-	{
-		var matches = await GetAllMatchesAsync(fifaCode);
-		var teams = matches.Select(m =>
-		{
-			var code = m.HomeTeam.FifaCode ?? m.HomeTeam.Code;
-			return code == fifaCode ? m.AwayTeam : m.HomeTeam;
-		}).Distinct().ToList();
-
-		var allTeams = await GetAllTeamsAsync();
-		teams = allTeams.Where(t => teams.Any(ot => ot.Country == t.Country)).ToList();
-
-		return teams;
-	}
 	async Task<Match> GetMatchAsync(string fifaCodeTeam1, string fifaCodeTeam2)
 	{
 		//find match by team FIFA codes
@@ -43,7 +24,7 @@ public interface IDataRepository
 			var codeHome = m.HomeTeam.FifaCode ?? m.HomeTeam.Code;
 			var codeAway = m.AwayTeam.FifaCode ?? m.AwayTeam.Code;
 			return (codeHome == fifaCodeTeam1 && codeAway == fifaCodeTeam2) ||
-			       (codeHome == fifaCodeTeam2 && codeAway == fifaCodeTeam1);
+				   (codeHome == fifaCodeTeam2 && codeAway == fifaCodeTeam1);
 		})!;
 
 		// determine which team is team1 and which is team2 and set score
@@ -78,7 +59,30 @@ public interface IDataRepository
 
 		return match;
 	}
-	Settings GetSettingsInstance();
+	async Task<IEnumerable<Player>> GetAllPlayersAsync(string fifaCode)
+	{
+		var match = GetAllMatchesAsync(fifaCode).Result.First();
+		var settings = GetSettingsInstance();
+
+		var statistics = match.HomeTeam.Code == fifaCode ? match.HomeTeamStatistics : match.AwayTeamStatistics;
+		var players = statistics.StartingEleven.Union(statistics.Substitutes);
+
+		return PlayerUtils.UpdatePlayerFavoritesPictures(players, settings.FavoritePlayers, settings.PlayerPictures);
+	}
+	async Task<IEnumerable<Team>> GetAllOpponentTeamsAsync(string fifaCode)
+	{
+		var matches = await GetAllMatchesAsync(fifaCode);
+		var teams = matches.Select(m =>
+		{
+			var code = m.HomeTeam.FifaCode ?? m.HomeTeam.Code;
+			return code == fifaCode ? m.AwayTeam : m.HomeTeam;
+		}).Distinct().ToList();
+
+		var allTeams = await GetAllTeamsAsync();
+		teams = allTeams.Where(t => teams.Any(ot => ot.Country == t.Country)).ToList();
+
+		return teams;
+	}
 	async Task<Ranking> GetRanking(string fifaCode)
 	{
 		var matches = GetAllMatchesAsync(fifaCode).Result.ToList();
@@ -138,7 +142,6 @@ public interface IDataRepository
 
 		return ranking;
 	}
-
 	async Task<TeamStatistics> GetTeamStatistics(Team team)
 	{
 		var statistics = new TeamStatistics()
@@ -176,7 +179,6 @@ public interface IDataRepository
 
 		return statistics;
 	}
-
 	private IEnumerable<Player> UpdatePlayerStatistics(IEnumerable<Player> players, IEnumerable<Event> events)
 	{
 		//player statistics
@@ -202,4 +204,5 @@ public interface IDataRepository
 
 		return players;
 	}
+	Settings GetSettingsInstance();
 }

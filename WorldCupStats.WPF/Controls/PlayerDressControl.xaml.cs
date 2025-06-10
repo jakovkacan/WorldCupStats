@@ -8,178 +8,172 @@ using WorldCupStats.WPF.Views;
 
 namespace WorldCupStats.WPF.Controls
 {
-    public partial class PlayerDressControl : UserControl
-    {
-        public static readonly DependencyProperty PlayerNameProperty =
-            DependencyProperty.Register("PlayerName", typeof(string), typeof(PlayerDressControl),
-                new PropertyMetadata(string.Empty, OnPlayerNameChanged));
+	public partial class PlayerDressControl : UserControl
+	{
+		//data binding properties
+		public static readonly DependencyProperty PlayerNameProperty =
+			DependencyProperty.Register(nameof(PlayerName), typeof(string), typeof(PlayerDressControl),
+				new PropertyMetadata(string.Empty, OnPlayerNameChanged));
 
-        public static readonly DependencyProperty FirstNameProperty =
-            DependencyProperty.Register("FirstName", typeof(string), typeof(PlayerDressControl),
-                new PropertyMetadata(string.Empty));
+		public static readonly DependencyProperty FirstNameProperty =
+			DependencyProperty.Register(nameof(FirstName), typeof(string), typeof(PlayerDressControl),
+				new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty LastNameProperty =
-            DependencyProperty.Register("LastName", typeof(string), typeof(PlayerDressControl),
-                new PropertyMetadata(string.Empty));
+		public static readonly DependencyProperty LastNameProperty =
+			DependencyProperty.Register(nameof(LastName), typeof(string), typeof(PlayerDressControl),
+				new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty ShirtNumberProperty =
-            DependencyProperty.Register("ShirtNumber", typeof(int), typeof(PlayerDressControl),
-                new PropertyMetadata(0));
+		public static readonly DependencyProperty ShirtNumberProperty =
+			DependencyProperty.Register(nameof(ShirtNumber), typeof(int), typeof(PlayerDressControl),
+				new PropertyMetadata(0));
 
-        public static readonly DependencyProperty PhotoUrlProperty =
-            DependencyProperty.Register("PhotoUrl", typeof(string), typeof(PlayerDressControl),
-                new PropertyMetadata("/Resources/Images/default.jpg", OnPhotoUrlChanged));
+		public static readonly DependencyProperty PhotoUrlProperty =
+			DependencyProperty.Register(nameof(PhotoUrl), typeof(string), typeof(PlayerDressControl),
+				new PropertyMetadata("/Resources/Images/default.jpg"));
 
-        public static readonly DependencyProperty PictureFileNameProperty =
-            DependencyProperty.Register("PictureFileName", typeof(string), typeof(PlayerDressControl),
-                new PropertyMetadata(null, OnPictureFileNameChanged));
+		public static readonly DependencyProperty PictureFileNameProperty =
+			DependencyProperty.Register(nameof(PictureFileName), typeof(string), typeof(PlayerDressControl),
+				new PropertyMetadata(null, OnPictureFileNameChanged));
 
-        public static readonly DependencyProperty PositionProperty =
-            DependencyProperty.Register("Position", typeof(Position), typeof(PlayerDressControl),
-                new PropertyMetadata(Position.Forward));
+		public static readonly DependencyProperty PositionProperty =
+			DependencyProperty.Register(nameof(Position), typeof(Position), typeof(PlayerDressControl),
+				new PropertyMetadata(Position.Forward));
 
-        public static readonly DependencyProperty IsOpponentProperty =
-            DependencyProperty.Register("IsOpponent", typeof(bool), typeof(PlayerDressControl),
-                new PropertyMetadata(false, OnIsOpponentChanged));
+		public static readonly DependencyProperty IsOpponentProperty =
+			DependencyProperty.Register(nameof(IsOpponent), typeof(bool), typeof(PlayerDressControl),
+				new PropertyMetadata(false, OnIsOpponentChanged));
 
-        private static void OnPlayerNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PlayerDressControl control && e.NewValue is string fullName)
-            {
-                var nameParts = fullName.Split(' ');
-                if (nameParts.Length > 1)
-                {
-                    control.FirstName = nameParts[0];
-                    control.LastName = string.Join(" ", nameParts.Skip(1));
-                }
-                else
-                {
-                    control.FirstName = fullName;
-                    control.LastName = string.Empty;
-                }
-            }
-        }
+		private static void OnPlayerNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			if (d is not PlayerDressControl control || e.NewValue is not string fullName) return;
 
-        private static void OnPictureFileNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PlayerDressControl control)
-            {
-                try
-                {
-                    string fileName = e.NewValue as string;
-                    control.PhotoUrl = fileName != null ? 
-                        FileUtils.GetPicturePath(fileName) : 
-                        "/Resources/Images/default.jpg";
-                }
-                catch
-                {
-                    control.PhotoUrl = "/Resources/Images/default.jpg";
-                }
-            }
-        }
+			// Split the full name into first and last names
+			var nameParts = fullName.Split(' ');
+			if (nameParts.Length > 1)
+			{
+				control.FirstName = nameParts[0];
+				control.LastName = string.Join(" ", nameParts.Skip(1));
+			}
+			else
+			{
+				control.FirstName = fullName;
+				control.LastName = string.Empty;
+			}
+		}
 
-        private static void OnPhotoUrlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            // This is now handled by OnPictureFileNameChanged
-        }
+		private static void OnPictureFileNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			if (d is PlayerDressControl control)
+			{
+				try
+				{
+					// Attempt to get the picture path from the file name
+					control.PhotoUrl = e.NewValue is string fileName ?
+						FileUtils.GetPicturePath(fileName) :
+						"/Resources/Images/default.jpg";
+				}
+				catch
+				{
+					control.PhotoUrl = "/Resources/Images/default.jpg";
+				}
+			}
+		}
 
-        private static void OnIsOpponentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PlayerDressControl control)
-            {
-                control.UpdateAppearance();
-            }
-        }
+		private static void OnIsOpponentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			if (d is PlayerDressControl control)
+				control.UpdateAppearance();
+		}
 
-        public PlayerDressControl()
-        {
-            InitializeComponent();
-            this.DataContext = this;
-            
-            // Show popup on mouse enter, hide on mouse leave for the entire control
-            this.MouseEnter += (s, e) => PlayerPopup.IsOpen = true;
-            this.MouseLeave += (s, e) => PlayerPopup.IsOpen = false;
+		public PlayerDressControl()
+		{
+			InitializeComponent();
+			this.DataContext = this;
 
-            // Add click event handler
-            this.MouseLeftButtonDown += PlayerDressControl_MouseLeftButtonDown;
+			// Show popup on mouse enter, hide on mouse leave for the entire control
+			this.MouseEnter += (s, e) => PlayerPopup.IsOpen = true;
+			this.MouseLeave += (s, e) => PlayerPopup.IsOpen = false;
 
-            UpdateAppearance();
-        }
+			// Add click event handler
+			this.MouseLeftButtonDown += PlayerDressControl_MouseLeftButtonDown;
 
-        private void UpdateAppearance()
-        {
-            if (IsOpponent)
-            {
-                DressImage.Source = new ImageSourceConverter().ConvertFromString(
-                    "pack://application:,,,/WorldCupStats.WPF;component/Resources/Images/dress_white.png"
-                ) as ImageSource;
-                NumberText.Foreground = Brushes.Black;
-            }
-            else
-            {
-                DressImage.Source = new ImageSourceConverter().ConvertFromString(
-                    "pack://application:,,,/WorldCupStats.WPF;component/Resources/Images/dress_black.png"
-                ) as ImageSource;
-                NumberText.Foreground = Brushes.White;
-            }
-        }
+			UpdateAppearance();
+		}
 
-        private void PlayerDressControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var playerInfo = this.Tag as PlayerInfo;
-            if (playerInfo == null) return;
+		// Method to update the appearance based on the team (opponent or not)
+		private void UpdateAppearance()
+		{
+			if (IsOpponent)
+			{
+				DressImage.Source = new ImageSourceConverter().ConvertFromString(
+					"pack://application:,,,/WorldCupStats.WPF;component/Resources/Images/dress_white.png"
+				) as ImageSource;
+				NumberText.Foreground = Brushes.Black;
+			}
+			else
+			{
+				DressImage.Source = new ImageSourceConverter().ConvertFromString(
+					"pack://application:,,,/WorldCupStats.WPF;component/Resources/Images/dress_black.png"
+				) as ImageSource;
+				NumberText.Foreground = Brushes.White;
+			}
+		}
 
-            var window = new PlayerInfoView(playerInfo);
-            window.Owner = Window.GetWindow(this);
-            window.ShowDialog();
-        }
+		private void PlayerDressControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			if (this.Tag is not PlayerInfo playerInfo) return;
 
-        public string PlayerName
-        {
-            get { return (string)GetValue(PlayerNameProperty); }
-            set { SetValue(PlayerNameProperty, value); }
-        }
+			var window = new PlayerInfoView(playerInfo);
+			window.Owner = Window.GetWindow(this);
+			window.ShowDialog();
+		}
 
-        public string FirstName
-        {
-            get { return (string)GetValue(FirstNameProperty); }
-            private set { SetValue(FirstNameProperty, value); }
-        }
+		public string PlayerName
+		{
+			get => (string)GetValue(PlayerNameProperty);
+			set => SetValue(PlayerNameProperty, value);
+		}
 
-        public string LastName
-        {
-            get { return (string)GetValue(LastNameProperty); }
-            private set { SetValue(LastNameProperty, value); }
-        }
+		public string FirstName
+		{
+			get => (string)GetValue(FirstNameProperty);
+			private set => SetValue(FirstNameProperty, value);
+		}
 
-        public int ShirtNumber
-        {
-            get { return (int)GetValue(ShirtNumberProperty); }
-            set { SetValue(ShirtNumberProperty, value); }
-        }
+		public string LastName
+		{
+			get => (string)GetValue(LastNameProperty);
+			private set => SetValue(LastNameProperty, value);
+		}
 
-        public string PhotoUrl
-        {
-            get { return (string)GetValue(PhotoUrlProperty); }
-            private set { SetValue(PhotoUrlProperty, value); }
-        }
+		public int ShirtNumber
+		{
+			get => (int)GetValue(ShirtNumberProperty);
+			set => SetValue(ShirtNumberProperty, value);
+		}
 
-        public string PictureFileName
-        {
-            get { return (string)GetValue(PictureFileNameProperty); }
-            set { SetValue(PictureFileNameProperty, value); }
-        }
+		public string PhotoUrl
+		{
+			get => (string)GetValue(PhotoUrlProperty);
+			private set => SetValue(PhotoUrlProperty, value);
+		}
 
-        public Position Position
-        {
-            get { return (Position)GetValue(PositionProperty); }
-            set { SetValue(PositionProperty, value); }
-        }
+		public string PictureFileName
+		{
+			get => (string)GetValue(PictureFileNameProperty);
+			set => SetValue(PictureFileNameProperty, value);
+		}
 
-        public bool IsOpponent
-        {
-            get { return (bool)GetValue(IsOpponentProperty); }
-            set { SetValue(IsOpponentProperty, value); }
-        }
-    }
-} 
+		public Position Position
+		{
+			get => (Position)GetValue(PositionProperty);
+			set => SetValue(PositionProperty, value);
+		}
+
+		public bool IsOpponent
+		{
+			get => (bool)GetValue(IsOpponentProperty);
+			init => SetValue(IsOpponentProperty, value);
+		}
+	}
+}

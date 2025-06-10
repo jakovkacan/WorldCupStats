@@ -13,6 +13,8 @@ public static class ConfigurationProvider
 			.AddJsonFile("appsettings.json", optional: false)
 			.Build();
 	}
+
+	//updates the appsettings.json file with the new language setting (necessary for startup config)
 	public static void UpdateAppSettingsLanguage(string newLanguage)
 	{
 		const string filePath = "appsettings.json";

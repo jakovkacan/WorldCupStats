@@ -22,7 +22,7 @@ namespace WorldCupStats.WinForms
 
 			services.AddSingleton<ISettingsRepository, SettingsRepository>();
 
-			// Register your forms
+			// Form registrations
 			services.AddTransient<RankingForm>();
 			services.AddTransient<MainForm>();
 			services.AddTransient<SettingsForm>();
@@ -45,7 +45,7 @@ namespace WorldCupStats.WinForms
 			services.AddSingleton<IConfiguration>(configuration);
 			services.AddLogging();
 
-			// Register your repository
+			// Register data repository based on configuration
 			var useLocalData = configuration["DataConfig:UseLocalData"]?.ToLowerInvariant() == "true";
 
 			if (useLocalData)
@@ -58,6 +58,7 @@ namespace WorldCupStats.WinForms
 
 			serviceProvider = services.BuildServiceProvider();
 
+			// Set culture based on configuration
 			var lang = configuration["Language"] ?? "en";
 			Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
 			Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);

@@ -13,6 +13,7 @@ public class HttpClientProvider : IHttpClientFactory
 		_config = config;
 	}
 
+	//sets the base URL and default headers for the HttpClient
 	public HttpClient CreateClient()
 	{
 		var baseUrl = _config["DataConfig:ApiEndpoints:BaseUrl"];

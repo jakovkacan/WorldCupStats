@@ -36,23 +36,21 @@ namespace WorldCupStats.WinForms.Forms
 			};
 			dgvPlayerRanking.Columns.Add(imgCol);
 
-			// Add other columns as needed
+			// Add other columns
 			dgvPlayerRanking.Columns.Add("Name", _rm.GetString("Name"));
 			dgvPlayerRanking.Columns.Add("Goals", _rm.GetString("Goals"));
 			dgvPlayerRanking.Columns.Add("YellowCards", _rm.GetString("YellowCards"));
 
-			// Populate rows
 			foreach (var pr in _ranking.PlayerRanking)
 			{
-				//var image = Properties.Resources.ResourceManager.GetObject("DefaultImage"); // If in Properties/Resources.resx
 				var path = pr.Player.PictureFileName != null
 					? FileUtils.GetPicturePath(pr.Player.PictureFileName)
 					: null;
-				System.Drawing.Image? playerImage = null;
+				Image? playerImage = null;
 
 				if (!string.IsNullOrEmpty(pr.Player.PictureFileName) && File.Exists(path))
 				{
-					playerImage = System.Drawing.Image.FromFile(path);
+					playerImage = Image.FromFile(path);
 				}
 				else
 				{
@@ -80,7 +78,6 @@ namespace WorldCupStats.WinForms.Forms
 
 		}
 
-		// Add a button or menu item to trigger printing
 		private void btnPrint_Click(object sender, EventArgs e)
 		{
 			using var printDialog = new PrintDialog();
@@ -98,14 +95,14 @@ namespace WorldCupStats.WinForms.Forms
 			}
 		}
 
-		private int _tableIndex = 0;
 		// PrintPage event handler
+		private int _tableIndex = 0;
 		private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
 		{
 			switch (_tableIndex)
 			{
 				case 0:
-					// Print the first table here (e.g., DataGridView1)
+					// Print the first table
 					PrintTable(dgvPlayerRanking, e.Graphics, "Player Ranking", [100, 150, 50, 50]);
 
 					// Prepare for next page
@@ -113,10 +110,9 @@ namespace WorldCupStats.WinForms.Forms
 					e.HasMorePages = true; // Triggers PrintPage again for next table
 					break;
 				case 1:
-					// Print the second table here (e.g., DataGridView2)
+					// Print the second table
 					PrintTable(dgvMatchRanking, e.Graphics, "Match Ranking");
 
-					// No more pages to print
 					_tableIndex = 0; // Reset for next print job
 					e.HasMorePages = false;
 					break;
@@ -156,7 +152,7 @@ namespace WorldCupStats.WinForms.Forms
 			var colIndex = 0;
 			foreach (DataGridViewColumn col in table.Columns)
 			{
-				using var headerFont = new System.Drawing.Font(table.Font, FontStyle.Bold);
+				using var headerFont = new Font(table.Font, FontStyle.Bold);
 
 				g.DrawRectangle(Pens.Black, cellX, y, colWidths[colIndex], rowHeight);
 
@@ -183,7 +179,7 @@ namespace WorldCupStats.WinForms.Forms
 
 					if (col is DataGridViewImageColumn && cell.Value is System.Drawing.Image img)
 					{
-						// Calculate aspect-ratio-preserving rectangle
+						// Calculate rectangle
 						var destRect = GetAspectRatioFitRectangle(
 							img.Width, img.Height,
 							cellX + 2, y + 2,
@@ -207,6 +203,7 @@ namespace WorldCupStats.WinForms.Forms
 				colIndex = 0;
 			}
 		}
+		// Helper method to calculate rectangle for aspect ratio fit
 		private static Rectangle GetAspectRatioFitRectangle(int imgWidth, int imgHeight, int destX, int destY, int destWidth, int destHeight)
 		{
 			var ratio = Math.Min((float)destWidth / imgWidth, (float)destHeight / imgHeight);
@@ -217,7 +214,5 @@ namespace WorldCupStats.WinForms.Forms
 
 			return new Rectangle(x, y, width, height);
 		}
-
-
 	}
 }

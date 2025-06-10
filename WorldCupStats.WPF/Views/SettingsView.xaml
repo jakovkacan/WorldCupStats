@@ -10,7 +10,7 @@
         Icon="/Resources/app.ico"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
-    
+
     <Window.Resources>
         <Style x:Key="ModernGroupBox" TargetType="GroupBox">
             <Setter Property="Margin" Value="10,5"/>
@@ -61,6 +61,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!-- Championship Type -->
             <GroupBox Header="{x:Static resources:Resources.Settings_Championship}" Style="{StaticResource ModernGroupBox}">
                 <StackPanel>
                     <RadioButton x:Name="rbTypeMen" Content="{x:Static resources:Resources.Settings_Men}" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
@@ -68,6 +69,7 @@
                 </StackPanel>
             </GroupBox>
 
+            <!-- Language Settings -->
             <GroupBox Grid.Row="1" Header="{x:Static resources:Resources.Settings_Language}" Style="{StaticResource ModernGroupBox}">
                 <StackPanel>
                     <RadioButton x:Name="rbLangEn" Content="{x:Static resources:Resources.Settings_English}" Style="{StaticResource ModernRadioButton}" IsChecked="True"/>
@@ -75,6 +77,7 @@
                 </StackPanel>
             </GroupBox>
 
+            <!-- Display Mode Settings -->
             <GroupBox Grid.Row="2" Header="{x:Static resources:Resources.Settings_DisplayMode}" Style="{StaticResource ModernGroupBox}">
                 <StackPanel>
                     <RadioButton x:Name="rbDisplayFullscreen" Content="{x:Static resources:Resources.Settings_Fullscreen}" Style="{StaticResource ModernRadioButton}"/>
@@ -88,6 +91,7 @@
                 </StackPanel>
             </GroupBox>
 
+            <!-- Button Panel -->
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                 <Button x:Name="btnSave" Content="{x:Static resources:Resources.Settings_Save}" Style="{StaticResource ModernButton}" Click="btnSave_Click"/>
                 <Button x:Name="btnCancel" Content="{x:Static resources:Resources.Settings_Cancel}" Style="{StaticResource ModernButton}" Background="#757575" Click="btnCancel_Click"/>

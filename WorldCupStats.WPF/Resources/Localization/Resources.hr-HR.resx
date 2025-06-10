@@ -195,6 +195,9 @@
   <data name="TeamInfo_GoalDifference" xml:space="preserve">
     <value>Razlika golova:</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Greška</value>
+  </data>
   <data name="MainView_Title" xml:space="preserve">
     <value>Statistika Svjetskog Prvenstva</value>
   </data>
@@ -225,7 +228,10 @@
   <data name="PlayerInfo_YellowCards" xml:space="preserve">
     <value>Žuti kartoni:</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Greška</value>
+  <data name="Yes" xml:space="preserve">
+    <value>Da</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Ne</value>
   </data>
 </root>

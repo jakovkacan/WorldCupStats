@@ -30,6 +30,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" HorizontalAlignment="Center">
+            <!-- Dress Image with Shadow and Scale Transform -->
             <Image x:Name="DressImage" 
                    Source="pack://application:,,,/WorldCupStats.WPF;component/Resources/Images/dress_black.png"
                    Width="120" Height="120"
@@ -41,7 +42,7 @@
                     </TransformGroup>
                 </Image.RenderTransform>
             </Image>
-
+            <!-- Player Number Overlay -->
             <TextBlock x:Name="NumberText"
                        Text="{Binding ShirtNumber}"
                        FontSize="48"
@@ -51,6 +52,7 @@
                        VerticalAlignment="Center"
                        Effect="{StaticResource TextShadow}"/>
 
+            <!-- Popup for Player Photo -->
             <Popup x:Name="PlayerPopup" 
                    PlacementTarget="{Binding ElementName=DressImage}"
                    AllowsTransparency="True"
@@ -72,6 +74,7 @@
             </Popup>
         </Grid>
 
+        <!-- Player Name Display -->
         <TextBlock Grid.Row="1"
                    FontSize="32"
                    Foreground="WhiteSmoke"
@@ -85,7 +88,8 @@
             <Run Text="{Binding LastName}"/>
         </TextBlock>
     </Grid>
-    
+
+    <!-- Mouse Enter/Leave Triggers for Scaling Effect -->
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="MouseEnter">
             <BeginStoryboard>

@@ -12,6 +12,7 @@
         Loaded="Window_Loaded">
     
     <Window.Resources>
+        <!-- Styles for Buttons -->
         <Style x:Key="TeamInfoButton" TargetType="Button">
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="40"/>
@@ -116,11 +117,11 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Soccer Field Area -->
+            <!-- Football Field Area -->
             <Border Grid.Row="1" Margin="20">
                 <Viewbox Stretch="Uniform">
                     <Grid Width="1920" Height="1226">
-                        <Image x:Name="SoccerFieldImage" 
+                        <Image x:Name="FieldImage" 
                                Source="pack://application:,,,/WorldCupStats.WPF;component/Resources/Images/field.png"
                                Stretch="Fill"/>
                         

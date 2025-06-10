@@ -14,6 +14,7 @@
         Background="Transparent"
         WindowStartupLocation="CenterScreen">
 
+    <!-- Animation properties -->
     <Window.Triggers>
         <EventTrigger RoutedEvent="Window.Loaded">
             <BeginStoryboard>
@@ -122,6 +123,7 @@
                 </StackPanel>
             </Grid>
 
+            <!-- Close Button -->
             <Button Grid.Row="0" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Top"
