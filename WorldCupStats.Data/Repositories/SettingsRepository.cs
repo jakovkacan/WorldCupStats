@@ -188,7 +188,10 @@ public class SettingsRepository : ISettingsRepository
 			throw new InvalidOperationException("Settings have not been initialized.");
 
 		if (_settings.FavoritePlayers.Count >= 3)
-			throw new InvalidOperationException("Cannot add more than 3 favorite players.");
+			throw new InvalidOperationException(
+				_settings.Language == Language.HR 
+					? "Ne možete dodati više od 3 omiljena igrača." 
+					: "Cannot add more than 3 favorite players.");
 
 		player.IsFavorite = true; // Mark player as favorite
 

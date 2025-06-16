@@ -6,7 +6,7 @@
         xmlns:resources1="clr-namespace:WorldCupStats.WPF.Resources"
         Title="{x:Static resources:Resources.PlayerInfo_Title}"
         Icon="/Resources/app.ico"
-        Height="500" Width="400"
+        Height="520" Width="400"
         WindowStartupLocation="CenterOwner"
         Background="Transparent"
         AllowsTransparency="True"

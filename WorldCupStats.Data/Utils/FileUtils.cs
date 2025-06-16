@@ -24,6 +24,9 @@ public static class FileUtils
 		var guid = Guid.NewGuid().ToString("N"); // Generate a unique identifier
 		var destinationPath = $@"{GetBaseDirectory()}img\{guid}{extension}";
 
+		if (!Directory.Exists(Path.Combine(GetBaseDirectory(), "img")))
+			Directory.CreateDirectory(Path.Combine(GetBaseDirectory(), "img"));
+
 		File.Copy(path, destinationPath);
 
 		return $"{guid}{extension}";
